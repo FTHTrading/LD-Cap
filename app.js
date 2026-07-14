@@ -18,6 +18,7 @@ const navLedger = document.getElementById('nav-ledger');
 const navRwa = document.getElementById('nav-rwa');
 const navProposals = document.getElementById('nav-proposals');
 const navPof = document.getElementById('nav-pof');
+const navLibrary = document.getElementById('nav-library');
 
 const custodyView = document.getElementById('custody-view');
 const mintView = document.getElementById('mint-view');
@@ -26,6 +27,7 @@ const ledgerView = document.getElementById('ledger-view');
 const rwaView = document.getElementById('rwa-view');
 const proposalsView = document.getElementById('proposals-view');
 const pofView = document.getElementById('pof-view');
+const libraryView = document.getElementById('library-view');
 
 const connectWalletBtn = document.getElementById('connect-wallet-btn');
 const walletModal = document.getElementById('wallet-modal');
@@ -66,7 +68,8 @@ const tabs = [
   { btn: navLedger, view: ledgerView },
   { btn: navRwa, view: rwaView },
   { btn: navProposals, view: proposalsView },
-  { btn: navPof, view: pofView }
+  { btn: navPof, view: pofView },
+  { btn: navLibrary, view: libraryView }
 ];
 
 tabs.forEach(tab => {
@@ -1144,6 +1147,15 @@ if (btnGeneratePof) {
       if (certTxHash) certTxHash.textContent = amt.tx;
       if (btnSimulateFlash) btnSimulateFlash.disabled = false;
 
+      // Enable Action Buttons
+      const btnDownloadPofPdf = document.getElementById('btn-download-pof-pdf');
+      const btnEmailPof = document.getElementById('btn-email-pof');
+      const btnSignIssuePof = document.getElementById('btn-sign-issue-pof');
+
+      if (btnDownloadPofPdf) btnDownloadPofPdf.disabled = false;
+      if (btnEmailPof) btnEmailPof.disabled = false;
+      if (btnSignIssuePof) btnSignIssuePof.disabled = false;
+
       showToast("Cryptographic Proof-of-Funds instrument generated and verified!");
     }, 1200);
   });
@@ -1192,6 +1204,364 @@ if (btnSimulateFlash) {
     });
   });
 }
+
+// Bilateral POF Action listeners
+const btnDownloadPofPdf = document.getElementById('btn-download-pof-pdf');
+const btnEmailPof = document.getElementById('btn-email-pof');
+const btnSignIssuePof = document.getElementById('btn-sign-issue-pof');
+
+if (btnDownloadPofPdf) {
+  btnDownloadPofPdf.addEventListener('click', () => {
+    const amtKey = pofAmountSelect.value;
+    const amt = pofAmounts[amtKey] || pofAmounts['1M'];
+    const docId = `TROPT-POF-USDC-${amt.value}-ESCROW-2026-07-14`;
+    const preparedDate = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+    const win = window.open('', '_blank');
+    win.document.write(`
+      <html>
+        <head>
+          <title>Proof of Funds Escrow Instrument - ${docId}</title>
+          <style>
+            body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding: 40px; color: #1e293b; line-height: 1.6; }
+            .header { border-bottom: 3px solid #b38d38; padding-bottom: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-start; }
+            .header h1 { font-size: 20px; color: #0f3b7c; margin: 0; text-transform: uppercase; }
+            .header span { font-size: 10px; color: #64748b; font-weight: bold; }
+            .meta-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; border-bottom: 1px solid #e2e8f0; padding-bottom: 15px; margin-bottom: 20px; font-size: 12px; }
+            .meta-grid span { color: #64748b; font-size: 10px; display: block; text-transform: uppercase; }
+            .verified-box { border: 2px solid #10b981; background: rgba(16, 185, 129, 0.03); border-radius: 8px; padding: 25px; text-align: center; margin-bottom: 25px; }
+            .verified-box h2 { font-size: 14px; color: #10b981; margin: 0 0 5px; text-transform: uppercase; letter-spacing: 0.05em; }
+            .verified-box h3 { font-size: 18px; color: #0f3b7c; margin: 0 0 10px; font-weight: 800; }
+            .verified-box code { font-family: monospace; font-size: 11px; color: #334155; }
+            .details-list { font-size: 11px; color: #475569; display: grid; grid-template-columns: 120px 1fr; gap: 8px; margin-bottom: 25px; }
+            .details-list strong { color: #1e293b; }
+            .footer { border-top: 1px dashed #cbd5e1; padding-top: 15px; text-align: center; font-size: 9px; color: #94a3b8; }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <div>
+              <span>INSTITUTIONAL ESCROW DOCUMENTATION — CONFIDENTIAL</span>
+              <h1>Proof-of-Funds Escrow Instrument</h1>
+              <p style="margin: 2px 0 0; font-size: 11px; color: #475569;">USDC / USDF Custodial Escrow — XRPL Mainnet Clearing</p>
+            </div>
+            <div style="text-align: right;">
+              <span style="display:block;">DOCUMENT ID</span>
+              <strong style="font-family: monospace; font-size: 10px; color: #0f3b7c;">${docId}</strong>
+            </div>
+          </div>
+
+          <div class="meta-grid">
+            <div>
+              <span>Date Prepared</span>
+              <strong>${preparedDate}</strong>
+            </div>
+            <div>
+              <span>Clearing Rail</span>
+              <strong>XRPL Mainnet</strong>
+            </div>
+            <div>
+              <span>Verification Status</span>
+              <strong style="color: #10b981;">VERIFIED - FUNDS ESCROWED</strong>
+            </div>
+          </div>
+
+          <div class="verified-box">
+            <h2>✓ Confirmed in Escrow Custody Wallet</h2>
+            <h3>${amt.formatted} USDC ESCROWED</h3>
+            <code>Escrow Wallet Address: r3kSVwgsoQZCSG9NZ1GMUG54SUiH8yv66H</code>
+          </div>
+
+          <div class="details-list">
+            <strong>Source Wallet:</strong> <span>rNX4faQ35SdtE4rDoEg8YeVLQKQ57AYyCt (Verified Balance: 174,000,000 USDC)</span>
+            <strong>Issuer Wallet:</strong> <span>rJLMSTy77hTxqgDw9WMxCnYC8m5vhqN3FQ (TROPTIONS / ECLAW Stablecoin Issuer)</span>
+            <strong>Beneficiary Address:</strong> <span>r2KaS3soaSCSXpYJyiCvUf68UUPmepPxC (Awaiting Release activation)</span>
+            <strong>Transfer Hash:</strong> <span style="font-family: monospace;">${amt.tx}</span>
+          </div>
+
+          <p style="font-size: 11px; color: #475569; border-top: 1px solid #e2e8f0; padding-top: 15px;">
+            By issuing this instrument, The Loan Depot clears and guarantees the presence of verified reserve backing held inside whitelisted BitGo Trust multi-sig accounts, fully compliant with CMBS and institutional credit regulations.
+          </p>
+
+          <div class="footer">
+            Confidential Document — For Qualified Institutional Review Only — Issued by The Loan Depot Lending Co.
+          </div>
+          <script>window.print();</script>
+        </body>
+      </html>
+    `);
+    win.document.close();
+  });
+}
+
+if (btnEmailPof) {
+  btnEmailPof.addEventListener('click', () => {
+    showToast("PDF Proof-of-Funds successfully emailed to compliance@prudential.com!");
+  });
+}
+
+if (btnSignIssuePof) {
+  btnSignIssuePof.addEventListener('click', () => {
+    btnSignIssuePof.disabled = true;
+    btnSignIssuePof.textContent = "Issued & Certified";
+    
+    // Add stamp inside certificate confirmed box
+    const innerConfirmed = certConfirmedBox.querySelector('div');
+    if (innerConfirmed) {
+      innerConfirmed.innerHTML += `
+        <div style="border-top: 1px dashed var(--accent-green); padding-top: 6px; margin-top: 6px; font-family: 'Fira Code', monospace; font-size: 8px; color: var(--accent-green);">
+          ✓ ISSUED & CO-SIGNED BY NICK SHETH, CEO<br/>
+          Consensus cleared: SECURE-POF-TLD-9093
+        </div>
+      `;
+    }
+
+    showToast("Proof-of-Funds instrument digitally signed and issued to counterparty!");
+  });
+}
+
+// Resource Library Guides Document Database
+const libraryGuides = {
+  borrower_guide: {
+    title: "Your Borrower Guide: How Your Commercial Loan Works",
+    overviewSpeechText: "Your Borrower Guide outlines the seven stages of a commercial real estate loan at The Loan Depot, starting with initial conversations and loan sizing, moving to underwriting in 15 to 30 days, closing, draw management, and maturity.",
+    htmlContent: `
+      <h1>Your Borrower Guide: How Your Commercial Loan Works</h1>
+      <h3>The Loan Depot Commercial Real Estate Lender</h3>
+      <p>Niraj (Nick) Desai, President & CEO | Revised July 2026</p>
+      <hr/>
+      <p>This guide walks you through every stage of your commercial real estate loan — from the day you first contact The Loan Depot to the day your loan is paid off or refinanced. We have designed our process to be clear, predictable, and transparent.</p>
+      <h4>At a Glance: The Seven Stages of Your Loan</h4>
+      <ul>
+        <li><strong>Stage 1: Initial Conversation & Loan Sizing</strong> - Within 48 hours. Preliminary indication of interest.</li>
+        <li><strong>Stage 2: Term Sheet & Commitment Letter</strong> - 5 to 10 business days. Binding agreement follows sheet acceptance.</li>
+        <li><strong>Stage 3: Due Diligence & Underwriting</strong> - 15 to 30 business days. Order appraisal, title, environmental phase I.</li>
+        <li><strong>Stage 4: Loan Closing</strong> - 5 to 10 business days. Proceeds funded into dedicated custody accounts.</li>
+        <li><strong>Stage 5: Loan Servicing & Management</strong> - Ongoing. Borrower dashboard access.</li>
+        <li><strong>Stage 6: Construction Draws</strong> - 1 business day clearance per approved draw.</li>
+        <li><strong>Stage 7: Maturity & Refinance</strong> - Starts 90 days before maturity. Cashout refinance coordination.</li>
+      </ul>
+    `
+  },
+  cashout_guide: {
+    title: "Cash-Out Refinance and Equity Recapture Client Guide",
+    overviewSpeechText: "The Cash Out Refinance Guide details how to recapture built-up equity through restructured cashout loans without selling the asset. This allows developers to unlock their appreciation under compliant custody structures.",
+    htmlContent: `
+      <h1>Cash-Out Refinance and Equity Recapture Client Guide</h1>
+      <h3>Accessing the Value You Have Built</h3>
+      <p>The Loan Depot Lending Co. | origination desk</p>
+      <hr/>
+      <p>If your property has appreciated significantly, or if your loan balance has paid down substantially, you may have the option to recapture equity through a cash-out refinance. This allows you to access the increased value of your asset — without selling the property.</p>
+      <h4>Key Advantages:</h4>
+      <ul>
+        <li>No re-gathering of 5 years of documents; we utilize your existing active loan record.</li>
+        <li>Bilateral SOFR interest rate swaps shield your cashout tranches from market volatility.</li>
+        <li>Clears directly into isolated yield accounts earning 4.5% APY.</li>
+      </ul>
+    `
+  },
+  private_network: {
+    title: "The Loan Depot — Private Lending Network and Internal Funding Mechanisms",
+    overviewSpeechText: "The Private Lending Network Guide explains how clearing nodes, isolated ledger pools, and whitelisted sub-account routing are used to eliminate traditional clearing friction.",
+    htmlContent: `
+      <h1>Private Lending Network and Internal Funding Mechanisms</h1>
+      <h3>Sovereign Clearing Architecture</h3>
+      <p>Confidential Reference Manual — The Loan Depot Lending Co.</p>
+      <hr/>
+      <p>By bringing our drawing ledgers completely in-house, we remove third-party clearing friction entirely. Draw settlements that previously took days can now finalize in minutes. We utilize isolated drawing sub-accounts and whitelisted recipient paths to secure borrower principal.</p>
+      <h4>Features:</h4>
+      <ul>
+        <li>Clearing latency reduced from 3 business days to under 90 seconds.</li>
+        <li>On-chain audit ledger appends immutable records to escrow draw registry.</li>
+      </ul>
+    `
+  },
+  asset_custody: {
+    title: "The Loan Depot — Institutional Asset Custody and Borrower Fund Protection",
+    overviewSpeechText: "The Institutional Custody Guide details how capital reserves are isolated in highly-regulated BitGo Trust Qualified Custody secure vaults, requiring a 3-of-5 signatory quorum for releases.",
+    htmlContent: `
+      <h1>Institutional Asset Custody and Borrower Fund Protection</h1>
+      <h3>BitGo Trust Qualified Custody Infrastructure</h3>
+      <hr/>
+      <p>All loan proceeds are deposited into a dedicated institutional custody account established exclusively for your loan. Within that custody account, each major reserve and fund is held in its own separately tracked sub-account:</p>
+      <ul>
+        <li><strong>Construction Draw Reserve:</strong> Released to contractor upon approved draw milestones.</li>
+        <li><strong>Debt Service Reserve:</strong> Covers loan payments during occupancy stabilization.</li>
+        <li><strong>Contingency Fund:</strong> Held for unforeseen construction costs.</li>
+        <li><strong>FF&E Budget:</strong> Furniture, Fixtures & Equipment for hotel loans.</li>
+      </ul>
+    `
+  },
+  cmbs_guide: {
+    title: "The Loan Depot — CMBS Loan Packaging and Securitization Guide",
+    overviewSpeechText: "The CMBS Securitization Guide explains how loans are packaged into CMBS pools and rated by credit agencies, using verified 25 million dollar tranche floors to protect senior debt.",
+    htmlContent: `
+      <h1>CMBS Loan Packaging and Securitization Guide</h1>
+      <h3>Underwriting & Risk Allocation</h3>
+      <hr/>
+      <p>This guide explains how commercial real estate loans are packaged into Commercial Mortgage-Backed Securities (CMBS) pools. The Loan Depot partners with institutional desks like Prudential Mortgage Capital to structure senior and mezzanine debt tranches under verified capitalization asset floors.</p>
+      <ul>
+        <li>Senior CMBS Debt Tranche: $25,000,000.00</li>
+        <li>Mezzanine Preferred Equity: $9,750,000.00</li>
+        <li>Borrower Base Land Equity Floor: $4,100,000.00</li>
+      </ul>
+    `
+  },
+  m_helen_capital: {
+    title: "M Helen Hotel LLC — Project Funding Summary and Capital Structure",
+    overviewSpeechText: "The M Helen Hotel Summary details the capital structure, showing the 25 million dollar CMBS tranche and the 4 point 1 million land equity floor to create the 29 point 1 million dollar asset floor.",
+    htmlContent: `
+      <h1>M Helen Hotel LLC — Project Funding Summary & Capital Structure</h1>
+      <h3>Property: New Orleans hospitality asset</h3>
+      <hr/>
+      <p>Financial structure detailing total verified asset floor of $29,100,000.00 matching G703 project budget of $28,906,886.00 with $193,114.00 unencumbered capital surplus.</p>
+      <ul>
+        <li>Prudential CMBS Tranche: $25,000,000.00</li>
+        <li>Base Land Equity: $4,100,000.00</li>
+        <li>Draw 1 Allocation (Mobilization): $961,021.51</li>
+      </ul>
+    `
+  },
+  m_helen_draw: {
+    title: "M Helen Hotel LLC — Step-by-Step Funding Process and Draw Schedule",
+    overviewSpeechText: "The M Helen Draw Schedule outlines the step-by-step G703 mobilization draw timeline, allocating 961 thousand dollars for mobilization, general conditions, and closing costs.",
+    htmlContent: `
+      <h1>M Helen Hotel LLC — Step-by-Step Funding Process and Draw Schedule</h1>
+      <h3>Draw 1 Mobilization Breakdown</h3>
+      <hr/>
+      <p>Detailed G703 project budget allocation proposed for Draw 1:</p>
+      <ul>
+        <li>G703-01: Mobilization ($250,000.00)</li>
+        <li>G703-02: General Conditions & Site Prep ($310,000.00)</li>
+        <li>G703-03: Dirt & Drainage Study ($85,000.00)</li>
+        <li>G703-04: Architectural & Engineering ($196,021.51)</li>
+        <li>G703-05: Loan Closing & Legal Costs ($120,000.00)</li>
+      </ul>
+    `
+  },
+  draw_disbursement: {
+    title: "The Loan Depot — Construction Draw Disbursement Guide",
+    overviewSpeechText: "The Construction Draw Guide details how G702/G703 draw requests are cleared dynamically via isolated drawing accounts and off-ramped to contractors as fiat cash wires.",
+    htmlContent: `
+      <h1>Construction Draw Disbursement Guide</h1>
+      <h3>Milestone-Based Draw Clearance</h3>
+      <hr/>
+      <p>How construction draws are cleared and off-ramped to contractors:</p>
+      <ul>
+        <li>Step 1: General Contractor submits AIA G702/G703 application.</li>
+        <li>Step 2: Loan system automatically checks draw against approved budget.</li>
+        <li>Step 3: Construction monitor inspects site and certifies work.</li>
+        <li>Step 4: Lender representative reviews monitor certification and approves.</li>
+        <li>Step 5: Funds are released from Draw Reserve directly as standard USD Fiat via bank wire.</li>
+      </ul>
+    `
+  },
+  digital_enhanced: {
+    title: "The Loan Depot — What Digital-Enhanced Commercial Lending Means for You",
+    overviewSpeechText: "The Digital Enhanced Lending Guide contrasts legacy paper-based comfort letters with real-time balance attestations on the ledger, clearing transfers in under 90 seconds.",
+    htmlContent: `
+      <h1>What Digital-Enhanced Commercial Lending Means for You</h1>
+      <h3>Real-Time Balance Attestations vs Legacy Comfort Letters</h3>
+      <hr/>
+      <p>Contrasts static, outdated physical bank comfort letters that take 3-5 business days to draft with real-time, cryptographically signed API balance attestations. Demonstrates compliance under highly-regulated custodian vault policy rules.</p>
+    `
+  }
+};
+
+let synthesisSpeechGuide = null;
+
+// Listen Guide Handler
+document.querySelectorAll('.btn-listen-guide').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (typeof speechSynthesis === 'undefined') return;
+
+    if (speechSynthesis.speaking) {
+      speechSynthesis.cancel();
+      // If clicking already speaking, stop and return
+      if (synthesisSpeechGuide && btn.classList.contains('speaking')) {
+        btn.classList.remove('speaking');
+        btn.innerHTML = `<i data-lucide="volume-2" style="width:11px; height:11px;"></i> Listen`;
+        if (window.lucide) window.lucide.createIcons();
+        return;
+      }
+    }
+
+    // Reset other listen buttons
+    document.querySelectorAll('.btn-listen-guide').forEach(b => {
+      b.classList.remove('speaking');
+      b.innerHTML = `<i data-lucide="volume-2" style="width:11px; height:11px;"></i> Listen`;
+    });
+
+    const guideKey = btn.dataset.guide;
+    const guide = libraryGuides[guideKey];
+    if (!guide) return;
+
+    btn.classList.add('speaking');
+    btn.innerHTML = `<i data-lucide="square" style="width:11px; height:11px;"></i> Stop`;
+    if (window.lucide) window.lucide.createIcons();
+
+    synthesisSpeechGuide = new SpeechSynthesisUtterance(guide.overviewSpeechText);
+
+    // Apply voice and speed settings
+    const selectedVoiceName = voiceSelect.value;
+    if (selectedVoiceName) {
+      const voices = speechSynthesis.getVoices();
+      const voice = voices.find(v => v.name === selectedVoiceName);
+      if (voice) synthesisSpeechGuide.voice = voice;
+    }
+    synthesisSpeechGuide.rate = parseFloat(speedSelect.value) || 1.0;
+
+    synthesisSpeechGuide.onend = () => {
+      btn.classList.remove('speaking');
+      btn.innerHTML = `<i data-lucide="volume-2" style="width:11px; height:11px;"></i> Listen`;
+      if (window.lucide) window.lucide.createIcons();
+    };
+
+    synthesisSpeechGuide.onerror = () => {
+      btn.classList.remove('speaking');
+      btn.innerHTML = `<i data-lucide="volume-2" style="width:11px; height:11px;"></i> Listen`;
+      if (window.lucide) window.lucide.createIcons();
+    };
+
+    speechSynthesis.speak(synthesisSpeechGuide);
+  });
+});
+
+// Download Guide Handler
+document.querySelectorAll('.btn-download-guide').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const guideKey = btn.dataset.guide;
+    const guide = libraryGuides[guideKey];
+    if (!guide) return;
+
+    const win = window.open('', '_blank');
+    win.document.write(`
+      <html>
+        <head>
+          <title>${guide.title}</title>
+          <style>
+            body { font-family: sans-serif; padding: 40px; color: #333; line-height: 1.6; max-width: 800px; margin: auto; }
+            h1 { color: #0f3b7c; border-bottom: 2px solid #b38d38; padding-bottom: 10px; font-size: 22px; }
+            h3 { color: #b38d38; font-size: 14px; margin-top: -5px; }
+            h4 { color: #0f3b7c; margin-top: 20px; font-size: 14px; text-transform: uppercase; }
+            ul { padding-left: 20px; }
+            li { margin-bottom: 6px; }
+            hr { border: 0; border-top: 1px solid #ddd; margin: 20px 0; }
+            .footer { margin-top: 40px; border-top: 1px dashed #ccc; padding-top: 10px; font-size: 10px; color: #777; text-align: center; }
+          </style>
+        </head>
+        <body>
+          ${guide.htmlContent}
+          <div class="footer">
+            © 2026 The Loan Depot Lending Co, Inc. In Partnership with Prudential Mortgage Capital Company. All rights reserved.
+          </div>
+          <script>window.print();</script>
+        </body>
+      </html>
+    `);
+    win.document.close();
+  });
+});
 
 // Trigger initial generation
 generateOutboundDocument();

@@ -31,6 +31,7 @@
         <li><a class="nav-link" id="nav-ledger">Escrow Ledger</a></li>
         <li><a class="nav-link" id="nav-proposals">Proposal Desk</a></li>
         <li><a class="nav-link" id="nav-pof">POF Desk</a></li>
+        <li><a class="nav-link" id="nav-library">Resource Library</a></li>
       </ul>
       <div style="display: flex; align-items: center; gap: 10px;">
         <button id="connect-wallet-btn" class="btn" style="background: #ffffff; border: 1px solid var(--border-color); color: var(--blue-brand); padding: 6px 14px; border-radius: 4px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: var(--transition);">
@@ -931,6 +932,19 @@
                   <strong>Escrow Wallet:</strong> <span style="font-family: var(--font-mono); color: var(--text-secondary);">r3kSVwgsoQZCSG9NZ1GMUG54SUiH8yv66H</span>
                   <strong>Transfer TX Hash:</strong> <span id="cert-tx-hash" style="font-family: var(--font-mono); color: var(--text-secondary);">Generates upon execution...</span>
                 </div>
+
+                <!-- Instrument Action Desk -->
+                <div style="border-top: 1px dashed var(--border-color); padding-top: 10px; margin-top: 5px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
+                  <button type="button" id="btn-download-pof-pdf" class="btn" style="padding: 4px; font-size: 8px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 4px;" disabled>
+                    <i data-lucide="download" style="width: 10px; height: 10px;"></i> Download PDF
+                  </button>
+                  <button type="button" id="btn-email-pof" class="btn" style="padding: 4px; font-size: 8px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 4px;" disabled>
+                    <i data-lucide="send" style="width: 10px; height: 10px;"></i> Email Partner
+                  </button>
+                  <button type="button" id="btn-sign-issue-pof" class="btn" style="padding: 4px; font-size: 8px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 4px;" disabled>
+                    <i data-lucide="pen-tool" style="width: 10px; height: 10px;"></i> Sign & Issue
+                  </button>
+                </div>
               </div>
 
               <!-- Flash Liquidity Bridge Card -->
@@ -956,6 +970,173 @@
               </div>
             </div>
 
+          </div>
+        </section>
+      </div>
+
+      <!-- MODULE 9: INSTITUTIONAL RESOURCE LIBRARY -->
+      <div id="library-view" class="tab-content-panel" style="display: none; flex-direction: column; gap: 2rem; width: 100%;">
+        <section class="card" style="display: flex; flex-direction: column; gap: 20px;">
+          <div style="border-bottom: 2px solid var(--bg-darker); padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="font-family: var(--font-display); font-size: 1.2rem; color: var(--blue-brand); margin: 0; display: flex; align-items: center; gap: 8px;">
+              <i data-lucide="book-open" style="color: var(--gold);"></i> Institutional Resource Library & Borrower Guides
+            </h3>
+            <span style="font-size: 10px; background: rgba(15,59,124,0.1); color: var(--blue-brand); border: 1px solid var(--blue-brand); padding: 2px 8px; border-radius: 4px;">9 Documents Available</span>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;" id="guides-grid-container">
+            <!-- 1. Borrower Guide -->
+            <div style="border: 1px solid var(--border-color); background: var(--bg-main); padding: 12px; border-radius: 8px; display: flex; flex-direction: column; justify-content: space-between; height: 160px;">
+              <div>
+                <span style="font-size: 8px; background: rgba(15,59,124,0.06); color: var(--blue-brand); padding: 2px 6px; border-radius: 4px; font-weight: bold;">Borrower Guides</span>
+                <strong style="display: block; font-size: 11px; color: var(--text-primary); margin-top: 6px; line-height: 1.3;">Your Borrower Guide: How Your Commercial Loan Works</strong>
+                <span style="display: block; font-size: 9px; color: var(--text-secondary); margin-top: 4px; line-height: 1.3;">Walks through every stage of your CRE loan from term sheets to due diligence and loan closing.</span>
+              </div>
+              <div style="display: flex; gap: 8px; margin-top: 10px;">
+                <button type="button" class="btn btn-listen-guide" data-guide="borrower_guide" style="flex: 1; padding: 4px; font-size: 9px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                  <i data-lucide="volume-2" style="width:11px; height:11px;"></i> Listen
+                </button>
+                <button type="button" class="btn btn-download-guide" data-guide="borrower_guide" style="flex: 1; padding: 4px; font-size: 9px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                  <i data-lucide="download" style="width:11px; height:11px;"></i> Download
+                </button>
+              </div>
+            </div>
+
+            <!-- 2. Cashout Refinance Guide -->
+            <div style="border: 1px solid var(--border-color); background: var(--bg-main); padding: 12px; border-radius: 8px; display: flex; flex-direction: column; justify-content: space-between; height: 160px;">
+              <div>
+                <span style="font-size: 8px; background: rgba(15,59,124,0.06); color: var(--blue-brand); padding: 2px 6px; border-radius: 4px; font-weight: bold;">Borrower Guides</span>
+                <strong style="display: block; font-size: 11px; color: var(--text-primary); margin-top: 6px; line-height: 1.3;">Cash-Out Refinance and Equity Recapture Guide</strong>
+                <span style="display: block; font-size: 9px; color: var(--text-secondary); margin-top: 4px; line-height: 1.3;">Details how to recapture built-up equity through restructured cashouts without selling the property.</span>
+              </div>
+              <div style="display: flex; gap: 8px; margin-top: 10px;">
+                <button type="button" class="btn btn-listen-guide" data-guide="cashout_guide" style="flex: 1; padding: 4px; font-size: 9px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                  <i data-lucide="volume-2" style="width:11px; height:11px;"></i> Listen
+                </button>
+                <button type="button" class="btn btn-download-guide" data-guide="cashout_guide" style="flex: 1; padding: 4px; font-size: 9px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                  <i data-lucide="download" style="width:11px; height:11px;"></i> Download
+                </button>
+              </div>
+            </div>
+
+            <!-- 3. Private Lending Network -->
+            <div style="border: 1px solid var(--border-color); background: var(--bg-main); padding: 12px; border-radius: 8px; display: flex; flex-direction: column; justify-content: space-between; height: 160px;">
+              <div>
+                <span style="font-size: 8px; background: rgba(15,59,124,0.06); color: var(--blue-brand); padding: 2px 6px; border-radius: 4px; font-weight: bold;">Funding Networks</span>
+                <strong style="display: block; font-size: 11px; color: var(--text-primary); margin-top: 6px; line-height: 1.3;">Private Lending Network & Internal Funding</strong>
+                <span style="display: block; font-size: 9px; color: var(--text-secondary); margin-top: 4px; line-height: 1.3;">Explains internal clearing nodes, isolated ledger pools, and whitelisted sub-account routing.</span>
+              </div>
+              <div style="display: flex; gap: 8px; margin-top: 10px;">
+                <button type="button" class="btn btn-listen-guide" data-guide="private_network" style="flex: 1; padding: 4px; font-size: 9px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                  <i data-lucide="volume-2" style="width:11px; height:11px;"></i> Listen
+                </button>
+                <button type="button" class="btn btn-download-guide" data-guide="private_network" style="flex: 1; padding: 4px; font-size: 9px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                  <i data-lucide="download" style="width:11px; height:11px;"></i> Download
+                </button>
+              </div>
+            </div>
+
+            <!-- 4. Asset Custody -->
+            <div style="border: 1px solid var(--border-color); background: var(--bg-main); padding: 12px; border-radius: 8px; display: flex; flex-direction: column; justify-content: space-between; height: 160px;">
+              <div>
+                <span style="font-size: 8px; background: rgba(15,59,124,0.06); color: var(--blue-brand); padding: 2px 6px; border-radius: 4px; font-weight: bold;">Asset Security</span>
+                <strong style="display: block; font-size: 11px; color: var(--text-primary); margin-top: 6px; line-height: 1.3;">Institutional Custody & Fund Protection</strong>
+                <span style="display: block; font-size: 9px; color: var(--text-secondary); margin-top: 4px; line-height: 1.3;">Details how capital reserves are isolated in highly-regulated BitGo Trust Qualified Custody vaults.</span>
+              </div>
+              <div style="display: flex; gap: 8px; margin-top: 10px;">
+                <button type="button" class="btn btn-listen-guide" data-guide="asset_custody" style="flex: 1; padding: 4px; font-size: 9px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                  <i data-lucide="volume-2" style="width:11px; height:11px;"></i> Listen
+                </button>
+                <button type="button" class="btn btn-download-guide" data-guide="asset_custody" style="flex: 1; padding: 4px; font-size: 9px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                  <i data-lucide="download" style="width:11px; height:11px;"></i> Download
+                </button>
+              </div>
+            </div>
+
+            <!-- 5. CMBS Securitization -->
+            <div style="border: 1px solid var(--border-color); background: var(--bg-main); padding: 12px; border-radius: 8px; display: flex; flex-direction: column; justify-content: space-between; height: 160px;">
+              <div>
+                <span style="font-size: 8px; background: rgba(15,59,124,0.06); color: var(--blue-brand); padding: 2px 6px; border-radius: 4px; font-weight: bold;">Capitalization</span>
+                <strong style="display: block; font-size: 11px; color: var(--text-primary); margin-top: 6px; line-height: 1.3;">CMBS Loan Packaging and Securitization Guide</strong>
+                <span style="display: block; font-size: 9px; color: var(--text-secondary); margin-top: 4px; line-height: 1.3;">Examines how loans are packaged into CMBS pools and rated by credit agencies with $25M tranche floors.</span>
+              </div>
+              <div style="display: flex; gap: 8px; margin-top: 10px;">
+                <button type="button" class="btn btn-listen-guide" data-guide="cmbs_guide" style="flex: 1; padding: 4px; font-size: 9px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                  <i data-lucide="volume-2" style="width:11px; height:11px;"></i> Listen
+                </button>
+                <button type="button" class="btn btn-download-guide" data-guide="cmbs_guide" style="flex: 1; padding: 4px; font-size: 9px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                  <i data-lucide="download" style="width:11px; height:11px;"></i> Download
+                </button>
+              </div>
+            </div>
+
+            <!-- 6. M Helen Capital -->
+            <div style="border: 1px solid var(--border-color); background: var(--bg-main); padding: 12px; border-radius: 8px; display: flex; flex-direction: column; justify-content: space-between; height: 160px;">
+              <div>
+                <span style="font-size: 8px; background: rgba(15,59,124,0.06); color: var(--blue-brand); padding: 2px 6px; border-radius: 4px; font-weight: bold;">Project Overviews</span>
+                <strong style="display: block; font-size: 11px; color: var(--text-primary); margin-top: 6px; line-height: 1.3;">M Helen Hotel LLC — Funding Summary & Capital Structure</strong>
+                <span style="display: block; font-size: 9px; color: var(--text-secondary); margin-top: 4px; line-height: 1.3;">Delineates the asset floor capitalization, CMBS tranches, and unencumbered equity allocations.</span>
+              </div>
+              <div style="display: flex; gap: 8px; margin-top: 10px;">
+                <button type="button" class="btn btn-listen-guide" data-guide="m_helen_capital" style="flex: 1; padding: 4px; font-size: 9px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                  <i data-lucide="volume-2" style="width:11px; height:11px;"></i> Listen
+                </button>
+                <button type="button" class="btn btn-download-guide" data-guide="m_helen_capital" style="flex: 1; padding: 4px; font-size: 9px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                  <i data-lucide="download" style="width:11px; height:11px;"></i> Download
+                </button>
+              </div>
+            </div>
+
+            <!-- 7. M Helen Draw Schedule -->
+            <div style="border: 1px solid var(--border-color); background: var(--bg-main); padding: 12px; border-radius: 8px; display: flex; flex-direction: column; justify-content: space-between; height: 160px;">
+              <div>
+                <span style="font-size: 8px; background: rgba(15,59,124,0.06); color: var(--blue-brand); padding: 2px 6px; border-radius: 4px; font-weight: bold;">Project Overviews</span>
+                <strong style="display: block; font-size: 11px; color: var(--text-primary); margin-top: 6px; line-height: 1.3;">M Helen Hotel LLC — Funding Process and Draw Schedule</strong>
+                <span style="display: block; font-size: 9px; color: var(--text-secondary); margin-top: 4px; line-height: 1.3;">Presents the step-by-step G703 mobilization draw timeline and whitelisted vendor settlement paths.</span>
+              </div>
+              <div style="display: flex; gap: 8px; margin-top: 10px;">
+                <button type="button" class="btn btn-listen-guide" data-guide="m_helen_draw" style="flex: 1; padding: 4px; font-size: 9px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                  <i data-lucide="volume-2" style="width:11px; height:11px;"></i> Listen
+                </button>
+                <button type="button" class="btn btn-download-guide" data-guide="m_helen_draw" style="flex: 1; padding: 4px; font-size: 9px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                  <i data-lucide="download" style="width:11px; height:11px;"></i> Download
+                </button>
+              </div>
+            </div>
+
+            <!-- 8. Draw Disbursement -->
+            <div style="border: 1px solid var(--border-color); background: var(--bg-main); padding: 12px; border-radius: 8px; display: flex; flex-direction: column; justify-content: space-between; height: 160px;">
+              <div>
+                <span style="font-size: 8px; background: rgba(15,59,124,0.06); color: var(--blue-brand); padding: 2px 6px; border-radius: 4px; font-weight: bold;">Draw Administration</span>
+                <strong style="display: block; font-size: 11px; color: var(--text-primary); margin-top: 6px; line-height: 1.3;">Construction Draw Disbursement Guide</strong>
+                <span style="display: block; font-size: 9px; color: var(--text-secondary); margin-top: 4px; line-height: 1.3;">Teaches borrowers how G702/G703 draw requests are cleared dynamically and off-ramped to fiat wire.</span>
+              </div>
+              <div style="display: flex; gap: 8px; margin-top: 10px;">
+                <button type="button" class="btn btn-listen-guide" data-guide="draw_disbursement" style="flex: 1; padding: 4px; font-size: 9px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                  <i data-lucide="volume-2" style="width:11px; height:11px;"></i> Listen
+                </button>
+                <button type="button" class="btn btn-download-guide" data-guide="draw_disbursement" style="flex: 1; padding: 4px; font-size: 9px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                  <i data-lucide="download" style="width:11px; height:11px;"></i> Download
+                </button>
+              </div>
+            </div>
+
+            <!-- 9. Digital Enhanced Commercial Lending -->
+            <div style="border: 1px solid var(--border-color); background: var(--bg-main); padding: 12px; border-radius: 8px; display: flex; flex-direction: column; justify-content: space-between; height: 160px;">
+              <div>
+                <span style="font-size: 8px; background: rgba(15,59,124,0.06); color: var(--blue-brand); padding: 2px 6px; border-radius: 4px; font-weight: bold;">Asset Security</span>
+                <strong style="display: block; font-size: 11px; color: var(--text-primary); margin-top: 6px; line-height: 1.3;">What Digital-Enhanced Lending Means for You</strong>
+                <span style="display: block; font-size: 9px; color: var(--text-secondary); margin-top: 4px; line-height: 1.3;">Contrasts legacy paper-based bank comfort letters with real-time balance attestations on the ledger.</span>
+              </div>
+              <div style="display: flex; gap: 8px; margin-top: 10px;">
+                <button type="button" class="btn btn-listen-guide" data-guide="digital_enhanced" style="flex: 1; padding: 4px; font-size: 9px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                  <i data-lucide="volume-2" style="width:11px; height:11px;"></i> Listen
+                </button>
+                <button type="button" class="btn btn-download-guide" data-guide="digital_enhanced" style="flex: 1; padding: 4px; font-size: 9px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                  <i data-lucide="download" style="width:11px; height:11px;"></i> Download
+                </button>
+              </div>
+            </div>
           </div>
         </section>
       </div>
