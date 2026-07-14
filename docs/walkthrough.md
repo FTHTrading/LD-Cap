@@ -43,8 +43,8 @@ I have successfully initialized, built, verified, and deployed the sovereign cap
 
 A browser subagent verified all modules, ran the simulations, and captured the Audit Ledger tab view:
 
-![RWA Cross-Collateral Transaction Confirmation](C:\Users\Kevan\.gemini\antigravity-ide\brain\844b3ca0-72d4-4e98-a45a-08775feb0a44\rwa_acquisition_final_1784027889896.png)
-*Figure 1: UI console log confirming the success of the programmatic RWA cross-collateral acquisition block.*
+![RWA Cross-Collateral Transaction Confirmation](C:\Users\Kevan\.gemini\antigravity-ide\brain\844b3ca0-72d4-4e98-a45a-08775feb0a44\completed_state_1784028271540.png)
+*Figure 1: Real-time UI log verification after selecting Louisiana and Kentucky properties from the flyer to execute the cross-collateral acquisition.*
 
 All source files are committed and live on GitHub:
 *   [Dashboard.jsx](file:///C:/Users/Kevan/.gemini/antigravity-ide/scratch/ld-cap/Dashboard.jsx)
