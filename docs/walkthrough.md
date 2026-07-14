@@ -1,6 +1,6 @@
 # LD Capital (M Helen Hotel LLC) Sovereign Draw & stablecoin Minting Terminal Walkthrough
 
-I have successfully initialized, built, verified, and deployed the sovereign capital draw and stablecoin minting terminal for **LD Capital (M Helen Hotel LLC)** on branch `main` at **`https://github.com/FTHTrading/LD-Cap`**.
+I have successfully initialized, built, verified, and deployed the sovereign capital draw, RWA tokenization, and multi-property acquisition terminal for **LD Capital (M Helen Hotel LLC)** on branch `main` at **`https://github.com/FTHTrading/LD-Cap`**.
 
 ---
 
@@ -18,17 +18,23 @@ I have successfully initialized, built, verified, and deployed the sovereign cap
     - `Helen_Reserve_Staking`: Active yield pool (4.5% APY).
     - `Helen_Treasury_Fees`: Transaction fee tracker (0.25% fee hook).
 
-### 3. Port 8888 HMAC Signature verification Log Console
+### 3. Port 8888 HMAC Signature Verification Log Console
 *   Triggers an interactive signature connection modal for the BitGo gateway, checking Whitelists and SafeGuard co-signers.
 *   Once wallet is linked, executing Draw 1 logs a line-by-line verification trace simulating a secure API check:
     - Computing HMAC-SHA256 signature hash.
     - Matching draw request against G703 codes.
     - Broadcasting signed transaction to mint stablecoins (`961,021.51 USDF`).
 
-### 4. SOFR Interest Rate Hedging swaps
+### 4. RWA Real Estate Tokenization & Multi-Property Cross-Collateralization
+*   **National RWA Portfolio:** Displays asset cards representing their national properties with valuations and idle equity.
+*   **Tokenize Trigger:** Allows clicking **Tokenize Asset** next to Austin or Nashville to represent deeds on-chain, unlocking their equity and enabling their selection in the collateral checklist.
+*   **Cross-Collateral Acquisition:** Toggling checkboxes pools equity (e.g., Georgia Escrow + Atlanta + Austin = **$19,350,000.00** pooled equity) and calculates the Max 65% LTV. When LTV is sufficient to cover the Target Acquisition cost (e.g., Miami Beach Resort: $8.5M), it enables the **Execute Cross-Collateral Acquisition** button.
+*   **Programmatic Clearing:** Clicking execute triggers a Port 8888 verification sequence that signs the transaction, provisions a new BitGo Child Org drawing vault, and routes the USDF draw to complete the purchase.
+
+### 5. SOFR Interest Rate Hedging swaps
 *   Allows placing bilateral CME-indexed SOFR swaps to hedge financing rate exposure with leverage options (1x to 10x) and margin collateral inputs.
 
-### 5. Guided Audio tour
+### 6. Guided Audio tour
 *   Integrates HTML5 Web Speech Synthesis narrating the G703 schedules and minting rules, filtered to exclude robotic David/Zira voices and sorted alphabetically.
 
 ---
@@ -37,11 +43,13 @@ I have successfully initialized, built, verified, and deployed the sovereign cap
 
 A browser subagent verified all modules, ran the simulations, and captured the Audit Ledger tab view:
 
-![Audit Ledger View](/audit_ledger_view_1784026857231.png)
-*Figure 1: Cryptographic Audit Ledger reflecting the verified CMBS floor and the authorized G703 Draw 1 block.*
+![RWA Cross-Collateral Transaction Confirmation](/rwa_acquisition_final_1784027889896.png)
+*Figure 1: UI console log confirming the success of the programmatic RWA cross-collateral acquisition block.*
 
 All source files are committed and live on GitHub:
 *   [index.html](file:///C:/Users/Kevan/.gemini/antigravity-ide/scratch/ld-cap/index.html)
 *   [app.js](file:///C:/Users/Kevan/.gemini/antigravity-ide/scratch/ld-cap/app.js)
 *   [style.css](file:///C:/Users/Kevan/.gemini/antigravity-ide/scratch/ld-cap/style.css)
-*   [.gitignore](file:///C:/Users/Kevan/.gemini/antigravity-ide/scratch/ld-cap/.gitignore)
+*   [README.md](file:///C:/Users/Kevan/.gemini/antigravity-ide/scratch/ld-cap/README.md)
+*   [PHASED_FUNDING.md](file:///C:/Users/Kevan/.gemini/antigravity-ide/scratch/ld-cap/PHASED_FUNDING.md)
+*   [docs/walkthrough.md](file:///C:/Users/Kevan/.gemini/antigravity-ide/scratch/ld-cap/docs/walkthrough.md)
