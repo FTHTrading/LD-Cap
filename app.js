@@ -101,8 +101,8 @@ const tabNarrativeSpeechMap = {
   ],
   'hedge-view': [
     "This is the Rate Hedging panel. Here, you can structure bilateral interest rate swaps based on average CME SOFR rates to protect borrower principal against market shifts.",
-    "Use the leverage slider to adjust yield ratios and active reserve offsets.",
-    "Staked reserves accumulate interest at four point five percent APY, directly offsetting daily borrowing costs."
+    "Adjust the slider parameters to evaluate interest rate hedge sensitivity and policy compliance.",
+    "Hedging structures utilize standard SOFR fixed-rate swaps to mitigate debt service exposure."
   ],
   'rwa-view': [
     "This is the Portfolio Equity structure panel. It displays senior and mezzanine tranches, target Loan-to-Value ratios, and borrower capital capacity.",
@@ -144,6 +144,13 @@ tabs.forEach(tab => {
     });
     tab.btn.classList.add('active');
     tab.view.style.display = 'flex';
+    
+    // Manage active-parent dropdown class
+    document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('active-parent'));
+    const parentDropdown = tab.btn.closest('.nav-dropdown');
+    if (parentDropdown) {
+      parentDropdown.classList.add('active-parent');
+    }
     
     // Refresh lucide icons in the view
     if (window.lucide) window.lucide.createIcons();
@@ -196,12 +203,14 @@ modalSignBtn.addEventListener('click', () => {
   modalSignBtn.textContent = 'Processing Handshake...';
   
   const logSteps = [
-    { text: '[INFO] Initializing Secure Vault Connection...', color: 'var(--text-secondary)' },
-    { text: '[INFO] Linking Escrow Account...', color: 'var(--text-secondary)' },
-    { text: '[POLICY] Verifying account compliance policies...', color: 'var(--accent-cyan)' },
-    { text: '[POLICY] Check: Recipient address matches approved whitelist', color: 'var(--accent-green)' },
-    { text: '[SIG] Verifying institutional custodian approvals...', color: 'var(--gold)' },
-    { text: '[SUCCESS] Connection authorized by linked treasury keys.', color: 'var(--accent-green)' }
+    { text: '[HANDSHAKE] Initializing handshake with BitGo Enterprise settlement node...', color: 'var(--text-secondary)' },
+    { text: '[AUTH] Checking credentials for Settlement Policy ID: POL-UNY-254900...', color: 'var(--text-secondary)' },
+    { text: '[VAULT] Querying Master Source Vault: bg-vault-07bcc4a1...', color: 'var(--accent-cyan)' },
+    { text: '[CONSENSUS] Signature Request dispatched to MPC participants...', color: 'var(--gold)' },
+    { text: '[CONSENSUS] Signer 1 (LD Capital Ops): Approved.', color: 'var(--accent-green)' },
+    { text: '[CONSENSUS] Signer 2 (LD Capital Risk): Approved.', color: 'var(--accent-green)' },
+    { text: '[CONSENSUS] Quorum verified (2-of-3 threshold satisfied).', color: 'var(--accent-green)' },
+    { text: '[SUCCESS] Handshake verified. Secure treasury link active.', color: 'var(--accent-green)' }
   ];
 
   modalStatusLog.innerHTML = '';
@@ -217,10 +226,10 @@ modalSignBtn.addEventListener('click', () => {
       if (idx === logSteps.length - 1) {
         // Complete Wallet Connection
         isWalletConnected = true;
-        connectWalletBtn.innerHTML = `<i data-lucide="check-circle" style="width: 13px; height: 13px; color: var(--accent-green);"></i> Linked (0x4E57...)`;
-        connectWalletBtn.style.color = 'var(--accent-green)';
-        connectWalletBtn.style.borderColor = 'rgba(16, 185, 129, 0.4)';
-        connectWalletBtn.style.background = 'rgba(16, 185, 129, 0.05)';
+        connectWalletBtn.innerHTML = `<i data-lucide="check-circle" style="width: 13px; height: 13px; color: #34d399;"></i> Linked (0x4E57...)`;
+        connectWalletBtn.style.color = '#34d399';
+        connectWalletBtn.style.borderColor = 'rgba(52, 211, 153, 0.4)';
+        connectWalletBtn.style.background = 'rgba(52, 211, 153, 0.1)';
         
         if (window.lucide) window.lucide.createIcons();
         
@@ -285,6 +294,12 @@ if (aiAuditBtn) {
         if (result.success) {
           showToast('AI Compliance Audit Completed!');
           
+          // Show policy checklist
+          const checklistBox = document.getElementById('ai-checklist-box');
+          if (checklistBox) {
+            checklistBox.style.display = 'block';
+          }
+          
           // Print result analysis
           const resultLine = document.createElement('div');
           resultLine.style.color = 'var(--accent-green)';
@@ -315,43 +330,141 @@ if (aiAuditBtn) {
   });
 }
 
-// 4. Stablecoin Minting & G703 Draw 1 Execution Simulation (Port 8888)
+// 4. Stablecoin Minting & G703 Draw Execution Simulation
+const drawStates = {
+  DRAW_1: { 
+    executed: false, 
+    amount: 961021.51, 
+    label: 'Draw 1: Mobilization', 
+    code: 'DRAW_1', 
+    recipient: '0x4E574939D460d284B5D990646D4aeaEF2D49Fa13', 
+    recipientId: '✓ Whitelisted GC (ID #GC-123)',
+    logs: [
+      { text: '--- INCOMING DRAW TRANSFER REQUEST DETECTED ---', color: 'var(--text-muted)' },
+      { text: 'Target Account: Operating Draw Account (0x4E57...Fa13)', color: 'var(--text-secondary)' },
+      { text: 'Verification: Whitelisted Treasury Signature matches', color: 'var(--text-secondary)' },
+      { text: '[CLEARING] Authenticating draw request against escrow rules...', color: 'var(--accent-cyan)' },
+      { text: '[CLEARING] Request Detail: Draw 1 - Mobilization ($961,021.51)', color: 'var(--text-secondary)' },
+      { text: '[CLEARING] Security key handshake: Verified', color: 'var(--accent-cyan)' },
+      { text: '[POLICY] Verifying Draw 1 line-items match construction budget schedules...', color: 'var(--gold)' },
+      { text: '  - G703-01 (Mobilization): $250,000.00 (Match)', color: 'var(--accent-green)' },
+      { text: '  - G703-02 (General Site): $310,000.00 (Match)', color: 'var(--accent-green)' },
+      { text: '  - G703-03 (Dirt/Drainage): $85,000.00 (Match)', color: 'var(--accent-green)' },
+      { text: '  - G703-04 (Architectural): $196,021.51 (Match)', color: 'var(--accent-green)' },
+      { text: '  - G703-05 (Closing Cost): $120,000.00 (Match)', color: 'var(--accent-green)' },
+      { text: '[CLEARING] Disbursing $961,021.51 to Operating Account...', color: 'var(--accent-cyan)' },
+      { text: '[BitGo] Multi-sig approvals verified. Broadmitting to clearing network...', color: 'var(--accent-cyan)' },
+      { text: '[LEDGER] Appending immutable record to escrow draw ledger...', color: 'var(--accent-green)' },
+      { text: '--- SETTLED & DEPOSITED: Reference #27492019 ---', color: 'var(--accent-green)' }
+    ],
+    hash: 'a772da12b918f0a0e8c6a51d8b2e3c0429f6p9fxa45d2d41c6f5a34e8d2e3c04',
+    prevHash: 'c6f5a34e8d2e3c0429f6p9fxa45d2d41a772da12b918f0a0e8c6a51d8b2e3c04',
+    details: 'Verified G703 budget reconciliation schedules. Funded $961,021.51 to Operating Sub-Account (0x4E57...Fa13). Debited Escrow Pool Account by same amount. Platform Treasury fee of 0.25% ($2,402.55) processed.'
+  },
+  DRAW_2: { 
+    executed: false, 
+    amount: 1500000.00, 
+    label: 'Draw 2: Foundation & Framing', 
+    code: 'DRAW_2', 
+    recipient: '0x8aced25DC8530FDaf0f86D53a0A1E02AAfA7Ac7A', 
+    recipientId: '✓ Whitelisted Framing Contractor (ID #FC-456)',
+    logs: [
+      { text: '--- INCOMING DRAW TRANSFER REQUEST DETECTED ---', color: 'var(--text-muted)' },
+      { text: 'Target Account: Framing Draw Account (0x8ace...Ac7A)', color: 'var(--text-secondary)' },
+      { text: 'Verification: Whitelisted Treasury Signature matches', color: 'var(--text-secondary)' },
+      { text: '[CLEARING] Authenticating draw request against escrow rules...', color: 'var(--accent-cyan)' },
+      { text: '[CLEARING] Request Detail: Draw 2 - Foundation & Framing ($1,500,000.00)', color: 'var(--text-secondary)' },
+      { text: '[CLEARING] Security key handshake: Verified', color: 'var(--accent-cyan)' },
+      { text: '[POLICY] Verifying Draw 2 line-items match construction budget schedules...', color: 'var(--gold)' },
+      { text: '  - G703-06 (Excavation): $450,000.00 (Match)', color: 'var(--accent-green)' },
+      { text: '  - G703-07 (Concrete Pour): $650,000.00 (Match)', color: 'var(--accent-green)' },
+      { text: '  - G703-08 (Steel Framing): $400,000.00 (Match)', color: 'var(--accent-green)' },
+      { text: '[CLEARING] Disbursing $1,500,000.00 to Contractor Sub-Account...', color: 'var(--accent-cyan)' },
+      { text: '[BitGo] Multi-sig approvals verified. Broadmitting to clearing network...', color: 'var(--accent-cyan)' },
+      { text: '[LEDGER] Appending immutable record to escrow draw ledger...', color: 'var(--accent-green)' },
+      { text: '--- SETTLED & DEPOSITED: Reference #27492020 ---', color: 'var(--accent-green)' }
+    ],
+    hash: 'b883ea23c919f0b1f9c7b62e3d0430f7q0gxb56e3d52d7g6b45e9e0f0a1b2c3d',
+    prevHash: 'a772da12b918f0a0e8c6a51d8b2e3c0429f6p9fxa45d2d41c6f5a34e8d2e3c04',
+    details: 'Verified G703 foundation & framing line-items. Funded $1,500,000.00 to Whitelisted Framing Contractor. Debited Escrow Pool Account by same amount. Platform Treasury fee of 0.25% ($3,750.00) processed.'
+  },
+  DRAW_3: { 
+    executed: false, 
+    amount: 2000000.00, 
+    label: 'Draw 3: Electrical & Plumbing', 
+    code: 'DRAW_3', 
+    recipient: '0x78564D4aeaEF2D49Fa1307C7991F82B5012D9D65', 
+    recipientId: '✓ Whitelisted MEP Contractor (ID #MC-789)',
+    logs: [
+      { text: '--- INCOMING DRAW TRANSFER REQUEST DETECTED ---', color: 'var(--text-muted)' },
+      { text: 'Target Account: MEP Draw Account (0x7856...D965)', color: 'var(--text-secondary)' },
+      { text: 'Verification: Whitelisted Treasury Signature matches', color: 'var(--text-secondary)' },
+      { text: '[CLEARING] Authenticating draw request against escrow rules...', color: 'var(--accent-cyan)' },
+      { text: '[CLEARING] Request Detail: Draw 3 - Electrical & Plumbing ($2,000,000.00)', color: 'var(--text-secondary)' },
+      { text: '[CLEARING] Security key handshake: Verified', color: 'var(--accent-cyan)' },
+      { text: '[POLICY] Verifying Draw 3 line-items match construction budget schedules...', color: 'var(--gold)' },
+      { text: '  - G703-09 (Plumbing Rough-in): $800,000.00 (Match)', color: 'var(--accent-green)' },
+      { text: '  - G703-10 (Electrical HVAC): $1,200,000.00 (Match)', color: 'var(--accent-green)' },
+      { text: '[CLEARING] Disbursing $2,000,000.00 to Contractor Sub-Account...', color: 'var(--accent-cyan)' },
+      { text: '[BitGo] Multi-sig approvals verified. Broadmitting to clearing network...', color: 'var(--accent-cyan)' },
+      { text: '[LEDGER] Appending immutable record to escrow draw ledger...', color: 'var(--accent-green)' },
+      { text: '--- SETTLED & DEPOSITED: Reference #27492021 ---', color: 'var(--accent-green)' }
+    ],
+    hash: 'c994fb34d020g1c2g0d8c73f4e1541g8r1hyc67f4e63e8h7c56f0f1g1b2c3d4e',
+    prevHash: 'b883ea23c919f0b1f9c7b62e3d0430f7q0gxb56e3d52d7g6b45e9e0f0a1b2c3d',
+    details: 'Verified G703 plumbing & HVAC mechanical engineering line-items. Funded $2,000,000.00 to Whitelisted MEP Contractor. Debited Escrow Pool Account by same amount. Platform Treasury fee of 0.25% ($5,000.00) processed.'
+  }
+};
+
+const drawRefSelect = document.getElementById('draw-ref-select');
+const mintRecipient = document.getElementById('mint-recipient');
+const mintAmount = document.getElementById('mint-amount');
+const recipientTag = document.getElementById('recipient-tag');
+
+if (drawRefSelect) {
+  drawRefSelect.addEventListener('change', () => {
+    const drawKey = drawRefSelect.value;
+    const draw = drawStates[drawKey];
+    if (draw) {
+      mintAmount.value = draw.amount.toFixed(2);
+      mintRecipient.value = draw.recipient;
+      recipientTag.textContent = draw.recipientId;
+      
+      const drawSignatureStamp = document.getElementById('draw-signature-stamp');
+      if (draw.executed) {
+        executeDrawBtn.disabled = true;
+        executeDrawBtn.textContent = `${draw.label} Disbursed`;
+        if (drawSignatureStamp) drawSignatureStamp.style.display = 'block';
+      } else {
+        executeDrawBtn.disabled = false;
+        executeDrawBtn.textContent = `Approve & Disburse ${draw.label} Funding`;
+        if (drawSignatureStamp) drawSignatureStamp.style.display = 'none';
+      }
+    }
+  });
+}
+
 executeDrawBtn.addEventListener('click', () => {
   if (!isWalletConnected) {
     showToast('Signature error: Link your treasury keys first.', 'error');
     return;
   }
-  if (isDrawExecuted) {
-    showToast('Draw 1 is already executed.', 'error');
+  const drawKey = drawRefSelect ? drawRefSelect.value : 'DRAW_1';
+  const draw = drawStates[drawKey];
+  if (!draw) return;
+
+  if (draw.executed) {
+    showToast(`${draw.label} is already executed.`, 'error');
     return;
   }
   
   executeDrawBtn.disabled = true;
-  executeDrawBtn.textContent = 'Verifying Draw 1...';
+  executeDrawBtn.textContent = `Verifying ${draw.label}...`;
   
-  const mintLogs = [
-    { text: '--- INCOMING DRAW TRANSFER REQUEST DETECTED ---', color: 'var(--text-muted)' },
-    { text: 'Target Account: Operating Draw Account (0x4E57...Fa13)', color: 'var(--text-secondary)' },
-    { text: 'Verification: Whitelisted Treasury Signature matches', color: 'var(--text-secondary)' },
-    { text: '[CLEARING] Authenticating draw request against escrow rules...', color: 'var(--accent-cyan)' },
-    { text: '[CLEARING] Request Detail: Draw 1 - Mobilization ($961,021.51)', color: 'var(--text-secondary)' },
-    { text: '[CLEARING] Security key handshake: Verified', color: 'var(--accent-cyan)' },
-    { text: '[POLICY] Verifying Draw 1 line-items match construction budget schedules...', color: 'var(--gold)' },
-    { text: '  - G703-01 (Mobilization): $250,000.00 (Match)', color: 'var(--accent-green)' },
-    { text: '  - G703-02 (General Site): $310,000.00 (Match)', color: 'var(--accent-green)' },
-    { text: '  - G703-03 (Dirt/Drainage): $85,000.00 (Match)', color: 'var(--accent-green)' },
-    { text: '  - G703-04 (Architectural): $196,021.51 (Match)', color: 'var(--accent-green)' },
-    { text: '  - G703-05 (Closing Cost): $120,000.00 (Match)', color: 'var(--accent-green)' },
-    { text: '[CLEARING] Disbursing $961,021.51 to Operating Account...', color: 'var(--accent-cyan)' },
-    { text: '[BitGo] Multi-sig approvals verified. Broadmitting to clearing network...', color: 'var(--accent-cyan)' },
-    { text: '[LEDGER] Appending immutable record to escrow draw ledger...', color: 'var(--accent-green)' },
-    { text: '--- SETTLED & DEPOSITED: Reference #27492019 ---', color: 'var(--accent-green)' }
-  ];
-
   hookConsoleLog.innerHTML = '';
   let delay = 0;
   
-  mintLogs.forEach((log, idx) => {
+  draw.logs.forEach((log, idx) => {
     setTimeout(() => {
       const line = document.createElement('div');
       line.style.color = log.color;
@@ -359,16 +472,34 @@ executeDrawBtn.addEventListener('click', () => {
       hookConsoleLog.appendChild(line);
       hookConsoleLog.scrollTop = hookConsoleLog.scrollHeight;
       
-      if (idx === mintLogs.length - 1) {
-        // Complete Draw 1 Execution
-        isDrawExecuted = true;
-        executeDrawBtn.textContent = 'Draw 1 Disbursed';
+      if (idx === draw.logs.length - 1) {
+        draw.executed = true;
+        executeDrawBtn.textContent = `${draw.label} Disbursed`;
         executeDrawBtn.disabled = true;
-        drawChildBal.textContent = '$961,021.51 USDC/UNY';
-        topStatusIndicator.textContent = 'Draw 1: Settled & Disbursed';
-        topStatusIndicator.style.background = 'rgba(16, 185, 129, 0.05)';
-        topStatusIndicator.style.color = 'var(--accent-green)';
-        topStatusIndicator.style.borderColor = 'var(--accent-green)';
+        
+        // Add balance to recipient
+        const currentBal = parseFloat(drawChildBal.textContent.replace(/[$, UNY]/g, '')) || 0;
+        drawChildBal.textContent = `$${(currentBal + draw.amount).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} UNY`;
+        
+        // Debit Escrow Pool balance
+        const escrowPoolBalEl = document.getElementById('escrow-pool-bal');
+        if (escrowPoolBalEl) {
+          const currentPool = parseFloat(escrowPoolBalEl.textContent.replace(/[$, UNY]/g, '')) || 29100000;
+          escrowPoolBalEl.textContent = `$${(currentPool - draw.amount).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} UNY`;
+        }
+
+        // Credit Platform Treasury balance with 0.25% Net Hook fee
+        const treasuryFeeBal = document.getElementById('treasury-fee-bal');
+        const fee = draw.amount * 0.0025;
+        if (treasuryFeeBal) {
+          const currentFee = parseFloat(treasuryFeeBal.textContent.replace(/[$, UNY]/g, '')) || 0;
+          treasuryFeeBal.textContent = `$${(currentFee + fee).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} UNY`;
+        }
+
+        topStatusIndicator.textContent = `${draw.label}: Settled & Disbursed`;
+        topStatusIndicator.style.background = 'rgba(52, 211, 153, 0.1)';
+        topStatusIndicator.style.color = '#34d399';
+        topStatusIndicator.style.borderColor = 'rgba(52, 211, 153, 0.4)';
         
         // Show Signature Stamp
         const drawSignatureStamp = document.getElementById('draw-signature-stamp');
@@ -378,19 +509,39 @@ executeDrawBtn.addEventListener('click', () => {
           signatureTimestampVal.textContent = new Date().toLocaleString();
         }
         
-        // Update timeline status
-        pStep2.className = 'timeline-step completed';
-        pStep3.className = 'timeline-step active';
+        // Update timeline status and badges if Draw 1 is settled
+        if (drawKey === 'DRAW_1') {
+          pStep2.className = 'timeline-step completed';
+          pStep3.className = 'timeline-step completed';
+          const step2Badge = document.getElementById('step-2-badge');
+          const step3Badge = document.getElementById('step-3-badge');
+          const step3Evidence = document.getElementById('step-3-evidence');
+          if (step2Badge) {
+            step2Badge.textContent = 'COMPLETED';
+            step2Badge.style.background = 'rgba(16, 185, 129, 0.1)';
+            step2Badge.style.color = 'var(--accent-green)';
+            step2Badge.style.borderColor = 'var(--accent-green)';
+          }
+          if (step3Badge) {
+            step3Badge.textContent = 'SETTLED & DISBURSED';
+            step3Badge.style.background = 'rgba(16, 185, 129, 0.1)';
+            step3Badge.style.color = 'var(--accent-green)';
+            step3Badge.style.borderColor = 'var(--accent-green)';
+          }
+          if (step3Evidence) {
+            step3Evidence.innerHTML = '<a href="#" style="color: var(--blue-brand); text-decoration: underline;" onclick="document.getElementById(\'nav-ledger\').click(); return false;">Evidence: Settled Block #2 Verification</a>';
+          }
+        }
         
-        showToast('G703 Draw 1 successfully verified and disbursed!');
+        showToast(`G703 ${draw.label} successfully verified and disbursed!`);
         
-        // Add blocks to audit ledger
+        // Add block to audit ledger
         addAuditBlock({
-          draw: 'Draw 1: Mobilization & Site Prep',
-          amount: '$961,021.51 USDC/UNY',
-          prevHash: '0000000000000000000000000000000000000000000000000000000000000000',
-          hash: 'c6f5a34e8d2e3c0429f6p9fxa45d2d41a772da12b918f0a0e8c6a51d8b2e3c04',
-          details: 'Verified budget reconciliation. Mobilization ($250k), Site Prep ($310k), Dirt Study ($85k), A&E ($196k), Loan Cost ($120k). Whitelisted operating sub-account target: 0x4E57...Fa13.'
+          draw: `${draw.label} Funding`,
+          amount: `$${draw.amount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} UNY`,
+          prevHash: draw.prevHash,
+          hash: draw.hash,
+          details: draw.details
         });
       }
     }, delay);
@@ -401,7 +552,7 @@ executeDrawBtn.addEventListener('click', () => {
 // 5. Hedging Desk calculations
 sofrLeverage.addEventListener('input', () => {
   const lev = sofrLeverage.value;
-  leverageValLabel.textContent = `${lev}x Leverage`;
+  leverageValLabel.textContent = lev === '1' ? '1x (No Leverage)' : `${lev}x Leverage`;
   updateYieldMath();
 });
 
@@ -409,15 +560,35 @@ sofrCollateral.addEventListener('input', updateYieldMath);
 
 function updateYieldMath() {
   const col = parseFloat(sofrCollateral.value) || 0;
+  const lev = parseFloat(sofrLeverage.value) || 1;
   // Dynamic offset model: Staking Yield offset = Collateral * 4.5% / 365
   const daily = (col * 0.045) / 365;
-  dailyStakingYield.textContent = `$${daily.toFixed(2)} UNY / day`;
+  dailyStakingYield.textContent = `$${daily.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} UNY / day`;
+  
+  // Calculate Notional Coverage
+  const notional = col * lev;
+  const notionalEl = document.getElementById('hedge-notional-coverage');
+  if (notionalEl) {
+    notionalEl.textContent = `$${notional.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} UNY`;
+  }
 }
 
 placeHedgeBtn.addEventListener('click', () => {
-  const col = sofrCollateral.value;
+  const col = parseFloat(sofrCollateral.value) || 0;
   const lev = sofrLeverage.value;
-  showToast(`Bilateral SOFR swap orders placed for $${col} at ${lev}x leverage!`, 'success');
+  const notional = col * parseFloat(lev);
+  showToast(`Bilateral SOFR swap orders placed for $${col.toLocaleString()} at ${lev}x leverage!`, 'success');
+  
+  const successStamp = document.getElementById('hedge-success-stamp');
+  if (successStamp) {
+    successStamp.style.display = 'block';
+    successStamp.innerHTML = `
+      <div style="color: var(--accent-green); font-weight: bold; text-transform: uppercase; margin-bottom: 3px;">✓ Rate Swap Active & Locked</div>
+      <div>• Margin collateral of $${col.toLocaleString()} UNY locked in BitGo sub-vault</div>
+      <div>• Bilateral OTC swap of $${notional.toLocaleString()} UNY cleared with counterparty</div>
+      <div>• Swap details: Fixed 5.12% swapped for CME Term SOFR 1-Month</div>
+    `;
+  }
 });
 
 // 6. Guided Audio Presentation (Web Speech API)
@@ -704,13 +875,25 @@ function recalculateCrossCollateral() {
   const match = targetStr.match(/\$(\d+\.?\d*)M/);
   const targetVal = match ? parseFloat(match[1]) * 1000000 : 8500000;
   
+  
   const status = maxLtv - targetVal;
+  const coverageRatio = (maxLtv / targetVal) * 100;
 
   // Render values
   pooledCollateralVal.textContent = `$${totalEquity.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   maxLtvVal.textContent = `$${maxLtv.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   requiredAcquisitionVal.textContent = `$${targetVal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   
+  const coverageEl = document.getElementById('collateral-coverage-ratio');
+  if (coverageEl) {
+    coverageEl.textContent = `${coverageRatio.toFixed(2)}%`;
+    if (coverageRatio >= 100) {
+      coverageEl.style.color = 'var(--accent-green)';
+    } else {
+      coverageEl.style.color = 'var(--accent-red)';
+    }
+  }
+
   if (status >= 0) {
     collateralStatusVal.textContent = `Surplus: +$${status.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     collateralStatusVal.style.color = 'var(--accent-green)';
@@ -908,44 +1091,50 @@ document.querySelectorAll('.client-select-btn').forEach(btn => {
 // Update LTV label dynamically
 if (propLtvSlider) {
   propLtvSlider.addEventListener('input', () => {
-    propLtvLabel.textContent = `${propLtvSlider.value}% LTV`;
+    const val = propLtvSlider.value;
+    propLtvLabel.textContent = `${val}% LTV`;
+    
+    // Check policy limits
+    const warningEl = document.getElementById('ltv-policy-warning');
+    if (warningEl) {
+      if (parseFloat(val) > 65) {
+        warningEl.style.display = 'block';
+      } else {
+        warningEl.style.display = 'none';
+      }
+    }
+    
+    // Auto-generate proposal instantly for a seamless interactive experience
+    generateOutboundDocument();
   });
 }
 
 const projectData = {
   M_HELEN: {
     name: 'M Helen Hotel LLC',
-    valuation: '$48,750,000.00',
-    equity: '$7,312,500.00',
-    debt: '$31,687,500.00',
-    mezz: '$9,750,000.00',
+    valuation: 48750000,
+    mezzPercent: 20,
     location: 'New Orleans, LA',
     description: 'A premium hospitality project featuring verified capital floors and multi-sig compliance controls.'
   },
   LA_PORTFOLIO: {
     name: 'Louisiana Hotel Portfolio',
-    valuation: '$30,500,000.00',
-    equity: '$15,250,000.00',
-    debt: '$19,825,000.00',
-    mezz: '$6,100,000.00',
+    valuation: 30500000,
+    mezzPercent: 20,
     location: 'Louisiana Statewide',
     description: 'A diversified hotel portfolio cashout transaction restructured under whitelisted draw pathways.'
   },
   KY_HOTEL: {
     name: 'Kentucky Full Service Hotel',
-    valuation: '$10,000,000.00',
-    equity: '$5,000,000.00',
-    debt: '$6,500,000.00',
-    mezz: '$2,000,000.00',
+    valuation: 10000000,
+    mezzPercent: 20,
     location: 'Louisville, KY',
     description: 'An equity recapture refinancing transaction utilizing isolated reserve vaults and yield staking offsets.'
   },
   CA_HOTEL: {
     name: 'California Limited Service Hotel',
-    valuation: '$19,000,000.00',
-    equity: '$9,500,000.00',
-    debt: '$12,350,000.00',
-    mezz: '$3,800,000.00',
+    valuation: 19000000,
+    mezzPercent: 20,
     location: 'Los Angeles, CA',
     description: 'A Cashout Refinance transaction featuring CME SOFR rate protection and instant settlement.'
   }
@@ -960,10 +1149,37 @@ const speeds = {
 function generateOutboundDocument() {
   const projKey = propProjectSelect.value;
   const templateKey = propTemplateSelect.value;
-  const ltv = propLtvSlider.value;
+  const ltv = parseFloat(propLtvSlider.value);
   const speedText = speeds[propSpeedSelect.value];
   const proj = projectData[projKey] || projectData.M_HELEN;
   const client = investorProfiles[activeClientKey];
+
+  // Dynamic calculations based on LTV selection!
+  const val = proj.valuation;
+  const seniorDebt = val * (ltv / 100);
+  const mezzTranche = val * (proj.mezzPercent / 100);
+  const equityLP = val - seniorDebt - mezzTranche;
+
+  const valuationFormatted = val.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+  const debtFormatted = seniorDebt.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+  const mezzFormatted = mezzTranche.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+  const equityFormatted = equityLP.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+
+  // Update dynamic TTS speech text for proposals-view tab
+  const narrativeText = `This is the client proposal memorandum for ${proj.name}. The asset is valued at ${valuationFormatted} with structured senior debt at ${debtFormatted} representing a ${ltv} percent loan to value ratio. The mezzanine preferred equity is ${mezzFormatted} and borrower LP GP equity is ${equityFormatted}. Disbursal clears ${speedText} directly to contractor sub-accounts.`;
+  tabNarrativeSpeechMap['proposals-view'] = [
+    narrativeText,
+    "The bilateral signature desk allows you to co-sign and execute the agreement instantly on-chain.",
+    "This memorandum meets all standard underwriting criteria and secures compliance clearing gates."
+  ];
+  
+  // If proposals tab is active, update the narratives array in-place so voice reads fresh numbers
+  const activeTab = document.querySelector('.nav-link.active');
+  if (activeTab && activeTab.id === 'nav-proposals') {
+    narratives[0] = tabNarrativeSpeechMap['proposals-view'][0];
+    narratives[1] = tabNarrativeSpeechMap['proposals-view'][1];
+    narratives[2] = tabNarrativeSpeechMap['proposals-view'][2];
+  }
 
   let content = '';
 
@@ -976,6 +1192,12 @@ function generateOutboundDocument() {
 
 <h3 style="font-size: 12px; color: var(--blue-brand); margin-bottom: 4px; text-transform: uppercase;">Project: ${proj.name}</h3>
 <p style="margin-bottom: 10px; font-size: 11px; color: var(--text-secondary);">${proj.description}</p>
+<p style="font-size: 9px; color: var(--text-muted); margin-bottom: 8px;">
+  <strong>Registered Client ID:</strong> ${client.name} | <strong>Historical Record:</strong> ${client.deals} | <strong>Assigned Segment:</strong> ${client.segment}
+</p>
+<div style="margin-bottom: 12px; font-size: 9px; color: var(--text-secondary); padding: 8px; background: rgba(19, 124, 15, 0.03); border: 1px dashed var(--gold); border-radius: 4px; line-height: 1.4;">
+  <strong>Math Reconciliation Desk:</strong> Total Capitalization (${valuationFormatted}) matches the broader project value. Underwriting policy establishes a <strong>Verified Capital Floor</strong> of $29,100,000.00 (Senior CMBS: $25.00M + Land Equity: $4.10M), securing an <strong>Asset Floor Buffer</strong> of $3,850,000.00 against the remaining GP Reserves.
+</div>
 <p style="margin-bottom: 12px; font-size: 10px; color: var(--text-primary); padding: 8px; background: rgba(15,59,124,0.03); border-left: 3px solid var(--blue-brand); border-radius: 4px;">
   <strong>Tailored Structure Briefing:</strong> ${client.context}
 </p>
@@ -990,7 +1212,7 @@ function generateOutboundDocument() {
   <tbody>
     <tr>
       <td style="padding: 6px; border-bottom: 1px solid var(--border-color);">Asset Valuation</td>
-      <td style="padding: 6px; border-bottom: 1px solid var(--border-color); text-align: right; font-weight: bold;">${proj.valuation}</td>
+      <td style="padding: 6px; border-bottom: 1px solid var(--border-color); text-align: right; font-weight: bold;">${valuationFormatted}</td>
     </tr>
     <tr>
       <td style="padding: 6px; border-bottom: 1px solid var(--border-color);">Target Loan-to-Value (LTV)</td>
@@ -998,15 +1220,15 @@ function generateOutboundDocument() {
     </tr>
     <tr>
       <td style="padding: 6px; border-bottom: 1px solid var(--border-color);">Structured Senior Debt</td>
-      <td style="padding: 6px; border-bottom: 1px solid var(--border-color); text-align: right;">${proj.debt}</td>
+      <td style="padding: 6px; border-bottom: 1px solid var(--border-color); text-align: right;">${debtFormatted}</td>
     </tr>
     <tr>
       <td style="padding: 6px; border-bottom: 1px solid var(--border-color);">Preferred Mezzanine Tranche</td>
-      <td style="padding: 6px; border-bottom: 1px solid var(--border-color); text-align: right;">${proj.mezz}</td>
+      <td style="padding: 6px; border-bottom: 1px solid var(--border-color); text-align: right;">${mezzFormatted}</td>
     </tr>
     <tr>
       <td style="padding: 6px; border-bottom: 1px solid var(--border-color);">Verified Land Equity (LP/GP)</td>
-      <td style="padding: 6px; border-bottom: 1px solid var(--border-color); text-align: right;">${proj.equity}</td>
+      <td style="padding: 6px; border-bottom: 1px solid var(--border-color); text-align: right;">${equityFormatted}</td>
     </tr>
   </tbody>
 </table>
@@ -1041,8 +1263,11 @@ function generateOutboundDocument() {
 
   <p><strong>Proposed Refinancing Terms:</strong></p>
   <ul style="padding-left: 15px; margin: 10px 0;">
-    <li><strong>Asset Valuation:</strong> ${proj.valuation}</li>
+    <li><strong>Asset Valuation:</strong> ${valuationFormatted}</li>
     <li><strong>Target Loan-to-Value:</strong> ${ltv}% LTV</li>
+    <li><strong>Structured Senior Debt:</strong> ${debtFormatted}</li>
+    <li><strong>Preferred Mezzanine Tranche:</strong> ${mezzFormatted}</li>
+    <li><strong>Borrower LP/GP Equity:</strong> ${equityFormatted}</li>
     <li><strong>Draw Disbursal Window:</strong> Cleared and settled <strong>${speedText}</strong> directly to drawing accounts.</li>
     <li><strong>Escrow Security:</strong> Whitelisted multi-sig custody gates preventing un-vetted capital outflows.</li>
     <li><strong>Yield Optimizations:</strong> Active reserve accounts earning 4.5% APY to offset debt costs.</li>
@@ -1077,7 +1302,7 @@ function generateOutboundDocument() {
 
 <h4 style="font-size: 10px; color: var(--blue-brand); text-transform: uppercase; margin-bottom: 6px; border-bottom: 1px dashed var(--border-color); padding-bottom: 3px;">1. Capital Stack Structure</h4>
 <p style="margin-bottom: 8px; line-height: 1.4;">
-  The project is capitalized at a total value of ${proj.valuation}. Under the proposed ${ltv}% LTV framework, the senior loan tranche is set at ${proj.debt}, supported by a mezzanine preferred equity position of ${proj.mezz} and a borrower land equity floor of ${proj.equity}.
+  The project is capitalized at a total value of ${valuationFormatted}. Under the proposed ${ltv}% LTV framework, the senior loan tranche is set at ${debtFormatted}, supported by a mezzanine preferred equity position of ${mezzFormatted} and a borrower land equity floor of ${equityFormatted}.
 </p>
 
 <h4 style="font-size: 10px; color: var(--blue-brand); text-transform: uppercase; margin-bottom: 6px; border-bottom: 1px dashed var(--border-color); padding-bottom: 3px;">2. Draw Clearance Risk Control</h4>
@@ -1166,22 +1391,58 @@ const stampSignatoryVal = document.getElementById('stamp-signatory-val');
 
 if (btnExecuteAgreement) {
   btnExecuteAgreement.addEventListener('click', () => {
+    // Validate that document has been generated first
+    const previewText = documentPreviewBox.innerText;
+    if (previewText.includes('Select options and click')) {
+      showToast('Please generate the proposal document first.', 'error');
+      return;
+    }
+    if (!isWalletConnected) {
+      showToast('Signature error: Link your treasury keys first.', 'error');
+      return;
+    }
+    
     btnExecuteAgreement.disabled = true;
-    btnExecuteAgreement.textContent = "Executing secure signature...";
+    btnExecuteAgreement.textContent = "Verifying agreement hash...";
 
     setTimeout(() => {
-      btnExecuteAgreement.textContent = "Agreement Digitally Executed";
-      const client = investorProfiles[activeClientKey];
+      btnExecuteAgreement.textContent = "Requesting multi-sig signatures...";
       
-      if (stampSignatoryVal) {
-        stampSignatoryVal.innerHTML = `<strong>Nick Sheth</strong> (President & CEO, The Loan Depot) <br/>& <strong>${client.name}</strong> (${client.segment})`;
-      }
-      if (agreementSignatureStamp) {
-        agreementSignatureStamp.style.display = "block";
-      }
+      setTimeout(() => {
+        btnExecuteAgreement.textContent = "Stamping agreement hash to escrow ledger...";
+        
+        setTimeout(() => {
+          btnExecuteAgreement.textContent = "Agreement Executed & Locked";
+          const client = investorProfiles[activeClientKey];
+          const agreementType = document.getElementById('agreement-type-select').value;
+          const agreementNames = {
+            'ESCROW_DRAW': 'Lending Escrow Draw Agreement',
+            'SOFR_SWAP': 'SOFR Rate Swap Protection Agreement',
+            'REFI_NOTE': 'Commercial Refinancing Term Note'
+          };
+          const selectedAgreementName = agreementNames[agreementType] || 'Lending Agreement';
+          
+          if (stampSignatoryVal) {
+            stampSignatoryVal.innerHTML = `<strong>Nick Sheth</strong> (President &amp; CEO, The Loan Depot) <br/>&amp; <strong>${client.name}</strong> (${client.segment})`;
+          }
+          if (agreementSignatureStamp) {
+            agreementSignatureStamp.style.display = "block";
+          }
 
-      showToast("Agreement cryptographically signed and locked to escrow ledger!");
-    }, 1000);
+          showToast("Agreement cryptographically signed and locked to escrow ledger!");
+          
+          // Append dynamic block to ledger!
+          addAuditBlock({
+            draw: `Execute: ${selectedAgreementName}`,
+            amount: '$0.00 UNY',
+            prevHash: 'a772da12b918f0a0e8c6a51d8b2e3c0429f6p9fxa45d2d41c6f5a34e8d2e3c04',
+            hash: 'e8c6a51d8b2e3c0429f6p9fxa45d2d41c6f5a34a772da12b918f0a0e8c6a51d8b',
+            details: `Bilateral signature quorum verification. Signers: Niraj (Nick) Sheth (CEO, The Loan Depot) & ${client.name} (${client.segment}) [2-of-2 quorum]. Project: ${projectData[propProjectSelect.value].name}. Date: ${new Date().toLocaleDateString()} | Time: ${new Date().toLocaleTimeString()} | Agreement Hash: SHA256-e8c6a51d8b2e3c0429f6p9fxa45d2d41c6f5a34.`
+          });
+          
+        }, 800);
+      }, 800);
+    }, 800);
   });
 }
 
@@ -1215,19 +1476,37 @@ const flashStatusStamp = document.getElementById('flash-status-stamp');
 const flashConsoleLog = document.getElementById('flash-console-log');
 
 const pofAmounts = {
-  '1M': { formatted: '1,000,000', value: '1M', tx: '773CD23C4C8307C7991F82B5012D9D65E3FD357E82EBBB32E50C4E564CE7F0A4' },
-  '5M': { formatted: '5,000,000', value: '5M', tx: '849BA850DF283BC60B12F0A3D99C8D678E2FF8902A2BBB90FF501D890CC7F3B9' },
-  '10M': { formatted: '10,000,000', value: '10M', tx: '912BA890EF223CC50D23F1C4E88C7D823F3AA9803B2BBB80EF402C892CC8E4C0' },
-  '25M': { formatted: '25,000,000', value: '25M', tx: '250BA900FF334DD60E34F2D5F99D8D904F4BB9904C3CCC90FF503D893DD9F5D1' }
+  '1M': { formatted: '1,000,000.00', value: '1M', tx: '773CD23C4C8307C7991F82B5012D9D65E3FD357E82EBBB32E50C4E564CE7F0A4' },
+  '5M': { formatted: '5,000,000.00', value: '5M', tx: '849BA850DF283BC60B12F0A3D99C8D678E2FF8902A2BBB90FF501D890CC7F3B9' },
+  '10M': { formatted: '10,000,000.00', value: '10M', tx: '912BA890EF223CC50D23F1C4E88C7D823F3AA9803B2BBB80EF402C892CC8E4C0' },
+  '25M': { formatted: '25,000,000.00', value: '25M', tx: '250BA900FF334DD60E34F2D5F99D8D904F4BB9904C3CCC90FF503D893DD9F5D1' }
 };
 
-if (btnGeneratePof) {
-  btnGeneratePof.addEventListener('click', () => {
-    btnGeneratePof.disabled = true;
-    btnGeneratePof.textContent = 'Verifying approval gates...';
-    
-    // Reset gates
-    const gates = ['gate-1', 'gate-2', 'gate-3', 'gate-4'];
+if (pofAmountSelect) {
+  pofAmountSelect.addEventListener('change', () => {
+    const val = pofAmountSelect.value;
+    const amt = pofAmounts[val] || pofAmounts['1M'];
+    const certDocId = document.getElementById('cert-doc-id');
+    const certAmountBody = document.getElementById('cert-amount-body');
+    if (certDocId) {
+      certDocId.textContent = `TROPT-POF-UNY-${amt.value}-ESCROW-2026-07-14`;
+    }
+    if (certAmountBody) {
+      certAmountBody.innerHTML = `This instrument represents a verified custodial escrow allocation of <strong>$${amt.formatted} UNY</strong> held under qualified trust rules.`;
+    }
+    // Reset verification status
+    if (certStatus) {
+      certStatus.textContent = 'Awaiting Verification';
+      certStatus.style.color = 'var(--accent-red)';
+    }
+    if (certConfirmedBox) {
+      certConfirmedBox.innerHTML = `
+        <i data-lucide="lock" style="width: 24px; height: 24px; color: var(--text-muted); margin-bottom: 6px;"></i>
+        <span style="font-size: 10px; color: var(--text-secondary); font-weight: 500;">Click 'Generate & Verify' to lock escrow reserves and stamp instrument on-chain.</span>
+      `;
+      if (window.lucide) window.lucide.createIcons();
+    }
+    const gates = ['gate-1', 'gate-2', 'gate-3', 'gate-4', 'gate-5', 'gate-6', 'gate-7'];
     gates.forEach(g => {
       const el = document.getElementById(g);
       if (el) {
@@ -1236,6 +1515,34 @@ if (btnGeneratePof) {
         el.style.color = 'var(--text-muted)';
       }
     });
+    const gatewaysLabel = document.getElementById('pof-gateways-label');
+    if (gatewaysLabel) {
+      gatewaysLabel.textContent = 'Approval Gateways (0 of 7 Verified)';
+    }
+    if (btnSimulateFlash) btnSimulateFlash.disabled = true;
+  });
+}
+
+if (btnGeneratePof) {
+  btnGeneratePof.addEventListener('click', () => {
+    btnGeneratePof.disabled = true;
+    btnGeneratePof.textContent = 'Verifying approval gates...';
+    
+    // Reset gates
+    const gates = ['gate-1', 'gate-2', 'gate-3', 'gate-4', 'gate-5', 'gate-6', 'gate-7'];
+    gates.forEach(g => {
+      const el = document.getElementById(g);
+      if (el) {
+        el.style.background = '#fff';
+        el.style.borderColor = 'var(--border-color)';
+        el.style.color = 'var(--text-muted)';
+      }
+    });
+
+    const gatewaysLabel = document.getElementById('pof-gateways-label');
+    if (gatewaysLabel) {
+      gatewaysLabel.textContent = 'Approval Gateways (0 of 7 Verified)';
+    }
 
     // Reset status & certificate
     if (certStatus) {
@@ -1263,49 +1570,49 @@ if (btnGeneratePof) {
     const amtKey = pofAmountSelect.value;
     const amt = pofAmounts[amtKey] || pofAmounts['1M'];
 
-    // Simulating sequential on-chain signature aggregation
+    // Simulating sequential on-chain signature aggregation across 7 gateways
     setTimeout(() => {
-      const el = document.getElementById('gate-1');
-      if (el) {
-        el.style.background = 'rgba(16, 185, 129, 0.05)';
-        el.style.borderColor = 'var(--accent-green)';
-        el.style.color = 'var(--accent-green)';
-      }
-    }, 200);
-
-    setTimeout(() => {
-      const el = document.getElementById('gate-2');
-      if (el) {
-        el.style.background = 'rgba(16, 185, 129, 0.05)';
-        el.style.borderColor = 'var(--accent-green)';
-        el.style.color = 'var(--accent-green)';
-      }
+      ['gate-1', 'gate-2'].forEach(g => {
+        const el = document.getElementById(g);
+        if (el) {
+          el.style.background = 'rgba(16, 185, 129, 0.05)';
+          el.style.borderColor = 'var(--accent-green)';
+          el.style.color = 'var(--accent-green)';
+        }
+      });
+      if (gatewaysLabel) gatewaysLabel.textContent = 'Approval Gateways (2 of 7 Verified)';
     }, 400);
 
     setTimeout(() => {
-      const el = document.getElementById('gate-3');
-      if (el) {
-        el.style.background = 'rgba(16, 185, 129, 0.05)';
-        el.style.borderColor = 'var(--accent-green)';
-        el.style.color = 'var(--accent-green)';
-      }
-    }, 600);
+      ['gate-3', 'gate-4', 'gate-5'].forEach(g => {
+        const el = document.getElementById(g);
+        if (el) {
+          el.style.background = 'rgba(16, 185, 129, 0.05)';
+          el.style.borderColor = 'var(--accent-green)';
+          el.style.color = 'var(--accent-green)';
+        }
+      });
+      if (gatewaysLabel) gatewaysLabel.textContent = 'Approval Gateways (5 of 7 Verified)';
+    }, 800);
 
     setTimeout(() => {
-      const el = document.getElementById('gate-4');
-      if (el) {
-        el.style.background = 'rgba(16, 185, 129, 0.05)';
-        el.style.borderColor = 'var(--accent-green)';
-        el.style.color = 'var(--accent-green)';
-      }
-    }, 800);
+      ['gate-6', 'gate-7'].forEach(g => {
+        const el = document.getElementById(g);
+        if (el) {
+          el.style.background = 'rgba(16, 185, 129, 0.05)';
+          el.style.borderColor = 'var(--accent-green)';
+          el.style.color = 'var(--accent-green)';
+        }
+      });
+      if (gatewaysLabel) gatewaysLabel.textContent = 'Approval Gateways (7 of 7 Verified) - VERIFIED ON-CHAIN';
+    }, 1200);
 
     setTimeout(() => {
       btnGeneratePof.disabled = false;
       btnGeneratePof.textContent = 'Generate & Verify POF Instrument';
       
       // Update Certificate ID and Date
-      if (certDocId) certDocId.textContent = `TROPT-POF-USDC-${amt.value}-ESCROW-2026-07-14`;
+      if (certDocId) certDocId.textContent = `TROPT-POF-UNY-${amt.value}-ESCROW-2026-07-14`;
       if (certDate) certDate.textContent = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
       
       if (certStatus) {
@@ -1318,10 +1625,10 @@ if (btnGeneratePof) {
           <div style="border: 2px solid var(--accent-green); background: rgba(16, 185, 129, 0.03); border-radius: 6px; padding: 15px; text-align: center; width: 100%;">
             <div style="font-size: 20px; font-weight: bold; color: var(--accent-green); margin-bottom: 5px;">✓</div>
             <div style="font-size: 10px; font-weight: bold; color: var(--accent-green); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px;">
-              ${amt.formatted} USDC CONFIRMED IN ESCROW CUSTODY WALLET
+              $${amt.formatted} UNY CONFIRMED IN CUSTODIAL TRUST VAULT
             </div>
             <div style="font-size: 13px; font-weight: 800; color: var(--blue-brand); margin-bottom: 6px;">
-              ${amt.formatted} USDC ESCROWED
+              $${amt.formatted} UNY ESCROWED
             </div>
             <div style="font-size: 8px; color: var(--text-secondary); font-family: var(--font-mono);">
               Escrow Vault: bg-escrow-9c0c50ce
@@ -1343,7 +1650,7 @@ if (btnGeneratePof) {
       if (btnSignIssuePof) btnSignIssuePof.disabled = false;
 
       showToast("Cryptographic Proof-of-Funds instrument generated and verified!");
-    }, 1200);
+    }, 1600);
   });
 }
 
@@ -1357,12 +1664,15 @@ if (btnSimulateFlash) {
     const amt = pofAmounts[amtKey] || pofAmounts['1M'];
 
     const logs = [
-      `[FLASH] Initiating non-custodial flash bridge check for $${amt.formatted} USDC...`,
-      `[FLASH] Borrowing flash liquidity from whitelisted clearing pool: tesSUCCESS`,
-      `[FLASH] Deposited into escrow vault address bg-escrow-9c0c50ce: OK`,
-      `[FLASH] On-chain asset ledger reserve status confirmed: tesSUCCESS`,
-      `[FLASH] Releasing escrow lock and returning liquidity to pool...`,
-      `[FLASH] Flash check completed. Latency: 1480ms. Status: tesSUCCESS.`
+      `[FLASH] Initiating atomic flash verification bridge for $${amt.formatted} UNY...`,
+      `[FLASH] Connecting to BitGo Settlement Liquidity Pool (Total Pool Size: $150,000,000.00 UNY)`,
+      `[FLASH] Requesting non-custodial flash borrow of $${amt.formatted} UNY (0% collateral required due to atomic lifecycle)...`,
+      `[FLASH] Liquidity cleared from pool and locked into custodial escrow vault bg-escrow-9c0c50ce: tesSUCCESS`,
+      `[FLASH] On-chain proof-of-funds attestation generated: SHA-256 hash verified`,
+      `[FLASH] 'Stamping the Escrow Ledger' - Anchoring cryptographic cert block on-chain...`,
+      `[FLASH] Escrow ledger successfully updated with atomic verification log: OK`,
+      `[FLASH] Returning borrowed $${amt.formatted} UNY liquidity to BitGo pool in same transaction block...`,
+      `[FLASH] Flash loan successfully repaid. Transaction finalized. Latency: 1420ms. Status: tesSUCCESS.`
     ];
 
     let delay = 0;
@@ -1384,6 +1694,15 @@ if (btnSimulateFlash) {
           flashStatusStamp.style.color = '#ffffff';
           flashStatusStamp.style.borderColor = 'var(--accent-green)';
           showToast("Atomic flash loan verification success! Asset backing validated.");
+
+          // Append flash verification log block to audit ledger
+          addAuditBlock({
+            draw: `Flash Verify: $${amt.formatted} UNY`,
+            amount: '$0.00 UNY',
+            prevHash: 'e8c6a51d8b2e3c0429f6p9fxa45d2d41c6f5a34a772da12b918f0a0e8c6a51d8b',
+            hash: amt.tx,
+            details: `Atomic flash bridge verification completed. Backed by BitGo Settlement Pool. Borrowed, attested, and returned $${amt.formatted} UNY in block. Ledger stamp committed.`
+          });
         }
       }, delay);
       delay += 300;
@@ -1400,7 +1719,7 @@ if (btnDownloadPofPdf) {
   btnDownloadPofPdf.addEventListener('click', () => {
     const amtKey = pofAmountSelect.value;
     const amt = pofAmounts[amtKey] || pofAmounts['1M'];
-    const docId = `TROPT-POF-USDC-${amt.value}-ESCROW-2026-07-14`;
+    const docId = `TROPT-POF-UNY-${amt.value}-ESCROW-2026-07-14`;
     const preparedDate = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
     const win = window.open('', '_blank');
@@ -1604,8 +1923,8 @@ if (btnDownloadPofPdf) {
             </div>
 
             <div class="verified-box">
-              <h2>✓ Confirmed in Escrow Custody Wallet</h2>
-              <h3>$${amt.formatted}.00 USDC / UNY CONFIRMED</h3>
+              <h2>✓ Confirmed in Custodial Trust Vault</h2>
+              <h3>$${amt.formatted} UNY CONFIRMED</h3>
               <code>Escrow Vault: bg-escrow-9c0c50ce</code>
             </div>
 

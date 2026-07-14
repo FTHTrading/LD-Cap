@@ -85,14 +85,15 @@ body {
 
 .nav-links {
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
   list-style: none;
+  align-items: center;
 }
 
 .nav-link {
   color: #e2e8f0;
   text-decoration: none;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.03em;
@@ -106,6 +107,80 @@ body {
 .nav-link:hover, .nav-link.active {
   color: #ffffff;
   background: rgba(255, 255, 255, 0.1);
+}
+
+/* Navigation Dropdowns */
+.nav-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.nav-dropdown-btn {
+  background: transparent;
+  color: #e2e8f0;
+  border: none;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: var(--transition);
+}
+
+.nav-dropdown-btn:hover, .nav-dropdown.active-parent .nav-dropdown-btn {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.nav-dropdown.active-parent .nav-dropdown-btn {
+  border-bottom: 2px solid var(--gold);
+  border-radius: 4px 4px 0 0;
+  color: #ffffff;
+}
+
+.nav-dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #0b2b5c; /* Match dark theme */
+  min-width: 210px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 0 4px 4px 4px;
+  z-index: 1000;
+  padding: 6px 0;
+}
+
+.nav-dropdown-content .nav-link {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border-radius: 0;
+  padding: 10px 16px;
+  border-left: 3px solid transparent;
+  background: transparent;
+}
+
+.nav-dropdown-content .nav-link:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-left-color: var(--gold);
+}
+
+.nav-dropdown-content .nav-link.active {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border-left-color: var(--gold);
+}
+
+.nav-dropdown:hover .nav-dropdown-content {
+  display: block;
 }
 
 /* Main Layout Grid */

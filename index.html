@@ -29,18 +29,39 @@
         <span class="title-depot">The Loan Depot</span>
         <span class="sub-depot">Commercial Real Estate Lender</span>
       </div>
+      
+      <!-- Categorized Navigation Dropdowns -->
       <ul class="nav-links">
-        <li><a class="nav-link active" id="nav-custody">Custody & Draw 1</a></li>
-        <li><a class="nav-link" id="nav-mint">Draw Disbursal</a></li>
-        <li><a class="nav-link" id="nav-hedge">Rate Hedging</a></li>
-        <li><a class="nav-link" id="nav-rwa">Portfolio Equity</a></li>
-        <li><a class="nav-link" id="nav-ledger">Escrow Ledger</a></li>
-        <li><a class="nav-link" id="nav-proposals">Proposal Desk</a></li>
-        <li><a class="nav-link" id="nav-pof">POF Desk</a></li>
-        <li><a class="nav-link" id="nav-library">Resource Library</a></li>
-        <li><a class="nav-link" id="nav-qa">Q&A Desk</a></li>
+        <li class="nav-dropdown active-parent">
+          <button class="nav-dropdown-btn">Draws &amp; Settlements <i data-lucide="chevron-down" style="width: 11px; height: 11px;"></i></button>
+          <div class="nav-dropdown-content">
+            <a class="nav-link active" id="nav-custody">Custody &amp; Draw 1</a>
+            <a class="nav-link" id="nav-mint">Draw Disbursal</a>
+            <a class="nav-link" id="nav-ledger">Escrow Ledger</a>
+          </div>
+        </li>
+        <li class="nav-dropdown">
+          <button class="nav-dropdown-btn">Capital &amp; Treasury <i data-lucide="chevron-down" style="width: 11px; height: 11px;"></i></button>
+          <div class="nav-dropdown-content">
+            <a class="nav-link" id="nav-hedge">Rate Hedging</a>
+            <a class="nav-link" id="nav-rwa">Portfolio Equity</a>
+            <a class="nav-link" id="nav-pof">POF Desk</a>
+          </div>
+        </li>
+        <li class="nav-dropdown">
+          <button class="nav-dropdown-btn">Assurance &amp; Docs <i data-lucide="chevron-down" style="width: 11px; height: 11px;"></i></button>
+          <div class="nav-dropdown-content">
+            <a class="nav-link" id="nav-proposals">Proposal Desk</a>
+            <a class="nav-link" id="nav-library">Resource Library</a>
+            <a class="nav-link" id="nav-qa">Q&A Desk</a>
+          </div>
+        </li>
       </ul>
+
       <div style="display: flex; align-items: center; gap: 10px;">
+        <div style="font-size: 10px; color: var(--gold); border: 1px dashed var(--gold); padding: 6px 12px; border-radius: 4px; font-weight: 600; background: rgba(179,141,56,0.05);" id="top-sandbox-badge">
+          Simulated Sandbox Ledger
+        </div>
         <button id="connect-wallet-btn" class="btn" style="background: #ffffff; border: 1px solid var(--border-color); color: var(--blue-brand); padding: 6px 14px; border-radius: 4px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: var(--transition);">
           <i data-lucide="wallet" style="width: 13px; height: 13px;"></i> Link Treasury Key
         </button>
@@ -51,8 +72,13 @@
     </div>
   </nav>
 
+  <!-- Regulatory & Custody Disclosure Banner -->
+  <div style="background: rgba(15, 59, 124, 0.03); border: 1px solid var(--border-color); border-left: 4px solid var(--gold); border-radius: 6px; padding: 12px 20px; max-width: 1600px; margin: 1.5rem auto 0 auto; width: calc(100% - 4rem); font-size: 10px; color: var(--text-secondary); line-height: 1.5;">
+    <strong>Regulatory &amp; Custody Disclosure:</strong> UNY is a tokenized USD-denominated asset custodied via regulated infrastructure and subject to issuer and custodian risk. Settlement and custody are provided via institutional API rails (for example, BitGo or equivalent) under segregation and off-exchange settlement models.
+  </div>
+
   <!-- Main Container -->
-  <div class="app-layout">
+  <div class="app-layout" style="margin-top: 1.5rem;">
     
     <!-- Left Column: Primary Tab Views -->
     <main style="display: flex; flex-direction: column; gap: 2rem;">
@@ -151,23 +177,98 @@
           <div class="sub-balances-grid">
             <div style="background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; text-align: center;">
               <strong style="display: block; font-size: 10px; color: var(--text-primary);">Escrow Pool Account</strong>
-              <span style="font-size: 11px; font-family: var(--font-mono); color: var(--gold); display: block; margin-top: 4px;">$29.10M USDC/UNY</span>
+              <span style="font-size: 11px; font-family: var(--font-mono); color: var(--gold); display: block; margin-top: 4px;" id="escrow-pool-bal">$29,100,000.00 UNY</span>
               <span style="font-size: 9px; color: var(--text-muted);">Locked Capital Floor</span>
             </div>
             <div style="background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; text-align: center;">
               <strong style="display: block; font-size: 10px; color: var(--text-primary);">Operating Draw Account</strong>
-              <span style="font-size: 11px; font-family: var(--font-mono); color: var(--accent-green); display: block; margin-top: 4px;" id="draw-child-bal">$0.00 USDC/UNY</span>
-              <span style="font-size: 9px; color: var(--text-muted);"> GC Outbound Channel</span>
+              <span style="font-size: 11px; font-family: var(--font-mono); color: var(--accent-green); display: block; margin-top: 4px;" id="draw-child-bal">$0.00 UNY</span>
+              <span style="font-size: 9px; color: var(--text-muted);">GC Outbound Channel</span>
             </div>
             <div style="background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; text-align: center;">
-              <strong style="display: block; font-size: 10px; color: var(--text-primary);">Staking Yield Account</strong>
-              <span style="font-size: 11px; font-family: var(--font-mono); color: var(--accent-cyan); display: block; margin-top: 4px;">4.5% APY Earned</span>
-              <span style="font-size: 9px; color: var(--text-muted);">Preferred Reserves</span>
+              <strong style="display: block; font-size: 10px; color: var(--text-primary); display: flex; align-items: center; justify-content: center; gap: 4px; margin: 0 auto;">
+                Staking Yield <i data-lucide="info" style="width: 10px; height: 10px; color: var(--text-muted); cursor: pointer;" title="Accrued daily offset yield based on 4.5% APY preferred reserves on escrow balances."></i>
+              </strong>
+              <span style="font-size: 11px; font-family: var(--font-mono); color: var(--accent-cyan); display: block; margin-top: 4px;" id="staking-yield-val">$14,820.00 UNY</span>
+              <span style="font-size: 8px; color: var(--text-secondary); display: block; margin-top: 2px;">Rate: 4.5% APY | Yield: $12.33/day</span>
             </div>
             <div style="background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; text-align: center;">
-              <strong style="display: block; font-size: 10px; color: var(--text-primary);">Platform Treasury Account</strong>
-              <span style="font-size: 11px; font-family: var(--font-mono); color: var(--accent-purple); display: block; margin-top: 4px;">0.25% Net Hook</span>
-              <span style="font-size: 9px; color: var(--text-muted);">Transaction Ledger</span>
+              <strong style="display: block; font-size: 10px; color: var(--text-primary); display: flex; align-items: center; justify-content: center; gap: 4px; margin: 0 auto;">
+                Platform Treasury <i data-lucide="info" style="width: 10px; height: 10px; color: var(--text-muted); cursor: pointer;" title="Net Hook: 0.25% protocol fee applied to all cleared construction draw disbursals."></i>
+              </strong>
+              <span style="font-size: 11px; font-family: var(--font-mono); color: var(--accent-purple); display: block; margin-top: 4px;" id="treasury-fee-bal">$0.00 UNY</span>
+              <span style="font-size: 9px; color: var(--text-muted);">0.25% Disbursal Net Hook</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- M Helen Funding Readiness Checklist & Next Steps Card -->
+        <section class="card" style="display: flex; flex-direction: column; gap: 15px; border-left: 4px solid var(--accent-green);">
+          <h3 style="font-family: var(--font-display); font-size: 1.1rem; color: var(--blue-brand); margin: 0; display: flex; align-items: center; justify-content: space-between;">
+            <span>⛳ M Helen Funding Readiness Checklist</span>
+            <span style="font-size: 9px; background: rgba(16, 185, 129, 0.1); color: var(--accent-green); border: 1px solid var(--accent-green); padding: 2px 8px; border-radius: 4px; font-weight: bold;">Active Deal Review</span>
+          </h3>
+          <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4; margin: 0;">
+            Verify the required underwriting clearances and legal document status below to release Draw 1 today.
+          </p>
+          
+          <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 20px; margin-top: 5px;">
+            <!-- Document checklist list -->
+            <div style="display: flex; flex-direction: column; gap: 10px; font-size: 11px;">
+              <strong style="font-size: 10px; color: var(--blue-brand); text-transform: uppercase;">Required Clearances &amp; Approvals</strong>
+              
+              <div style="display: flex; flex-direction: column; gap: 8px;">
+                <div style="display: flex; align-items: flex-start; gap: 8px;">
+                  <span style="color: var(--accent-green); font-weight: bold; font-size: 12px; line-height: 1;">✓</span>
+                  <div>
+                    <strong>AIA G702 &amp; G703 Application:</strong>
+                    <span style="color: var(--text-secondary); display: block; font-size: 10px;">Vetted G703 schedule matching $961,021.51 mobilization. Certified by architect.</span>
+                  </div>
+                </div>
+                
+                <div style="display: flex; align-items: flex-start; gap: 8px;">
+                  <span style="color: var(--accent-green); font-weight: bold; font-size: 12px; line-height: 1;">✓</span>
+                  <div>
+                    <strong>Title Endorsement &amp; Date-Down:</strong>
+                    <span style="color: var(--text-secondary); display: block; font-size: 10px;">Endorsement secured; zero mechanics liens or encumbrances reported on site.</span>
+                  </div>
+                </div>
+                
+                <div style="display: flex; align-items: flex-start; gap: 8px;">
+                  <span style="color: var(--accent-green); font-weight: bold; font-size: 12px; line-height: 1;">✓</span>
+                  <div>
+                    <strong>GC/Sub Lien Waivers (Conditional):</strong>
+                    <span style="color: var(--text-secondary); display: block; font-size: 10px;">GC and subcontractors signatures collected and locked to document vault.</span>
+                  </div>
+                </div>
+
+                <div style="display: flex; align-items: flex-start; gap: 8px;">
+                  <span style="color: var(--accent-green); font-weight: bold; font-size: 12px; line-height: 1;">✓</span>
+                  <div>
+                    <strong>Escrow Funding Allocation:</strong>
+                    <span style="color: var(--text-secondary); display: block; font-size: 10px;">$29,100,000.00 UNY locked in parent custodial vault.</span>
+                  </div>
+                </div>
+
+                <div style="display: flex; align-items: flex-start; gap: 8px;">
+                  <span style="color: var(--text-muted); font-weight: bold; font-size: 12px; line-height: 1;">☐</span>
+                  <div>
+                    <strong>Bilateral Signature Quorum:</strong>
+                    <span style="color: var(--text-secondary); display: block; font-size: 10px;">Requires multi-sig key handshake and draw authorization.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Next steps instruction -->
+            <div style="background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 6px; padding: 12px; font-size: 10px; display: flex; flex-direction: column; gap: 8px;">
+              <strong style="color: var(--gold); text-transform: uppercase;">Next Steps to Disburse</strong>
+              <ol style="padding-left: 14px; margin: 0; display: flex; flex-direction: column; gap: 6px; color: var(--text-secondary); line-height: 1.4;">
+                <li>Click <strong>Link Treasury Key</strong> in the top header to run compliance handshake.</li>
+                <li>Go to the <strong>Draw Disbursal</strong> desk under the Draws menu.</li>
+                <li>Verify G703 line items, click <strong>Approve &amp; Disburse</strong>.</li>
+                <li>The clearing bridge executes the FedWire off-ramp to contractor's bank account instantly.</li>
+              </ol>
             </div>
           </div>
         </section>
@@ -212,6 +313,17 @@
                 <li style="display: flex; gap: 8px;"><span style="color:var(--gold);">▪</span> <div><strong>Purpose-Built Hospitality Vehicle:</strong> Managed for institutional deployment to secure NOI yields under verified asset floors.</div></li>
                 <li style="display: flex; gap: 8px;"><span style="color:var(--gold);">▪</span> <div><strong>On-Chain Traceability:</strong> Every dollar spent is traceable from origin through whitelisted draw sub-accounts to construction contractors.</div></li>
               </ul>
+              
+              <!-- Math Reconciliation Desk -->
+              <div style="background: var(--bg-darker); border: 1px dashed var(--gold); border-radius: 6px; padding: 12px; margin-top: 10px; font-size: 10px;">
+                <strong style="color: var(--blue-brand); display: block; margin-bottom: 6px; text-transform: uppercase; font-family: var(--font-display);">Capital Stack &amp; Asset Floor Math Reconciliation</strong>
+                <div style="display: flex; flex-direction: column; gap: 4px; line-height: 1.4;">
+                  <div>• <strong>Total Capitalization ($48.75M):</strong> Senior CMBS Debt ($31.6875M) + Mezzanine ($9.750M) + LP/GP Equity ($7.3125M)</div>
+                  <div>• <strong>Verified Capital Floor ($29.10M):</strong> Secured CMBS Tranche ($25.00M) + Land Equity Lock ($4.10M)</div>
+                  <div>• <strong>Asset Floor Buffer ($3.85M):</strong> Total Capitalization ($48.75M) - Senior CMBS ($25.00M) - Mezzanine ($9.75M) - Land Equity ($4.10M) - GP Reserve ($6.05M)</div>
+                  <div>• <strong>Unencumbered Capital Surplus ($193,114.00):</strong> Verified Capital Floor ($29.10M) - Construction Budget Floor ($28,906,886.00)</div>
+                </div>
+              </div>
             </div>
             
             <!-- Slide 2: Capital Stack -->
@@ -359,8 +471,11 @@
                 </select>
               </div>
               <div class="form-group">
-                <label for="mint-recipient">Recipient Sub-Account Address</label>
-                <input type="text" id="mint-recipient" class="form-control" style="font-family: var(--font-mono); font-size:11px;" value="0x4E574939D460d284B5D990646D4aeaEF2D49Fa13">
+                <label for="mint-recipient" style="display: flex; justify-content: space-between; align-items: center;">
+                  <span>Recipient Sub-Account Address</span>
+                  <span id="recipient-tag" style="color: var(--accent-green); font-weight: bold; font-size: 8px; text-transform: uppercase;">✓ Whitelisted GC (ID #GC-123)</span>
+                </label>
+                <input type="text" id="mint-recipient" class="form-control" style="font-family: var(--font-mono); font-size:11px;" value="0x4E574939D460d284B5D990646D4aeaEF2D49Fa13" disabled>
               </div>
               <div class="form-group">
                 <label for="mint-amount">Funding Disbursal (UNY Stablecoins)</label>
@@ -397,6 +512,24 @@
               <div id="hook-console-log" class="hook-console">
                 <div style="color: var(--text-muted);">Clearing pipeline active. Click 'Approve & Disburse' to initiate transfer verification...</div>
               </div>
+
+              <!-- Structured AI Compliance & Policy Checklist -->
+              <div id="ai-checklist-box" style="display: none; background: #ffffff; border: 1px solid var(--border-color); border-radius: 6px; padding: 12px; margin-top: 5px;">
+                <strong style="font-size: 10px; color: var(--blue-brand); display: block; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.05em;">
+                  ✓ AI Compliance Auditor Policy Results
+                </strong>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; font-size: 9px; line-height: 1.3;">
+                  <div style="color: var(--accent-green);">✓ G703 Budget Matching: PASS</div>
+                  <div style="color: var(--accent-green);">✓ Contractor KYC/AML Status: PASS</div>
+                  <div style="color: var(--accent-green);">✓ Max LTV Under 65% Limit: PASS</div>
+                  <div style="color: var(--accent-green);">✓ Escrow Floor Verification: PASS</div>
+                  <div style="color: var(--accent-green);">✓ 3-of-5 Quorum Verification: PASS</div>
+                  <div style="color: var(--accent-green);">✓ Ledger Hash Anchored: PASS</div>
+                </div>
+                <div style="font-size: 8px; color: var(--text-muted); border-top: 1px dashed var(--border-color); padding-top: 6px; margin-top: 8px;">
+                  Model: @cf/meta/llama-3-8b-instruct | Status: APPROVED FOR DISBURSAL
+                </div>
+              </div>
             </div>
 
           </div>
@@ -407,8 +540,8 @@
               <i data-lucide="shield" style="color: var(--gold); width:13px; height:13px;"></i> In-House Sovereign Stablecoin Minting Engine
             </strong>
             <p style="font-size: 10px; color: var(--text-secondary); margin: 0; line-height: 1.5;">
-              The UnyKorn architecture gives commercial real estate lenders first-to-market sovereignty by allowing them to mint their own asset-backed stablecoins (such as <strong>UNY</strong>) directly within the system. Instead of relying on public retail tokens, we map customized stablecoin assets directly to whitelisted custody sub-accounts inside <strong>BitGo Trust</strong>. 
-              This allows you to lock collateral on-chain, issue digital project dollars instantly to contractors, and enable third-party partners to clear and hold your custom stablecoins inside their secure BitGo vaults with zero middleman slippage.
+              The UnyKorn architecture gives commercial real estate lenders first-to-market sovereignty by allowing them to mint their own asset-backed stablecoins (such as <strong>UNY</strong>) directly within the system. These stablecoins represent tokenized claims on underlying fiat reserves held inside secure <strong>BitGo Trust Company</strong> custodial vaults. Collateral consists of tokenized representations of BitGo-held cash reserves, mapped 1:1 on-chain. 
+              This allows you to issue digital project dollars instantly to contractors, lock collateral on-chain, and enable partners to clear and hold custom stablecoins inside secure vaults. Because settlement is routed directly between qualified custodian sub-accounts and designated project wallets, there is no public-market FX/DEX slippage or liquidity routing friction in this pipeline.
             </p>
           </div>
 
@@ -438,7 +571,7 @@
               </div>
 
               <div class="form-group">
-                <label for="sofr-collateral">UNY Margin Collateral</label>
+                <label for="sofr-collateral">UNY Margin Collateral (1 UNY = 1 USD)</label>
                 <input type="number" id="sofr-collateral" class="form-control" style="font-family: var(--font-mono);" value="100000">
               </div>
 
@@ -447,29 +580,57 @@
                 <strong style="color: var(--accent-green);" id="daily-staking-yield">$12.33 UNY / day</strong>
               </div>
 
+              <div style="display: flex; justify-content: space-between; font-size: 11px; border-top: 1px dashed var(--border-color); padding-top: 8px;">
+                <span style="color: var(--text-secondary);">Hedge Notional Coverage</span>
+                <strong style="color: var(--blue-brand);" id="hedge-notional-coverage">$100,000.00 UNY</strong>
+              </div>
+
               <button id="place-hedge-btn" class="btn-primary" style="margin-top: 5px;">Execute Rate Hedge Protection</button>
+              
+              <!-- Bilateral Actions Preview Panel -->
+              <div id="hedge-success-stamp" style="display: none; border: 1px dashed var(--accent-green); background: rgba(4,120,87,0.05); padding: 10px; border-radius: 6px; font-size: 9px; line-height: 1.3; margin-top: 5px;">
+                <div style="color: var(--accent-green); font-weight: bold; text-transform: uppercase; margin-bottom: 3px;">✓ Rate Swap Active & Locked</div>
+                <div>• Margin collateral locked inside BitGo sub-vault</div>
+                <div>• Bilateral OTC swap cleared with liquidity counterparty</div>
+                <div>• Swap details: Fixed 5.12% swapped for CME Term SOFR 1-Month</div>
+              </div>
             </div>
 
-            <!-- Details -->
+            <!-- Details & Parameters -->
             <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 15px; display: flex; flex-direction: column; gap: 10px;">
               <h4 style="font-family: var(--font-display); font-size: 0.95rem; color: var(--blue-brand); margin: 0; border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">Hedging Protection Specifications</h4>
               
-              <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 11px;">
+              <!-- Live Index Parameters -->
+              <div style="background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 6px; padding: 8px; font-size: 9px; line-height: 1.4; display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+                <div><strong>CME SOFR Index:</strong> CME Term SOFR 1M</div>
+                <div><strong>Current Index Rate:</strong> 5.12%</div>
+                <div><strong>Effective Date:</strong> July 14, 2026</div>
+                <div><strong>Tenor:</strong> Matched to CMBS Debt</div>
+                <div><strong>Collateral Vault ID:</strong> bg-escrow-9c0c50ce</div>
+                <div><strong>OTC Counterparty:</strong> Bilateral LP (OTC Desk)</div>
+              </div>
+
+              <ul style="list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 11px; margin: 0; padding: 0;">
                 <li style="display: flex; align-items: flex-start; gap: 8px;">
                   <span style="color: var(--gold); font-weight: bold;">✓</span>
                   <div>
-                    <strong style="color: var(--text-primary); display: block;">Escrow Pool Isolation</strong>
-                    <span style="color: var(--text-secondary);">Collateral is kept isolated within individual BitGo Child accounts rather than pooled globally.</span>
+                    <strong style="color: var(--text-primary); display: block; font-size: 11px;">Escrow Pool Isolation</strong>
+                    <span style="color: var(--text-secondary); font-size: 10px; display: block; margin-top: 1px;">Collateral is kept isolated within individual BitGo Child accounts rather than pooled globally to minimize contagion risk.</span>
                   </div>
                 </li>
                 <li style="display: flex; align-items: flex-start; gap: 8px;">
                   <span style="color: var(--gold); font-weight: bold;">✓</span>
                   <div>
-                    <strong style="color: var(--text-primary); display: block;">SOFR 30-Day Average Locking</strong>
-                    <span style="color: var(--text-secondary);">Rate calculations reference CME SOFR Average indexes to prevent intraday volatility spikes.</span>
+                    <strong style="color: var(--text-primary); display: block; font-size: 11px;">SOFR 30-Day Average Locking</strong>
+                    <span style="color: var(--text-secondary); font-size: 10px; display: block; margin-top: 1px;">Rate calculations reference CME SOFR Average indexes to prevent intraday volatility spikes.</span>
                   </div>
                 </li>
               </ul>
+              
+              <!-- Risk Disclosure -->
+              <div style="font-size: 8px; color: var(--text-muted); line-height: 1.4; border-top: 1px dashed var(--border-color); padding-top: 8px; margin-top: 2px;">
+                <strong>Risk Disclosure:</strong> Leverage limits are capped at 10x. Margin calls are auto-triggered if the CME SOFR index moves beyond +/- 1.50% from the locked fixing rate. Collateral is subject to policy lock-up until the CMBS Tranche settles.
+              </div>
             </div>
 
           </div>
@@ -484,7 +645,7 @@
             <span style="font-size: 10px; background: rgba(4, 120, 87, 0.1); color: var(--accent-green); border: 1px solid var(--accent-green); padding: 2px 8px; border-radius: 4px; font-weight: bold;" id="ledger-status-badge">Verifying Chain...</span>
           </h3>
           <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1.2rem; margin-top: 0;">
-            Detailed, immutable audit history of draw fundings, and project milestone allocations.
+            Detailed, immutable audit history of draw fundings and project milestone allocations. <strong style="font-size: 9px; color: var(--text-muted);">(Internal Audit/Logging Ledger Only — Not an Investor On-Chain Settlement Instrument)</strong>
           </p>
           <div id="audit-blocks-container" style="display: flex; flex-direction: column; gap: 10px; max-height: 400px; overflow-y: auto; padding-right: 5px; width: 100%;">
             <div style="font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono); text-align: center; padding: 20px;">
@@ -690,10 +851,17 @@
                     <span style="color: var(--text-secondary);">Required Draw for Acquisition:</span>
                     <strong id="required-acquisition-val" style="font-family: var(--font-mono); color: var(--accent-red);">$8,500,000.00</strong>
                   </div>
+                  <div style="display: flex; justify-content: space-between;">
+                    <span style="color: var(--text-secondary);">Collateral Coverage Ratio:</span>
+                    <strong id="collateral-coverage-ratio" style="font-family: var(--font-mono); color: var(--accent-red);">31.35%</strong>
+                  </div>
                   <div style="display: flex; justify-content: space-between; border-top: 1px dashed var(--border-color); padding-top: 8px;">
                     <span style="color: var(--text-secondary);">Collateral Status:</span>
                     <strong id="collateral-status-val" style="font-family: var(--font-mono); color: var(--accent-red);">-$5,835,000.00 (Deficit)</strong>
                   </div>
+                </div>
+                <div style="font-size: 8px; color: var(--text-muted); margin-top: 10px; line-height: 1.4;">
+                  <strong>Lender Underwriting Policy:</strong> Lender underwriting policy currently targets ≤65% LTV for hospitality and construction exposures; actual terms subject to independent credit review. Executing this request commits events to the internal audit ledger; deeds are locked into secure multi-sig collateral pool contracts.
                 </div>
               </div>
 
@@ -777,6 +945,10 @@
                   <strong id="prop-ltv-label" style="color: var(--blue-brand); font-family: var(--font-mono);">65% LTV</strong>
                 </div>
                 <input type="range" id="prop-ltv-slider" min="50" max="75" step="5" value="65" style="width: 100%; accent-color: var(--blue-brand); background: #ffffff; cursor: pointer;">
+                <span style="font-size: 8px; color: var(--text-muted); display: block; margin-top: 3px;">Max LTV (hospitality policy): 65%</span>
+                <div id="ltv-policy-warning" style="font-size: 9px; color: var(--accent-red); margin-top: 4px; display: none; font-weight: bold;">
+                  Warning: Requested LTV above policy ceiling; subject to exception approval.
+                </div>
               </div>
 
               <div class="form-group">
@@ -803,6 +975,9 @@
                 <button type="button" class="btn-primary" id="btn-execute-agreement" style="background: var(--blue-brand); color: #fff; padding: 8px; font-size: 10px; font-weight: bold; border-radius: 4px; display: flex; align-items: center; justify-content: center; gap: 6px;">
                   <i data-lucide="pen-tool" style="width:12px; height:12px;"></i> Sign & Execute Agreement
                 </button>
+                <div style="font-size: 8px; color: var(--text-muted); line-height: 1.4; margin-top: 2px;">
+                  <em>* Note: The ledger entry is a record of the executed agreement, not a legal substitute for the executed PDF/Doc. Signatures are binding only once the required quorum (e.g., 2 of 2 signers) is reached and time-stamped.</em>
+                </div>
                 <div id="agreement-signature-stamp" style="display: none; border: 1px dashed var(--accent-green); background: rgba(4,120,87,0.03); padding: 8px; border-radius: 4px; text-align: center;">
                   <div style="font-weight: bold; color: var(--accent-green); font-size: 9px; text-transform: uppercase;">✓ Document Digitally Stamped & Cleared</div>
                   <div style="font-size: 8px; color: var(--text-secondary); margin-top: 2px;">
@@ -861,11 +1036,16 @@
       <!-- MODULE 8: PROOF OF FUNDS (POF) & FLASH LOAN DESK -->
       <div id="pof-view" class="tab-content-panel" style="display: none; flex-direction: column; gap: 2rem; width: 100%;">
         <section class="card" style="display: flex; flex-direction: column; gap: 20px;">
-          <div style="border-bottom: 2px solid var(--bg-darker); padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+          <div style="border-bottom: 2px solid var(--bg-darker); padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
             <h3 style="font-family: var(--font-display); font-size: 1.2rem; color: var(--blue-brand); margin: 0; display: flex; align-items: center; gap: 8px;">
               <i data-lucide="shield-check" style="color: var(--gold);"></i> Cryptographic Proof-of-Funds (POF) Control Center
             </h3>
-            <span style="font-size: 10px; background: rgba(15,59,124,0.1); color: var(--blue-brand); border: 1px solid var(--blue-brand); padding: 2px 8px; border-radius: 4px;">BitGo Settlement Node: Active</span>
+            <div style="display: flex; flex-direction: column; align-items: flex-end; font-size: 9px; line-height: 1.3;">
+              <span style="font-weight: bold; color: var(--accent-green); display: flex; align-items: center; gap: 4px;">
+                <span style="width: 6px; height: 6px; background: var(--accent-green); border-radius: 50%; display: inline-block;"></span> BitGo Settlement Node: Active
+              </span>
+              <span style="color: var(--text-muted); font-family: var(--font-mono);">Node: bg-node-07b | Latency: 45ms | Base L2</span>
+            </div>
           </div>
 
           <div class="pof-main-grid">
@@ -875,10 +1055,10 @@
               <div class="form-group">
                 <label for="pof-amount-select">Required POF Escrow Value</label>
                 <select id="pof-amount-select" class="form-control" style="background:#ffffff; cursor:pointer;">
-                  <option value="1M" selected>$1,000,000.00 USDC / UNY</option>
-                  <option value="5M">$5,000,000.00 USDC / UNY</option>
-                  <option value="10M">$10,000,000.00 USDC / UNY</option>
-                  <option value="25M">$25,000,000.00 USDC / UNY</option>
+                  <option value="1M" selected>$1,000,000.00 UNY</option>
+                  <option value="5M">$5,000,000.00 UNY</option>
+                  <option value="10M">$10,000,000.00 UNY</option>
+                  <option value="25M">$25,000,000.00 UNY</option>
                 </select>
               </div>
 
@@ -897,17 +1077,20 @@
                 <input type="text" class="form-control" style="font-family: var(--font-mono); font-size: 10px;" value="bg-beneficiary-4e57" disabled>
               </div>
 
-              <div style="border-top: 1px solid var(--border-color); padding-top: 12px; display: flex; flex-direction: column; gap: 8px;">
-                <label style="font-weight: bold; color: var(--blue-brand); font-size: 11px; display: block; text-transform: uppercase;">Approval Gateways (0 of 7 Verified)</label>
-                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; font-size: 8px; text-align: center;">
-                  <div id="gate-1" style="border: 1px solid var(--border-color); padding: 4px 2px; border-radius: 4px; background: #fff; color: var(--text-muted); font-weight: bold;">Compliance</div>
-                  <div id="gate-2" style="border: 1px solid var(--border-color); padding: 4px 2px; border-radius: 4px; background: #fff; color: var(--text-muted); font-weight: bold;">Governance</div>
-                  <div id="gate-3" style="border: 1px solid var(--border-color); padding: 4px 2px; border-radius: 4px; background: #fff; color: var(--text-muted); font-weight: bold;">Custody</div>
-                  <div id="gate-4" style="border: 1px solid var(--border-color); padding: 4px 2px; border-radius: 4px; background: #fff; color: var(--text-muted); font-weight: bold;">Signer</div>
+              <div style="border-top: 1px solid var(--border-color); padding-top: 12px; display: flex; flex-direction: column; gap: 6px;">
+                <label id="pof-gateways-label" style="font-weight: bold; color: var(--blue-brand); font-size: 11px; display: block; text-transform: uppercase;">Approval Gateways (0 of 7 Verified)</label>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; font-size: 8px; text-align: left;">
+                  <div id="gate-1" style="border: 1px solid var(--border-color); padding: 4px 6px; border-radius: 4px; background: #fff; color: var(--text-muted); font-weight: bold;">✓ Compliance (KYB/AML)</div>
+                  <div id="gate-2" style="border: 1px solid var(--border-color); padding: 4px 6px; border-radius: 4px; background: #fff; color: var(--text-muted); font-weight: bold;">✓ Governance (Policy Quorum)</div>
+                  <div id="gate-3" style="border: 1px solid var(--border-color); padding: 4px 6px; border-radius: 4px; background: #fff; color: var(--text-muted); font-weight: bold;">✓ Custody (BitGo Attestation)</div>
+                  <div id="gate-4" style="border: 1px solid var(--border-color); padding: 4px 6px; border-radius: 4px; background: #fff; color: var(--text-muted); font-weight: bold;">✓ Signer (Multisig Consent)</div>
+                  <div id="gate-5" style="border: 1px solid var(--border-color); padding: 4px 6px; border-radius: 4px; background: #fff; color: var(--text-muted); font-weight: bold;">✓ Liquidity (Reserve Proof)</div>
+                  <div id="gate-6" style="border: 1px solid var(--border-color); padding: 4px 6px; border-radius: 4px; background: #fff; color: var(--text-muted); font-weight: bold;">✓ Legal (Document Executed)</div>
+                  <div id="gate-7" style="border: 1px solid var(--border-color); padding: 4px 6px; border-radius: 4px; background: #fff; color: var(--text-muted); font-weight: bold;">✓ Treasury (Funding Source)</div>
                 </div>
               </div>
 
-              <button class="btn-primary" id="btn-generate-pof" style="width: 100%; margin-top: 5px;">Generate & Verify POF Instrument</button>
+              <button class="btn-primary" id="btn-generate-pof" style="width: 100%; margin-top: 5px;">Generate &amp; Verify POF Instrument</button>
             </div>
 
             <!-- Right Panel: Live PDF Preview & Flash Loan Terminal -->
@@ -943,6 +1126,11 @@
                   </div>
                 </div>
 
+                <!-- Escrow Amount Body Statement -->
+                <div style="font-size: 10.5px; color: var(--text-primary); text-align: center; border: 1px solid var(--border-color); background: var(--bg-main); border-radius: 6px; padding: 10px; line-height: 1.4;" id="cert-amount-body">
+                  This instrument represents a verified custodial escrow allocation of <strong>$1,000,000.00 UNY</strong> held under qualified trust rules.
+                </div>
+
                 <!-- Big Confirmed Stamp Box -->
                 <div id="cert-confirmed-box" style="border: 2px solid var(--border-color); background: rgba(0,0,0,0.01); border-radius: 6px; padding: 15px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100px; transition: all 0.3s ease;">
                   <i data-lucide="lock" style="width: 24px; height: 24px; color: var(--text-muted); margin-bottom: 6px;"></i>
@@ -969,25 +1157,39 @@
                 </div>
               </div>
 
-              <!-- Flash Liquidity Bridge Card -->
-              <div style="background: var(--bg-main); border: 1px solid var(--border-color); padding: 15px; border-radius: 8px; display: flex; flex-direction: column; gap: 8px;">
+              <!-- Flash Liquidity Bridge Card (Simulation & Production POF Path) -->
+              <div style="background: var(--bg-main); border: 1px solid var(--border-color); padding: 15px; border-radius: 8px; display: flex; flex-direction: column; gap: 10px;">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                   <strong style="font-size: 10px; text-transform: uppercase; color: var(--blue-brand); letter-spacing: 0.05em; display: flex; align-items: center; gap: 6px;">
-                    <i data-lucide="zap" style="color: var(--gold); width:13px; height:13px;"></i> Atomic Flash Loan Verification Bridge
+                    <i data-lucide="zap" style="color: var(--gold); width:13px; height:13px;"></i> Atomic Flash Loan Verification Bridge (Simulation Mode)
                   </strong>
-                  <span style="font-size: 8px; color: var(--text-muted);">Atomic Non-Custodial Check</span>
+                  <span style="font-size: 8px; color: var(--accent-red); font-weight: bold; text-transform: uppercase; background: rgba(225,29,72,0.05); padding: 2px 6px; border: 1px solid rgba(225,29,72,0.2); border-radius: 4px;">Demo Module</span>
                 </div>
+                
+                <!-- Simulation Warning Label -->
+                <div style="font-size: 9px; color: var(--text-secondary); background: rgba(179,141,56,0.05); border: 1px dashed var(--gold); border-radius: 6px; padding: 10px; line-height: 1.45;">
+                  <strong>Simulation Disclaimer:</strong> This Proof-of-Funds desk includes a simulation module for educational / demo purposes. Simulated flash-loan flows, 0% collateral cycles, and test node telemetry are not used as actual escrow, settlement balances, or capital verification for live deals.
+                </div>
+
                 <p style="font-size: 9px; color: var(--text-secondary); margin: 0; line-height: 1.4;">
-                  Instantly verify asset backing by deploying a temporary flash loan against the whitelisted clearing pool. The bridge verifies liquidity presence, stamps the escrow ledger, and completes repayment in under 2 seconds.
+                  Instantly verify simulated asset presence by deploying a temporary flash loan against the whitelisted clearing pool. The bridge verifies liquidity presence, stamps the escrow ledger, and completes repayment in under 2 seconds.
                 </p>
+
                 <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 10px; align-items: stretch; margin-top: 5px;">
                   <button id="btn-simulate-flash" class="btn-primary" style="font-size: 10px; padding: 6px;" disabled>Simulate Flash Loan Verification</button>
                   <div id="flash-status-stamp" style="font-size: 9px; border: 1px solid var(--border-color); border-radius: 4px; padding: 4px; display: flex; align-items: center; justify-content: center; background: #fff; color: var(--text-muted); font-weight: bold; text-align: center; text-transform: uppercase;">
                     Bridge Idle
                   </div>
                 </div>
+
                 <!-- Flash log console -->
                 <div id="flash-console-log" style="display: none; background: #0c101d; border: 1px solid var(--border-color); font-family: 'Courier New', Courier, monospace; font-size: 10px; color: #f8fafc; padding: 10px; border-radius: 6px; height: 110px; overflow-y: auto; line-height: 1.5; font-weight: bold; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);">
+                </div>
+
+                <!-- Real-world Production PoF Path -->
+                <div style="border-top: 1px solid var(--border-color); padding-top: 10px; margin-top: 5px; font-size: 9px; color: var(--text-secondary); line-height: 1.45;">
+                  <strong style="color: var(--blue-brand); text-transform: uppercase; font-size: 8.5px; display: block; margin-bottom: 4px;">Real-World Production Verification Path</strong>
+                  Production Proof-of-Funds is provided via segregated custody accounts and off-exchange settlement rails with verifiable balances and auditor-grade access — for example, via BitGo or equivalent Proof-of-Reserves (PoR) APIs and attestations.
                 </div>
               </div>
             </div>
@@ -1300,24 +1502,42 @@
         <h3 style="font-family: var(--font-display); font-size: 1.1rem; color: var(--blue-brand); margin: 0;">🚀 Draw Approval Pipeline</h3>
         <div class="timeline-list">
           
-          <div class="timeline-step completed" id="p-step-1">
-            <div class="timeline-node">1</div>
+          <!-- Step 1 -->
+          <div class="timeline-step completed" id="p-step-1" style="display: flex; gap: 12px; margin-bottom: 15px;">
+            <div class="timeline-node" style="flex-shrink: 0;">1</div>
             <div>
-              <strong style="color: var(--text-primary); display: block; font-size: 11px;">Escrow Clearance & Land Equity Lock</strong>
-              <span style="color: var(--text-secondary); font-size: 10px; line-height: 1.3; display: block;">Prudential CMBS Tranche of $25M reconciled. Base land equity of $4.1M secured in child org sub-wallet.</span>
-          <div class="timeline-step active" id="p-step-2">
-            <div class="timeline-node">2</div>
-            <div>
-              <strong style="color: var(--text-primary); display: block; font-size: 11px;">Draw 1 Funding Allocation Approval</strong>
-              <span style="color: var(--text-secondary); font-size: 10px; line-height: 1.3; display: block;">Verify Draw 1 Request ($961,021.51) against general conditions and site prep entitling schedules.</span>
+              <div style="display: flex; align-items: center;">
+                <strong style="color: var(--text-primary); font-size: 11px;">Escrow Clearance &amp; Land Equity Lock</strong>
+                <span style="background: rgba(16, 185, 129, 0.1); color: var(--accent-green); border: 1px solid var(--accent-green); padding: 1px 4px; border-radius: 3px; font-size: 8px; font-weight: bold; margin-left: 6px;">COMPLETED</span>
+              </div>
+              <span style="color: var(--text-secondary); font-size: 10px; line-height: 1.3; display: block; margin-top: 2px;">Prudential CMBS Tranche of $25M reconciled. Base land equity of $4.1M secured in child org sub-wallet.</span>
+              <a href="#" style="font-size: 9px; color: var(--blue-brand); text-decoration: underline; display: block; margin-top: 4px;" onclick="document.getElementById('nav-ledger').click(); return false;">Evidence: Genesis Block #1 Verification</a>
             </div>
           </div>
 
-          <div class="timeline-step" id="p-step-3">
-            <div class="timeline-node">3</div>
+          <!-- Step 2 -->
+          <div class="timeline-step active" id="p-step-2" style="display: flex; gap: 12px; margin-bottom: 15px;">
+            <div class="timeline-node" style="flex-shrink: 0;">2</div>
             <div>
-              <strong style="color: var(--text-primary); display: block; font-size: 11px;">Operating Account Disbursal</strong>
-              <span style="color: var(--text-secondary); font-size: 10px; line-height: 1.3; display: block;">Approve signature checks and disburse draw funding directly into operating sub-account.</span>
+              <div style="display: flex; align-items: center;">
+                <strong style="color: var(--text-primary); font-size: 11px;">Draw 1 Funding Allocation Approval</strong>
+                <span id="step-2-badge" style="background: rgba(179,141,56,0.1); color: var(--gold); border: 1px solid var(--gold); padding: 1px 4px; border-radius: 3px; font-size: 8px; font-weight: bold; margin-left: 6px;">READY TO APPROVE</span>
+              </div>
+              <span style="color: var(--text-secondary); font-size: 10px; line-height: 1.3; display: block; margin-top: 2px;">Verify Draw 1 Request ($961,021.51) against general conditions and site prep entitling schedules.</span>
+              <a href="#" style="font-size: 9px; color: var(--blue-brand); text-decoration: underline; display: block; margin-top: 4px;" onclick="document.getElementById('nav-library').click(); return false;">Evidence: G703 Entitling Schedule &amp; Budget Feeder</a>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="timeline-step" id="p-step-3" style="display: flex; gap: 12px;">
+            <div class="timeline-node" style="flex-shrink: 0;">3</div>
+            <div>
+              <div style="display: flex; align-items: center;">
+                <strong style="color: var(--text-primary); font-size: 11px;">Operating Account Disbursal</strong>
+                <span id="step-3-badge" style="background: rgba(100,116,139,0.1); color: var(--text-muted); border: 1px solid var(--border-color); padding: 1px 4px; border-radius: 3px; font-size: 8px; font-weight: bold; margin-left: 6px;">PENDING</span>
+              </div>
+              <span style="color: var(--text-secondary); font-size: 10px; line-height: 1.3; display: block; margin-top: 2px;">Approve signature checks and disburse draw funding directly into operating sub-account.</span>
+              <span id="step-3-evidence" style="font-size: 9px; color: var(--text-muted); display: block; margin-top: 4px;">Target Operating Account: 0x4E57...Fa13 | Post-Disbursal: $961,021.51 UNY</span>
             </div>
           </div>
 
@@ -1399,6 +1619,19 @@
         <p style="color: var(--text-secondary); line-height: 1.4; margin: 0;">
           Establishing secure connection to Whitelisted Institutional Custody vaults. Approve multi-sig keys to link treasury.
         </p>
+        
+        <!-- Custody Policy Metadata Card -->
+        <div style="background: var(--bg-darker); border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; font-size: 9px; line-height: 1.4;">
+          <strong>Custody Provider:</strong> BitGo Trust Company<br/>
+          <strong>Master Source Vault ID:</strong> <span style="font-family: var(--font-mono);">bg-vault-07bcc4a1</span><br/>
+          <strong>Settlement Policy ID:</strong> <span style="font-family: var(--font-mono);">POL-UNY-254900</span><br/>
+          <strong>MPC Consensus Rules:</strong> 2-of-3 Quorum Threshold Required<br/>
+          <div style="display: flex; gap: 6px; margin-top: 4px; font-weight: bold; color: var(--text-secondary);">
+            <span>• Signer 1: LD Capital Ops</span>
+            <span>• Signer 2: LD Capital Risk</span>
+            <span>• Signer 3: Custodian Co-sign</span>
+          </div>
+        </div>
 
         <!-- Status log -->
         <div id="modal-status-log" style="background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 6px; padding: 12px; font-family: var(--font-mono); height: 140px; overflow-y: auto; color: var(--text-primary); display: flex; flex-direction: column; gap: 6px;">
