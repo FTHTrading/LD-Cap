@@ -104,7 +104,7 @@ To address your requirement for lightning-fast Proof of Funds generation and ver
 
 ## 📚 Institutional Borrower Resource Library & Audio Narrations
 
-We integrated a dedicated **Resource Library** tab displaying a structured 3x3 grid of all 9 borrower/lender guides requested:
+We integrated a dedicated **Resource Library** tab displaying a structured grid of **13 borrower/lender guides** (adding 4 new key institutional documents):
 
 1.  *Traditional CRE Lending Comparables (Legacy Systems)*
 2.  *Cash-Out Refinance and Equity Recapture Client Guide*
@@ -115,14 +115,30 @@ We integrated a dedicated **Resource Library** tab displaying a structured 3x3 g
 7.  *M Helen Hotel LLC — Step-by-Step Funding Process and Draw Schedule*
 8.  *Construction Draw Disbursement Guide*
 9.  *What Digital-Enhanced Commercial Lending Means for You*
+10. *Accessing $100M in Institutional Capital*
+11. *Prudential and Lender Access Protocol*
+12. *Power Moves: Advanced CRE Strategies*
+13. *BitGo Institutional Proof of Funds Guide*
 
 ### Core Features:
 *   **Legacy Comparables Identification:** The first card is styled and designated as a **Legacy Comparable** reference sheet. This lets borrowers immediately compare the high-friction, slow timelines of traditional institutions with UnyKorn’s clearing speed.
 *   **Human-Like Voice Reading (TTS):** Clicking **Listen** on any guide triggers a native, human-like voice synthesis narrating the key stages, LTV details, and legal compliance structures in CRE bank terminology.
 *   **One-Click PDF Generation:** Clicking **Download** dynamically compiles a beautifully-styled, clean HTML document formatted for instant printing or local PDF export.
 
-![Resource Library and Listening State](C:\Users\Kevan\.gemini\antigravity-ide\brain\844b3ca0-72d4-4e98-a45a-08775feb0a44\listening_state_1784032100964.png)
-*Figure 7: Resource Library tab showing the Borrower Guides grid and the Legacy Comparables guide in listening state.*
+![Resource Library State](C:\Users\Kevan\.gemini\antigravity-ide\brain\844b3ca0-72d4-4e98-a45a-08775feb0a44\resource_library_1784033561509.png)
+*Figure 7: Expanded Resource Library listing 13 documents and including the new institutional briefing files.*
+
+---
+
+## ⚡ Institutional Liquidity Attestation & Deal Desk
+
+We replaced the previous retail-oriented POF controls with the updated **Liquidity Attestation Engine** matching the Wall Street Platinum premium aesthetic:
+
+*   **Active Liquidity Source Selector:** Allows the user to select from active institutional documents (e.g., *BitGo Institutional Proof of Funds Guide*, *Sovereign Capital Access Matrix*, etc.).
+*   **Real-Time Proof-of-Reserves Telemetry:** Renders high-level institutional balance sheet telemetry, confirming the **$100,000,000.00 confirmed facility capacity cap** instantly and clean of cryptocurrency jargon.
+
+![Institutional Liquidity Attestation Desk](C:\Users\Kevan\.gemini\antigravity-ide\brain\844b3ca0-72d4-4e98-a45a-08775feb0a44\attestation_state_1784033550650.png)
+*Figure 8: Institutional Deal Desk presenting real-time cryptographic attestation metrics upon document selection.*
 
 ---
 
@@ -158,4 +174,4 @@ We have also built a unified, single-file administrative dashboard called [dashb
     *   Shield node modal that runs cryptographic logs, audits ledger paths, and anchors signature consensus permanently.
 
 ![UnyKorn Sovereign Capital Portal Dashboard](C:\Users\Kevan\.gemini\antigravity-ide\brain\844b3ca0-72d4-4e98-a45a-08775feb0a44\signature_verification_alert_1784030503224.png)
-*Figure 8: Fully verified glassmorphic portal presenting the underwriting review memo and simulated multi-key consensus handshake.*
+*Figure 9: Fully verified glassmorphic portal presenting the underwriting review memo and simulated multi-key consensus handshake.*
