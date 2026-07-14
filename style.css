@@ -51,7 +51,7 @@ body {
 
 .nav-container {
   width: 100%;
-  max-width: 1400px;
+  max-width: 1600px;
   margin: 0 auto;
   padding: 0 2rem;
   display: flex;
@@ -113,7 +113,7 @@ body {
   display: grid;
   grid-template-columns: 1.15fr 0.85fr;
   gap: 2rem;
-  max-width: 1400px;
+  max-width: 1600px;
   margin: 2.5rem auto;
   padding: 0 2rem;
   width: 100%;
@@ -553,6 +553,10 @@ tbody tr:hover {
     grid-template-columns: 1fr;
     gap: 15px;
   }
+  .app-layout {
+    margin: 1.5rem auto !important;
+    padding: 0 1.5rem !important;
+  }
   .logo {
     align-items: center;
   }
@@ -588,6 +592,11 @@ tbody tr:hover {
   .pof-main-grid {
     grid-template-columns: 1fr !important;
     gap: 12px !important;
+  }
+  
+  .app-layout {
+    margin: 1rem auto !important;
+    padding: 0 1rem !important;
   }
   
   /* Make all tables responsive */
