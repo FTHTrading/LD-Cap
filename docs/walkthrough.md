@@ -167,3 +167,23 @@ We have also built a unified, single-file administrative dashboard called [dashb
 
 ![UnyKorn Sovereign Capital Portal Dashboard](C:\Users\Kevan\.gemini\antigravity-ide\brain\844b3ca0-72d4-4e98-a45a-08775feb0a44\signature_verification_alert_1784030503224.png)
 *Figure 8: Fully verified glassmorphic portal presenting the underwriting review memo and simulated multi-key consensus handshake.*
+
+---
+
+## 📱 Mobile Responsive Stacking & PWA Support
+
+To prepare Nick and the partners for presenting the portal live from their phones, we upgraded the frontend with native app-like mobile support:
+
+1. **Progressive Web App (PWA) Integration:**
+   * Created [manifest.json](file:///C:/Users/Kevan/.gemini/antigravity-ide/scratch/ld-cap/manifest.json) detailing short-names, launch URLs, standalone window orientation, and UnyKorn-hosted touch icons.
+   * Built [sw.js](file:///C:/Users/Kevan/.gemini/antigravity-ide/scratch/ld-cap/sw.js) (Service Worker) to cache local assets (`index.html`, `style.css`, `app.js`) enabling offline capability and instant page loads.
+   * Registered the service worker at the start of [app.js](file:///C:/Users/Kevan/.gemini/antigravity-ide/scratch/ld-cap/app.js) and added touch links in the header of [index.html](file:///C:/Users/Kevan/.gemini/antigravity-ide/scratch/ld-cap/index.html).
+2. **Horizontal Swipeable Tab Navigation:**
+   * On tablet and phone screens, the 9-item top navigation tabs bar automatically converts into a horizontal, swipeable selection bar. This keeps the header compact, visible, and 100% responsive.
+3. **One-Column Grid Stacking:**
+   * Implemented CSS media queries in [style.css](file:///C:/Users/Kevan/.gemini/antigravity-ide/scratch/ld-cap/style.css) that dynamically collapse two-column grids (`.stats-grid`, `.grid-3`, `.balance-card-grid`, `.rate-hedging-grid`, `.proposal-desk-grid`) into a single-column layout on viewports under `991px` and `768px`.
+   * Tables now auto-scroll horizontally on small screens instead of overflowing the page boundaries.
+
+![Mobile Responsive Proof of Funds](C:\Users\Kevan\.gemini\antigravity-ide\brain\844b3ca0-72d4-4e98-a45a-08775feb0a44\pof_verified_1784036207008.png)
+*Figure 9: Fully responsive Proof of Funds desk running on a simulated mobile viewport with horizontal tab navigation and single-column stacking.*
+
