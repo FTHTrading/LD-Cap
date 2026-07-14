@@ -145,12 +145,12 @@
           <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
             <div style="background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; text-align: center;">
               <strong style="display: block; font-size: 10px; color: var(--text-primary);">Escrow Pool Account</strong>
-              <span style="font-size: 11px; font-family: var(--font-mono); color: var(--gold); display: block; margin-top: 4px;">$29.10M USDF</span>
+              <span style="font-size: 11px; font-family: var(--font-mono); color: var(--gold); display: block; margin-top: 4px;">$29.10M USDC/UNY</span>
               <span style="font-size: 9px; color: var(--text-muted);">Locked Capital Floor</span>
             </div>
             <div style="background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; text-align: center;">
               <strong style="display: block; font-size: 10px; color: var(--text-primary);">Operating Draw Account</strong>
-              <span style="font-size: 11px; font-family: var(--font-mono); color: var(--accent-green); display: block; margin-top: 4px;" id="draw-child-bal">$0.00 USDF</span>
+              <span style="font-size: 11px; font-family: var(--font-mono); color: var(--accent-green); display: block; margin-top: 4px;" id="draw-child-bal">$0.00 USDC/UNY</span>
               <span style="font-size: 9px; color: var(--text-muted);"> GC Outbound Channel</span>
             </div>
             <div style="background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; text-align: center;">
@@ -357,7 +357,7 @@
                 <input type="text" id="mint-recipient" class="form-control" style="font-family: var(--font-mono); font-size:11px;" value="0x4E574939D460d284B5D990646D4aeaEF2D49Fa13">
               </div>
               <div class="form-group">
-                <label for="mint-amount">Funding Disbursal (USDF Stablecoins)</label>
+                <label for="mint-amount">Funding Disbursal (UNY Stablecoins)</label>
                 <input type="number" id="mint-amount" class="form-control" style="font-family: var(--font-mono);" value="961021.51" disabled>
               </div>
 
@@ -391,6 +391,18 @@
             </div>
 
           </div>
+
+          <!-- Sovereign Stablecoin In-House Minting Description -->
+          <div style="border-top: 1px dashed var(--border-color); padding-top: 15px; margin-top: 10px; display: flex; flex-direction: column; gap: 6px;">
+            <strong style="font-family: var(--font-display); font-size: 11px; text-transform: uppercase; color: var(--blue-brand); display: flex; align-items: center; gap: 6px; letter-spacing: 0.05em;">
+              <i data-lucide="shield" style="color: var(--gold); width:13px; height:13px;"></i> In-House Sovereign Stablecoin Minting Engine
+            </strong>
+            <p style="font-size: 10px; color: var(--text-secondary); margin: 0; line-height: 1.5;">
+              The UnyKorn architecture gives commercial real estate lenders first-to-market sovereignty by allowing them to mint their own asset-backed stablecoins (such as <strong>UNY</strong>) directly within the system. Instead of relying on public retail tokens, we map customized stablecoin assets directly to whitelisted custody sub-accounts inside <strong>BitGo Trust</strong>. 
+              This allows you to lock collateral on-chain, issue digital project dollars instantly to contractors, and enable third-party partners to clear and hold your custom stablecoins inside their secure BitGo vaults with zero middleman slippage.
+            </p>
+          </div>
+
         </section>
       </div>
 
@@ -417,13 +429,13 @@
               </div>
 
               <div class="form-group">
-                <label for="sofr-collateral">USDF Margin Collateral</label>
+                <label for="sofr-collateral">UNY Margin Collateral</label>
                 <input type="number" id="sofr-collateral" class="form-control" style="font-family: var(--font-mono);" value="100000">
               </div>
 
               <div style="display: flex; justify-content: space-between; font-size: 11px;">
                 <span style="color: var(--text-secondary);">Daily Staking Yield Offset (4.5% APY)</span>
-                <strong style="color: var(--accent-green);" id="daily-staking-yield">$12.33 USDF / day</strong>
+                <strong style="color: var(--accent-green);" id="daily-staking-yield">$12.33 UNY / day</strong>
               </div>
 
               <button id="place-hedge-btn" class="btn-primary" style="margin-top: 5px;">Execute Rate Hedge Protection</button>
@@ -854,10 +866,10 @@
               <div class="form-group">
                 <label for="pof-amount-select">Required POF Escrow Value</label>
                 <select id="pof-amount-select" class="form-control" style="background:#ffffff; cursor:pointer;">
-                  <option value="1M" selected>$1,000,000.00 USDC / USDF</option>
-                  <option value="5M">$5,000,000.00 USDC / USDF</option>
-                  <option value="10M">$10,000,000.00 USDC / USDF</option>
-                  <option value="25M">$25,000,000.00 USDC / USDF</option>
+                  <option value="1M" selected>$1,000,000.00 USDC / UNY</option>
+                  <option value="5M">$5,000,000.00 USDC / UNY</option>
+                  <option value="10M">$10,000,000.00 USDC / UNY</option>
+                  <option value="25M">$25,000,000.00 USDC / UNY</option>
                 </select>
               </div>
 
@@ -898,7 +910,7 @@
                   <div>
                     <span style="font-size: 8px; color: var(--text-muted); font-weight: bold; letter-spacing: 0.1em; text-transform: uppercase; display: block;">Institutional Escrow Documentation — Confidential</span>
                     <strong style="font-size: 14px; color: var(--blue-brand); font-family: var(--font-display); text-transform: uppercase;">Proof-of-Funds Escrow Instrument</strong>
-                    <span style="font-size: 9px; color: var(--text-secondary); display: block; margin-top: 2px;">USDC / USDF Custodial Escrow — XRPL Mainnet Clearing</span>
+                    <span style="font-size: 9px; color: var(--text-secondary); display: block; margin-top: 2px;">USDC / UNY Custodial Escrow — XRPL Mainnet Clearing</span>
                   </div>
                   <div style="text-align: right;">
                     <span style="font-size: 7px; color: var(--text-muted); text-transform: uppercase; display: block;">Document ID</span>

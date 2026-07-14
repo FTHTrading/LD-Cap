@@ -276,7 +276,7 @@ executeDrawBtn.addEventListener('click', () => {
         isDrawExecuted = true;
         executeDrawBtn.textContent = 'Draw 1 Disbursed';
         executeDrawBtn.disabled = true;
-        drawChildBal.textContent = '$961,021.51 USDF';
+        drawChildBal.textContent = '$961,021.51 USDC/UNY';
         topStatusIndicator.textContent = 'Draw 1: Settled & Disbursed';
         topStatusIndicator.style.background = 'rgba(16, 185, 129, 0.05)';
         topStatusIndicator.style.color = 'var(--accent-green)';
@@ -299,7 +299,7 @@ executeDrawBtn.addEventListener('click', () => {
         // Add blocks to audit ledger
         addAuditBlock({
           draw: 'Draw 1: Mobilization & Site Prep',
-          amount: '$961,021.51 USDF',
+          amount: '$961,021.51 USDC/UNY',
           prevHash: '0000000000000000000000000000000000000000000000000000000000000000',
           hash: 'c6f5a34e8d2e3c0429f6p9fxa45d2d41a772da12b918f0a0e8c6a51d8b2e3c04',
           details: 'Verified budget reconciliation. Mobilization ($250k), Site Prep ($310k), Dirt Study ($85k), A&E ($196k), Loan Cost ($120k). Whitelisted operating sub-account target: 0x4E57...Fa13.'
@@ -323,7 +323,7 @@ function updateYieldMath() {
   const col = parseFloat(sofrCollateral.value) || 0;
   // Dynamic offset model: Staking Yield offset = Collateral * 4.5% / 365
   const daily = (col * 0.045) / 365;
-  dailyStakingYield.textContent = `$${daily.toFixed(2)} USDF / day`;
+  dailyStakingYield.textContent = `$${daily.toFixed(2)} UNY / day`;
 }
 
 placeHedgeBtn.addEventListener('click', () => {
@@ -664,7 +664,7 @@ executeCrossPurchaseBtn.addEventListener('click', () => {
       { text: '[CLEARING] Signing collateral lock with whitelisted keys...', color: 'var(--accent-cyan)' },
       { text: '[BitGo] Provisioning child account drawing sub-vault: "ldcap_mhelen_acquisition"...', color: 'var(--gold)' },
       { text: '[BitGo] Locking collateral tranches in escrow sub-vaults...', color: 'var(--gold)' },
-      { text: '[CLEARING] Disbursing acquisition USDF stablecoins to destination account...', color: 'var(--accent-cyan)' },
+      { text: '[CLEARING] Disbursing acquisition USDC/UNY stablecoins to destination account...', color: 'var(--accent-cyan)' },
       { text: '[SUCCESS] Refinancing draw cleared and credited to drawing account!', color: 'var(--accent-green)' },
       { text: '--- SETTLED & DEPOSITED: Reference #27492020 ---', color: 'var(--accent-green)' }
     ];
@@ -687,7 +687,7 @@ executeCrossPurchaseBtn.addEventListener('click', () => {
           // Add to cryptographic audit ledger
           addAuditBlock({
             draw: `Acquisition: ${acquisitionTargetSelect.value}`,
-            amount: `$${(parseFloat(acquisitionTargetSelect.value.match(/\$(\d+\.?\d*)M/)[1]) * 1000000).toLocaleString()} USDF`,
+            amount: `$${(parseFloat(acquisitionTargetSelect.value.match(/\$(\d+\.?\d*)M/)[1]) * 1000000).toLocaleString()} USDC/UNY`,
             prevHash: 'c6f5a34e8d2e3c0429f6p9fxa45d2d41a772da12b918c6f5a34e8d2e3c04',
             hash: '772da12b918f0a0e8c6a51d8b2e3c0429f6p9fxa45d2d41a772da12b918f0a0',
             details: `Cross-collateralized national portfolio. Target asset acquired under multi-sig escrow whitelist. Child sub-account configured and registered.`
@@ -1321,68 +1321,260 @@ if (btnDownloadPofPdf) {
         <head>
           <title>Proof of Funds Escrow Instrument - ${docId}</title>
           <style>
-            body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding: 40px; color: #1e293b; line-height: 1.6; }
-            .header { border-bottom: 3px solid #b38d38; padding-bottom: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-start; }
-            .header h1 { font-size: 20px; color: #0f3b7c; margin: 0; text-transform: uppercase; }
-            .header span { font-size: 10px; color: #64748b; font-weight: bold; }
-            .meta-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; border-bottom: 1px solid #e2e8f0; padding-bottom: 15px; margin-bottom: 20px; font-size: 12px; }
-            .meta-grid span { color: #64748b; font-size: 10px; display: block; text-transform: uppercase; }
-            .verified-box { border: 2px solid #10b981; background: rgba(16, 185, 129, 0.03); border-radius: 8px; padding: 25px; text-align: center; margin-bottom: 25px; }
-            .verified-box h2 { font-size: 14px; color: #10b981; margin: 0 0 5px; text-transform: uppercase; letter-spacing: 0.05em; }
-            .verified-box h3 { font-size: 18px; color: #0f3b7c; margin: 0 0 10px; font-weight: 800; }
-            .verified-box code { font-family: monospace; font-size: 11px; color: #334155; }
-            .details-list { font-size: 11px; color: #475569; display: grid; grid-template-columns: 120px 1fr; gap: 8px; margin-bottom: 25px; }
-            .details-list strong { color: #1e293b; }
-            .footer { border-top: 1px dashed #cbd5e1; padding-top: 15px; text-align: center; font-size: 9px; color: #94a3b8; }
+            :root {
+              --blue-brand: #0f3b7c;
+              --gold: #b38d38;
+              --text-primary: #0f172a;
+              --text-secondary: #475569;
+              --border-color: #cbd5e1;
+              --bg-darker: #f8fafc;
+            }
+            body { 
+              font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+              padding: 40px; 
+              color: var(--text-primary); 
+              line-height: 1.5; 
+              background: #ffffff;
+            }
+            .border-wrap {
+              border: 1px solid var(--border-color);
+              padding: 30px;
+              border-radius: 8px;
+              position: relative;
+            }
+            .border-wrap::before {
+              content: '';
+              position: absolute;
+              top: 5px; left: 5px; right: 5px; bottom: 5px;
+              border: 1px solid var(--gold);
+              border-radius: 4px;
+              pointer-events: none;
+            }
+            .header { 
+              border-bottom: 2px solid var(--blue-brand); 
+              padding-bottom: 12px; 
+              margin-bottom: 20px; 
+              display: flex; 
+              justify-content: space-between; 
+              align-items: flex-start; 
+            }
+            .header h1 { font-size: 18px; color: var(--blue-brand); margin: 0; text-transform: uppercase; letter-spacing: 0.05em; }
+            .header span { font-size: 9px; color: var(--gold); font-weight: bold; letter-spacing: 0.1em; }
+            .meta-grid { 
+              display: grid; 
+              grid-template-columns: repeat(3, 1fr); 
+              gap: 15px; 
+              border-bottom: 1px solid var(--border-color); 
+              padding-bottom: 12px; 
+              margin-bottom: 20px; 
+              font-size: 11px; 
+            }
+            .meta-grid span { color: var(--text-secondary); font-size: 9px; display: block; text-transform: uppercase; font-weight: 600; }
+            .meta-grid strong { color: var(--text-primary); }
+            
+            .verified-box { 
+              border: 2px solid #10b981; 
+              background: rgba(16, 185, 129, 0.02); 
+              border-radius: 6px; 
+              padding: 20px; 
+              text-align: center; 
+              margin-bottom: 20px; 
+            }
+            .verified-box h2 { font-size: 12px; color: #10b981; margin: 0 0 4px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: bold; }
+            .verified-box h3 { font-size: 20px; color: var(--blue-brand); margin: 0 0 8px; font-weight: 800; }
+            .verified-box code { font-family: monospace; font-size: 10px; color: #0f172a; background: #f1f5f9; padding: 2px 6px; border-radius: 4px; border: 1px solid #e2e8f0; }
+
+            .credentials-section {
+              margin-bottom: 20px;
+              background: var(--bg-darker);
+              border: 1px solid var(--border-color);
+              border-radius: 6px;
+              padding: 15px;
+            }
+            .credentials-section h4 {
+              margin: 0 0 10px 0;
+              font-size: 10px;
+              color: var(--blue-brand);
+              text-transform: uppercase;
+              letter-spacing: 0.05em;
+              border-bottom: 1px dashed var(--border-color);
+              padding-bottom: 4px;
+            }
+            .credentials-grid {
+              display: grid;
+              grid-template-columns: repeat(2, 1fr);
+              gap: 8px;
+              font-size: 10px;
+            }
+            .credentials-grid div {
+              display: flex;
+              justify-content: space-between;
+              padding-right: 15px;
+            }
+            .credentials-grid span { color: var(--text-secondary); }
+            .credentials-grid strong { color: var(--text-primary); font-family: monospace; }
+
+            .details-list { 
+              font-size: 10px; 
+              color: var(--text-secondary); 
+              display: flex;
+              flex-direction: column;
+              gap: 6px; 
+              margin-bottom: 20px; 
+              border-bottom: 1px solid var(--border-color);
+              padding-bottom: 15px;
+            }
+            .details-row {
+              display: grid;
+              grid-template-columns: 140px 1fr;
+              gap: 10px;
+            }
+            .details-row strong { color: var(--blue-brand); text-transform: uppercase; font-size: 9px; letter-spacing: 0.02em; }
+            
+            .sig-grid {
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 40px;
+              margin-top: 30px;
+              font-size: 10px;
+            }
+            .sig-box {
+              border-top: 1px solid var(--border-color);
+              padding-top: 8px;
+              text-align: center;
+              position: relative;
+            }
+            .sig-box .stamp {
+              position: absolute;
+              top: -32px;
+              left: 50%;
+              transform: translateX(-50%);
+              font-family: 'Fira Code', monospace;
+              font-size: 9px;
+              color: #10b981;
+              border: 1.5px dashed #10b981;
+              padding: 2px 8px;
+              border-radius: 4px;
+              background: rgba(16,185,129,0.05);
+              text-transform: uppercase;
+              font-weight: bold;
+            }
+
+            .footer { 
+              border-top: 1px dashed var(--border-color); 
+              padding-top: 12px; 
+              text-align: center; 
+              font-size: 8px; 
+              color: var(--text-secondary);
+              margin-top: 25px; 
+            }
           </style>
         </head>
         <body>
-          <div class="header">
-            <div>
-              <span>INSTITUTIONAL ESCROW DOCUMENTATION — CONFIDENTIAL</span>
-              <h1>Proof-of-Funds Escrow Instrument</h1>
-              <p style="margin: 2px 0 0; font-size: 11px; color: #475569;">USDC / USDF Custodial Escrow — XRPL Mainnet Clearing</p>
+          <div class="border-wrap">
+            <div class="header">
+              <div>
+                <span>INSTITUTIONAL ESCROW DOCUMENTATION — CONFIDENTIAL</span>
+                <h1>Proof-of-Funds Escrow Instrument</h1>
+                <p style="margin: 2px 0 0; font-size: 10px; color: var(--text-secondary);">USDC / UNY Custodial Escrow — XRPL Mainnet Clearing</p>
+              </div>
+              <div style="text-align: right;">
+                <span style="display:block;">DOCUMENT ID</span>
+                <strong style="font-family: monospace; font-size: 10px; color: var(--blue-brand);">${docId}</strong>
+              </div>
             </div>
-            <div style="text-align: right;">
-              <span style="display:block;">DOCUMENT ID</span>
-              <strong style="font-family: monospace; font-size: 10px; color: #0f3b7c;">${docId}</strong>
+
+            <div class="meta-grid">
+              <div>
+                <span>Date Prepared</span>
+                <strong>${preparedDate}</strong>
+              </div>
+              <div>
+                <span>Clearing Rail</span>
+                <strong>XRPL Mainnet Clearing</strong>
+              </div>
+              <div>
+                <span>Verification Status</span>
+                <strong style="color: #10b981; font-weight: bold;">VERIFIED - FUNDS ESCROWED</strong>
+              </div>
             </div>
-          </div>
 
-          <div class="meta-grid">
-            <div>
-              <span>Date Prepared</span>
-              <strong>${preparedDate}</strong>
+            <div class="verified-box">
+              <h2>✓ Confirmed in Escrow Custody Wallet</h2>
+              <h3>$${amt.formatted}.00 USDC / UNY CONFIRMED</h3>
+              <code>Escrow Wallet: r3kSVwgsoQZCSG9NZ1GMUG54SUiH8yv66H</code>
             </div>
-            <div>
-              <span>Clearing Rail</span>
-              <strong>XRPL Mainnet</strong>
+
+            <!-- New Section: UnyKorn Corporate Registry Credentials -->
+            <div class="credentials-section">
+              <h4>UnyKorn LLC Escrow Registry Credentials</h4>
+              <div class="credentials-grid">
+                <div>
+                  <span>Sovereign Organization:</span>
+                  <strong>UnyKorn LLC</strong>
+                </div>
+                <div>
+                  <span>State of Registration:</span>
+                  <strong>Wyoming, USA</strong>
+                </div>
+                <div>
+                  <span>Tax Registration (EIN):</span>
+                  <strong>42-3536633</strong>
+                </div>
+                <div>
+                  <span>Legal Entity Identifier (LEI):</span>
+                  <strong>2549008J7LUHSQ73SI26</strong>
+                </div>
+                <div>
+                  <span>ISO MIC Exchange Code:</span>
+                  <strong>UBEC</strong>
+                </div>
+                <div>
+                  <span>BitGo Enterprise Account:</span>
+                  <strong>69a0b54edd793f...e070</strong>
+                </div>
+              </div>
             </div>
-            <div>
-              <span>Verification Status</span>
-              <strong style="color: #10b981;">VERIFIED - FUNDS ESCROWED</strong>
+
+            <div class="details-list">
+              <div class="details-row">
+                <strong>Source Wallet:</strong>
+                <span>rNX4faQ35SdtE4rDoEg8YeVLQKQ57AYyCt (Verified Custodial Balance: 174,000,000 USDC)</span>
+              </div>
+              <div class="details-row">
+                <strong>Issuer Wallet:</strong>
+                <span>rJLMSTy77hTxqgDw9WMxCnYC8m5vhqN3FQ (TROPTIONS / ECLAW Stablecoin Issuer)</span>
+              </div>
+              <div class="details-row">
+                <strong>Beneficiary Address:</strong>
+                <span>r2KaS3soaSCSXpYJyiCvUf68UUPmepPxC (Awaiting Release activation)</span>
+              </div>
+              <div class="details-row">
+                <strong>Ledger Clearing Hash:</strong>
+                <span style="font-family: monospace; font-size: 9px; color: var(--text-primary); word-break: break-all;">${amt.tx}</span>
+              </div>
             </div>
-          </div>
 
-          <div class="verified-box">
-            <h2>✓ Confirmed in Escrow Custody Wallet</h2>
-            <h3>${amt.formatted} USDC ESCROWED</h3>
-            <code>Escrow Wallet Address: r3kSVwgsoQZCSG9NZ1GMUG54SUiH8yv66H</code>
-          </div>
+            <p style="font-size: 9px; color: var(--text-secondary); line-height: 1.4; margin: 0;">
+              By issuing this instrument, The Loan Depot in partnership with Prudential Mortgage Capital Company clearing networks certifies and guarantees the presence of verified reserve backing held inside whitelisted BitGo Trust multi-sig accounts, fully compliant with CMBS and institutional credit regulations.
+            </p>
 
-          <div class="details-list">
-            <strong>Source Wallet:</strong> <span>rNX4faQ35SdtE4rDoEg8YeVLQKQ57AYyCt (Verified Balance: 174,000,000 USDC)</span>
-            <strong>Issuer Wallet:</strong> <span>rJLMSTy77hTxqgDw9WMxCnYC8m5vhqN3FQ (TROPTIONS / ECLAW Stablecoin Issuer)</span>
-            <strong>Beneficiary Address:</strong> <span>r2KaS3soaSCSXpYJyiCvUf68UUPmepPxC (Awaiting Release activation)</span>
-            <strong>Transfer Hash:</strong> <span style="font-family: monospace;">${amt.tx}</span>
-          </div>
+            <div class="sig-grid">
+              <div class="sig-box">
+                <div class="stamp">✓ Authorized</div>
+                <strong>Niraj (Nick) Desai</strong><br/>
+                <span style="color: var(--text-secondary); font-size: 8px;">President & CEO, The Loan Depot</span>
+              </div>
+              <div class="sig-box">
+                <div class="stamp">✓ BitGo Secured</div>
+                <strong>BitGo Trust Custody Officer</strong><br/>
+                <span style="color: var(--text-secondary); font-size: 8px;">Consensual Multi-Sig Clearing Gate</span>
+              </div>
+            </div>
 
-          <p style="font-size: 11px; color: #475569; border-top: 1px solid #e2e8f0; padding-top: 15px;">
-            By issuing this instrument, The Loan Depot clears and guarantees the presence of verified reserve backing held inside whitelisted BitGo Trust multi-sig accounts, fully compliant with CMBS and institutional credit regulations.
-          </p>
-
-          <div class="footer">
-            Confidential Document — For Qualified Institutional Review Only — Issued by The Loan Depot Lending Co.
+            <div class="footer">
+              Confidential Document — For Qualified Institutional Review Only — Distributed by The Loan Depot Lending Co.
+            </div>
           </div>
           <script>window.print();</script>
         </body>
