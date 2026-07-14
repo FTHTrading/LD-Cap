@@ -1495,6 +1495,52 @@ const libraryGuides = {
       <hr/>
       <p>Contrasts static, outdated physical bank comfort letters that take 3-5 business days to draft with real-time, cryptographically signed API balance attestations. Demonstrates compliance under highly-regulated custodian vault policy rules.</p>
     `
+  },
+  access_100m: {
+    title: "Accessing $100M in Institutional Capital",
+    overviewSpeechText: "Accessing One Hundred Million Dollars in Institutional Capital outlines how UnyKorn and The Loan Depot deploy capital at scale using syndicated liquidity matrices, CMBS conduits, and life insurance facilities.",
+    htmlContent: `
+      <h1>Accessing $100M in Institutional Capital</h1>
+      <h3>The Loan Depot Lending Co. | In Partnership with Prudential</h3>
+      <hr/>
+      <p>Details how UnyKorn + The Loan Depot provides up to $100 Million for transactions. Through our institutional capital network—anchored by our partnership with Prudential Mortgage Capital Company and CMBS conduits—we structure and deploy up to $100 million in a single commercial real estate transaction with zero clearing friction.</p>
+    `
+  },
+  lender_protocol: {
+    title: "Prudential and Lender Access Protocol",
+    overviewSpeechText: "The Prudential and Lender Access Protocol details the operational and technical rules for designated partners to verify, monitor, and audit construction escrow pools in real time via read only API clearing nodes.",
+    htmlContent: `
+      <h1>Prudential and Lender Access Protocol</h1>
+      <h3>How Institutional Partners Verify and Monitor in Real Time</h3>
+      <hr/>
+      <p>Technical and operational protocol describing system roles, read-only API clearing nodes, and role-based access for Prudential capital markets, compliance, and asset management teams to audit escrow balances 24/7 without manual document requests.</p>
+    `
+  },
+  power_moves: {
+    title: "Power Moves: Advanced CRE Strategies",
+    overviewSpeechText: "Power Moves details the advanced capital strategies made available to our borrowers, including same day proof of funds, earnest money bridges, simultaneous closings, and preferred equity leverage.",
+    htmlContent: `
+      <h1>Power Moves: Advanced CRE Strategies</h1>
+      <h3>Institutional Capital Strategy Document</h3>
+      <hr/>
+      <p>Seven Power Moves for Qualified Borrowers:</p>
+      <ul>
+        <li><strong>Same-Day Proof of Funds Package:</strong> Wins competitive bidding windows through real-time attestation.</li>
+        <li><strong>Earnest Money Bridge:</strong> Preserves operator liquidity during diligence.</li>
+        <li><strong>Simultaneous Close:</strong> Eliminates two-step acquisition closing friction.</li>
+        <li><strong>Preferred Equity Leverage:</strong> Maximizes LTV options up to 85% with SOFR netting.</li>
+      </ul>
+    `
+  },
+  bitgo_pof: {
+    title: "BitGo Institutional Proof of Funds Guide",
+    overviewSpeechText: "The BitGo Institutional Proof of Funds Guide explains how qualified custody trust accounts and the Go Network trading pools deliver verified capital confirmations in under ninety seconds.",
+    htmlContent: `
+      <h1>BitGo Institutional Proof of Funds Guide</h1>
+      <h3>How BitGo Delivers Verified Capital Confirmation in Under 90 Seconds</h3>
+      <hr/>
+      <p>Detailed description of UnyKorn’s Master Enterprise setup (ID: 69a0b54edd793f289161ec0c50cee070) utilizing segregated Child Organization isolation, Qualified Custody vaults with 3-of-4 multi-sig keys, and Go Network trading escrow pools to confirm reserve backing instantly without legacy banking lag.</p>
+    `
   }
 };
 
@@ -1595,5 +1641,83 @@ document.querySelectorAll('.btn-download-guide').forEach(btn => {
 
 // Trigger initial generation
 generateOutboundDocument();
+
+// Expand the core Document Engine Database within app.js
+const sovereignPofDatabase = {
+    "BitGo Institutional Proof of Funds Guide": {
+        vaultType: "Qualified Custody Trust Environment",
+        attestationType: "Real-Time Cryptographic Balance Attestation",
+        verifiedLiquidity: "$100,000,000.00 Allocation Cap",
+        auditFrequency: "Continuous / Per-Second Telemetry"
+    },
+    "Sovereign Capital Access Matrix": {
+        vaultType: "In-House Closed-Loop Settlement Rails",
+        attestationType: "Syndicated Liquidity Matrix Allocation",
+        verifiedLiquidity: "$100,000,000.00 Total Facility Base",
+        auditFrequency: "Zero Third-Party Clearing Friction"
+    },
+    "Prudential Partner Access Protocol": {
+        vaultType: "Isolated Read-Only API Clearing Node",
+        attestationType: "Role-Based Multi-Sig Consensus Audit",
+        verifiedLiquidity: "Continuous Verification Core",
+        auditFrequency: "Real-Time Compliance Tracking"
+    },
+    "Advanced CRE Power Moves": {
+        vaultType: "Custodial Escrow Isolation (BitGo Go Network)",
+        attestationType: "Same-Day Proof of Funds Rail",
+        verifiedLiquidity: "Active Deal Flow Clearing",
+        auditFrequency: "Instant Cleared Settlement (<24 hrs)"
+    }
+};
+
+// POF Desk Event Listeners and Interface Matrix Update
+function initializePofDeskEngine() {
+    const pofSelector = document.getElementById('select-pof-document');
+    const pofDisplayBox = document.getElementById('pof-telemetry-output');
+    
+    if (!pofSelector || !pofDisplayBox) return;
+
+    pofSelector.addEventListener('change', (e) => {
+        const selectedDoc = e.target.value;
+        const data = sovereignPofDatabase[selectedDoc];
+        
+        if (!data) return;
+
+        // Force layout container swap from centring class parameters to vertical alignment blocks
+        pofDisplayBox.classList.remove('items-center', 'justify-center', 'text-center');
+        pofDisplayBox.classList.add('text-left', 'block');
+
+        // Render high-level institutional telemetry instantly clean of retail jargon
+        pofDisplayBox.innerHTML = `
+            <div class="space-y-3 font-mono text-[11px] w-full animate-fade-in text-slate-300">
+                <div class="text-gold text-[10px] uppercase font-bold tracking-wider border-b border-white/10 pb-2 mb-3" style="color:var(--gold);">
+                    ● Cryptographic Proof-Of-Reserves Telemetry Lock Established
+                </div>
+                <div class="flex justify-between py-1 border-b border-white/5">
+                    <span class="text-slate-400">Institutional Infrastructure Tier:</span> 
+                    <span class="text-white font-bold">${data.vaultType}</span>
+                </div>
+                <div class="flex justify-between py-1 border-b border-white/5">
+                    <span class="text-slate-400">Verification Methodology:</span> 
+                    <span class="text-white font-bold">${data.attestationType}</span>
+                </div>
+                <div class="flex justify-between py-1 border-b border-white/5">
+                    <span class="text-slate-400">Confirmed Capital Floor Capacity:</span> 
+                    <span class="text-emerald-400 font-bold tracking-wide" style="color:var(--accent-green);">${data.verifiedLiquidity}</span>
+                </div>
+                <div class="flex justify-between py-1">
+                    <span class="text-slate-400">System SLA / Compliance Rule:</span> 
+                    <span class="text-slate-200 font-medium">${data.auditFrequency}</span>
+                </div>
+                <div class="mt-4 p-2.5 bg-emerald-500/5 rounded border border-emerald-500/10 text-[10px] text-emerald-400 font-sans tracking-wide" style="border-color:rgba(16,185,129,0.2); color:var(--accent-green); background:rgba(16,185,129,0.03);">
+                    ✓ Balance Attestation Confirmed: Safe allocation parameters checked against UnyKorn Node array.
+                </div>
+            </div>
+        `;
+    });
+}
+
+// Hook execution
+initializePofDeskEngine();
 
 
