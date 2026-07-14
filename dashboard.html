@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-[#070A12] text-slate-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UnyKorn Institutional Capital Systems</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        obsidian: '#070A12',
+                        cobalt: '#0072FF',
+                        emerald: '#00E676',
+                        gold: '#b38d38',
+                        glassCard: 'rgba(10, 15, 30, 0.75)',
+                        glassBorder: 'rgba(255, 255, 255, 0.05)'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #070A12;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.01) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.01) 1px, transparent 1px);
+            background-size: 32px 32px;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        .glass-panel {
+            background: rgba(10, 15, 30, 0.70);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+        /* Voice visualizer animation styles */
+        .voice-bar {
+            width: 3px;
+            height: 15px;
+            background-color: #00E676;
+            border-radius: 2px;
+            display: inline-block;
+            margin: 0 1px;
+            transform-origin: bottom;
+        }
+        .voice-visualizer.playing .voice-bar {
+            animation: bounce 0.8s ease-in-out infinite alternate;
+        }
+        .voice-visualizer.playing .voice-bar:nth-child(2) { animation-delay: 0.15s; }
+        .voice-visualizer.playing .voice-bar:nth-child(3) { animation-delay: 0.3s; }
+        .voice-visualizer.playing .voice-bar:nth-child(4) { animation-delay: 0.45s; }
+        .voice-visualizer.playing .voice-bar:nth-child(5) { animation-delay: 0.6s; }
+
+        @keyframes bounce {
+            0% { transform: scaleY(0.3); }
+            100% { transform: scaleY(1.8); }
+        }
+
+        /* Custom scrollbar for high-density tables */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(7, 10, 18, 0.5); }
+        ::-webkit-scrollbar-thumb { background: rgba(0, 114, 255, 0.3); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(0, 114, 255, 0.5); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-cobalt/30 selection:text-white">
+
+    <!-- HEADER: Executive Control Bar -->
+    <header class="w-full border-b border-glassBorder glass-panel sticky top-0 z-40 px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div>
+            <h1 class="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                UnyKorn <span class="text-sm font-normal text-slate-400 border-l border-glassBorder pl-2 tracking-wide">Sovereign Capital Systems</span>
+            </h1>
+            <p class="text-xs text-slate-400 mt-0.5">Office of the CEO: <span class="text-slate-200 font-medium">Kevan Burns</span></p>
+        </div>
+
+        <!-- Perspective Switcher Toggle -->
+        <div class="bg-black/40 p-1 rounded-lg border border-glassBorder flex gap-1">
+            <button onclick="switchPerspective('debt')" id="btn-debt" class="px-3 py-1.5 text-xs font-semibold rounded-md transition-all duration-200 bg-cobalt text-white shadow-lg shadow-cobalt/20">
+                Commercial Debt Mode
+            </button>
+            <button onclick="switchPerspective('family')" id="btn-family" class="px-3 py-1.5 text-xs font-semibold rounded-md transition-all duration-200 text-slate-400 hover:text-slate-200">
+                Family Office Mode
+            </button>
+            <button onclick="switchPerspective('ledger')" id="btn-ledger" class="px-3 py-1.5 text-xs font-semibold rounded-md transition-all duration-200 text-slate-400 hover:text-slate-200">
+                Internal Ledger Mode
+            </button>
+        </div>
+
+        <!-- Treasury Connection Status Badge -->
+        <div class="flex items-center gap-3 bg-slate-900/50 border border-glassBorder px-4 py-2 rounded-lg">
+            <div class="flex flex-col text-right">
+                <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500">Secure Routing Vault</span>
+                <span class="text-xs font-mono text-slate-300">Auth Node: 0x4E57...Fa13</span>
+            </div>
+            <button onclick="triggerVerificationModal('Authorize Node Connection')" class="h-8 w-8 rounded-full bg-emerald/10 border border-emerald/20 flex items-center justify-center cursor-pointer hover:bg-emerald/20 transition-all" title="Authorize Core Connection">
+                <i data-lucide="shield" class="w-4 h-4 text-emerald"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN WORKSPACE LAYOUT -->
+    <main class="flex-1 p-6 grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-[1800px] w-full mx-auto">
+        
+        <!-- LEFT COLUMN: Private Treasury Asset & Document Hub -->
+        <div class="space-y-6">
+            
+            <!-- Section 1: Core Digital Capital Engine Documents -->
+            <div class="glass-panel rounded-xl p-5 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between border-b border-glassBorder pb-3 mb-4">
+                        <h2 class="text-sm uppercase font-bold tracking-wider text-slate-400 flex items-center gap-2">
+                            <i data-lucide="folder-git-2" class="w-4 h-4 text-cobalt"></i>
+                            Private Asset & Document Hub
+                        </h2>
+                        <span class="text-[10px] bg-cobalt/10 text-cobalt border border-cobalt/20 px-2 py-0.5 rounded font-mono font-bold">SECURED</span>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between p-3 bg-black/20 rounded-lg border border-glassBorder hover:bg-black/40 transition-colors group">
+                            <div class="flex items-center gap-3">
+                                <div class="p-2 bg-red-500/10 rounded text-red-400 text-xs font-bold font-mono">PDF</div>
+                                <span class="text-xs font-medium text-slate-200 group-hover:text-white transition-colors">M Helen Hotel LLC Capital Engine</span>
+                            </div>
+                            <a href="docs/walkthrough.md" class="p-1 text-slate-500 hover:text-slate-200 transition-colors" title="Download Verified Model">
+                                <i data-lucide="download" class="w-4 h-4"></i>
+                            </a>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-black/20 rounded-lg border border-glassBorder hover:bg-black/40 transition-colors group">
+                            <div class="flex items-center gap-3">
+                                <div class="p-2 bg-cobalt/10 rounded text-cobalt text-xs font-bold font-mono">PPT</div>
+                                <span class="text-xs font-medium text-slate-200 group-hover:text-white transition-colors">Capitalization Structure Pitch Deck v4</span>
+                            </div>
+                            <button class="p-1 text-slate-500 hover:text-slate-200 transition-colors" title="Download Presentation">
+                                <i data-lucide="download" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-black/20 rounded-lg border border-glassBorder hover:bg-black/40 transition-colors group">
+                            <div class="flex items-center gap-3">
+                                <div class="p-2 bg-amber-500/10 rounded text-amber-400 text-xs font-bold font-mono">DOC</div>
+                                <span class="text-xs font-medium text-slate-200 group-hover:text-white transition-colors">Site Acquisition & Entitlement Docs</span>
+                            </div>
+                            <button class="p-1 text-slate-500 hover:text-slate-200 transition-colors" title="Download Document">
+                                <i data-lucide="download" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 2: G703 Capital Engine Slide Deck Viewer -->
+            <div class="glass-panel rounded-xl p-5 space-y-4">
+                <div class="flex justify-between items-center border-b border-glassBorder pb-3">
+                    <h2 class="text-sm uppercase font-bold tracking-wider text-slate-400 flex items-center gap-2">
+                        <i data-lucide="presentation" class="w-4 h-4 text-emerald"></i>
+                        Capital Engine Slides
+                    </h2>
+                    <span class="text-[10px] text-slate-500 font-mono">PDF Slide Reference</span>
+                </div>
+                
+                <!-- Slide Tab Controls -->
+                <div class="flex gap-1 overflow-x-auto pb-2 border-b border-glassBorder/50 scrollbar-none">
+                    <button onclick="switchSlide('slide-stack')" id="btn-slide-stack" class="px-2 py-1 text-[10px] font-bold rounded bg-slate-800 text-white transition-colors whitespace-nowrap">Capital Stack</button>
+                    <button onclick="switchSlide('slide-hierarchy')" id="btn-slide-hierarchy" class="px-2 py-1 text-[10px] font-bold rounded text-slate-400 hover:text-slate-200 transition-colors whitespace-nowrap">Sub-Accounts</button>
+                    <button onclick="switchSlide('slide-budget')" id="btn-slide-budget" class="px-2 py-1 text-[10px] font-bold rounded text-slate-400 hover:text-slate-200 transition-colors whitespace-nowrap">Budget vs Floor</button>
+                </div>
+
+                <!-- Slides Content -->
+                <div id="slide-container" class="min-h-[140px] text-xs space-y-2">
+                    
+                    <!-- Slide 1: Capital Stack -->
+                    <div id="slide-stack" class="slide-item space-y-2">
+                        <strong class="text-white block font-medium">Real-Time Verifiable Capital Stack Tranches</strong>
+                        <div class="grid grid-cols-3 gap-2">
+                            <div class="bg-black/35 p-2 rounded border border-glassBorder">
+                                <span class="text-[8px] text-slate-400 block font-bold">SENIOR DEBT (65%)</span>
+                                <strong class="text-slate-200 block text-[10px] mt-0.5">$31,687,500.00</strong>
+                            </div>
+                            <div class="bg-black/35 p-2 rounded border border-glassBorder">
+                                <span class="text-[8px] text-slate-400 block font-bold">MEZZANINE (20%)</span>
+                                <strong class="text-slate-200 block text-[10px] mt-0.5">$9,750,000.00</strong>
+                            </div>
+                            <div class="bg-black/35 p-2 rounded border border-glassBorder">
+                                <span class="text-[8px] text-slate-400 block font-bold font-mono">LP EQUITY (15%)</span>
+                                <strong class="text-slate-200 block text-[10px] mt-0.5">$7,312,500.00</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 2: Sub-Accounts -->
+                    <div id="slide-hierarchy" class="slide-item space-y-2 hidden">
+                        <strong class="text-white block font-medium">Escrow Account Compartmentalization</strong>
+                        <div class="grid grid-cols-2 gap-2 text-[10px]">
+                            <div class="bg-black/35 p-2 rounded border border-glassBorder">
+                                <span class="text-slate-400 block">Hard Cost:</span>
+                                <strong class="text-slate-200">$23,300,000.00</strong>
+                            </div>
+                            <div class="bg-black/35 p-2 rounded border border-glassBorder">
+                                <span class="text-slate-400 block">FF&E Reserve:</span>
+                                <strong class="text-slate-200">$2,900,000.00</strong>
+                            </div>
+                            <div class="bg-black/35 p-2 rounded border border-glassBorder">
+                                <span class="text-slate-400 block">Soft Cost:</span>
+                                <strong class="text-slate-200">$1,800,000.00</strong>
+                            </div>
+                            <div class="bg-black/35 p-2 rounded border border-glassBorder">
+                                <span class="text-slate-400 block">Debt Service:</span>
+                                <strong class="text-slate-200">$2,400,000.00</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 3: Budget vs Floor -->
+                    <div id="slide-budget" class="slide-item space-y-2 hidden">
+                        <div class="flex justify-between items-center">
+                            <strong class="text-white block font-medium">G703 AIA Cost Audit</strong>
+                            <span class="text-[10px] text-emerald font-bold">Coverage: 118.5%</span>
+                        </div>
+                        <table class="w-full text-[10px] text-slate-300">
+                            <thead>
+                                <tr class="border-b border-glassBorder">
+                                    <th class="text-left py-1 text-slate-500">Category</th>
+                                    <th class="text-right py-1 text-slate-500">Budget</th>
+                                    <th class="text-right py-1 text-slate-500">Floor</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="py-1">Foundation</td>
+                                    <td class="text-right">$2.80M</td>
+                                    <td class="text-right text-emerald">$3.10M</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-1">Structural</td>
+                                    <td class="text-right">$4.50M</td>
+                                    <td class="text-right text-emerald">$5.20M</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-1">MEP Systems</td>
+                                    <td class="text-right">$5.10M</td>
+                                    <td class="text-right text-emerald">$5.80M</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Section 3: Historical Investor Directory -->
+            <div class="glass-panel rounded-xl p-5 space-y-4">
+                <div class="flex justify-between items-center border-b border-glassBorder pb-3">
+                    <h2 class="text-sm uppercase font-bold tracking-wider text-slate-400 flex items-center gap-2">
+                        <i data-lucide="users" class="w-4 h-4 text-cobalt"></i>
+                        Investor Directory (30 Year Record)
+                    </h2>
+                    <span class="text-[10px] text-slate-500 font-mono">Profile Registry</span>
+                </div>
+                
+                <!-- Client select list -->
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="selectInvestor('doe')" id="btn-investor-doe" class="investor-btn p-2 bg-cobalt/20 border border-cobalt/40 text-left rounded-lg transition-all">
+                        <strong class="text-xs text-white block">John Doe</strong>
+                        <span class="text-[9px] text-slate-400 block font-mono">Institutional Yield</span>
+                    </button>
+                    <button onclick="selectInvestor('smith')" id="btn-investor-smith" class="investor-btn p-2 bg-black/20 border border-glassBorder text-left rounded-lg transition-all hover:bg-black/40">
+                        <strong class="text-xs text-slate-200 block">Jane Smith</strong>
+                        <span class="text-[9px] text-slate-400 block font-mono">Conservative Family</span>
+                    </button>
+                    <button onclick="selectInvestor('johnson')" id="btn-investor-johnson" class="investor-btn p-2 bg-black/20 border border-glassBorder text-left rounded-lg transition-all hover:bg-black/40">
+                        <strong class="text-xs text-slate-200 block">Robert Johnson</strong>
+                        <span class="text-[9px] text-slate-400 block font-mono">Opportunistic LP</span>
+                    </button>
+                    <button onclick="selectInvestor('connor')" id="btn-investor-connor" class="investor-btn p-2 bg-black/20 border border-glassBorder text-left rounded-lg transition-all hover:bg-black/40">
+                        <strong class="text-xs text-slate-200 block">Sarah Connor</strong>
+                        <span class="text-[9px] text-slate-400 block font-mono">Security Trust Principal</span>
+                    </button>
+                </div>
+
+                <!-- Selected Client Profile Summary -->
+                <div id="investor-profile-card" class="bg-black/40 p-3 rounded-lg border border-glassBorder text-xs space-y-2">
+                    <div class="flex justify-between items-center border-b border-glassBorder/50 pb-1.5">
+                        <strong id="profile-name" class="text-white text-xs">John Doe Profile</strong>
+                        <span id="profile-segment" class="text-[9px] bg-cobalt/10 text-cobalt border border-cobalt/20 px-2 py-0.5 rounded font-mono">Institutional</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 text-[10px]">
+                        <div>
+                            <span class="text-slate-500 block">Deals Participated:</span>
+                            <strong id="profile-deals" class="text-slate-300">Louisiana Refi, Ohio Cashout</strong>
+                        </div>
+                        <div>
+                            <span class="text-slate-500 block">Preferred LTV Target:</span>
+                            <strong id="profile-ltv" class="text-slate-300">65% LTV</strong>
+                        </div>
+                        <div>
+                            <span class="text-slate-500 block">Speed Expectation:</span>
+                            <strong id="profile-speed" class="text-slate-300">Under 90 Seconds</strong>
+                        </div>
+                        <div>
+                            <span class="text-slate-500 block">Personality Profile:</span>
+                            <strong id="profile-personality" class="text-slate-300">Direct, yield-focused</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- CENTER COLUMN: Sovereign Settlement Pipeline & Proposal Generator -->
+        <div class="space-y-6">
+            
+            <!-- Section 1: Capital Disbursal & Draw Telemetry -->
+            <div class="glass-panel rounded-xl p-5 space-y-4">
+                <h2 class="text-sm uppercase font-bold tracking-wider text-slate-400 flex items-center gap-2 border-b border-glassBorder pb-3">
+                    <i data-lucide="git-commit" class="w-4 h-4 text-cobalt"></i>
+                    Sovereign Settlement Pipeline
+                </h2>
+                
+                <!-- Vertical Telemetry Pipeline Timeline -->
+                <div class="relative pl-6 space-y-6 before:absolute before:bottom-2 before:top-2 before:left-2 before:w-0.5 before:bg-slate-800">
+                    
+                    <!-- Node 1 -->
+                    <div class="relative">
+                        <div class="absolute -left-[22px] top-1 bg-emerald border-4 border-[#070A12] h-4 w-4 rounded-full"></div>
+                        <div>
+                            <h3 id="lbl-step-1" class="text-xs font-bold text-white uppercase tracking-wide">CMBS Vault Clearance & Entitlement Verification</h3>
+                            <p class="text-[11px] text-slate-400 mt-0.5">Status: <span class="text-emerald font-medium">Settled & Locked</span></p>
+                        </div>
+                    </div>
+
+                    <!-- Node 2 -->
+                    <div class="relative">
+                        <div class="absolute -left-[22px] top-1 bg-cobalt border-4 border-[#070A12] h-4 w-4 rounded-full animate-pulse"></div>
+                        <div>
+                            <h3 id="lbl-step-2" class="text-xs font-bold text-white uppercase tracking-wide">Capital Allocation Draw Real-Time Audit</h3>
+                            <p class="text-[11px] text-slate-300 mt-0.5">
+                                Verified Allocation: <span class="text-cobalt font-mono font-bold">$961,021.51</span> for Site Prep & Mobilization
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Node 3 -->
+                    <div class="relative">
+                        <div class="absolute -left-[22px] top-1 bg-slate-700 border-4 border-[#070A12] h-4 w-4 rounded-full"></div>
+                        <div>
+                            <h3 id="lbl-step-3" class="text-xs font-bold text-slate-500 uppercase tracking-wide">In-House Treasury Unit Allocation Routing</h3>
+                            <p class="text-[11px] text-slate-500 mt-0.5">Awaiting multi-key deployment consensus.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="triggerVerificationModal('Consensus achieved. Initializing routing nodes.')" class="w-full bg-cobalt/20 hover:bg-cobalt text-cobalt hover:text-white border border-cobalt/30 hover:border-transparent font-bold py-2.5 px-4 rounded text-xs tracking-wide transition-all uppercase mt-2">
+                    Execute Secure Distribution Draw
+                </button>
+            </div>
+
+            <!-- Section 2: Bilateral Capital Protection Desk (SOFR Desk) -->
+            <div class="glass-panel rounded-xl p-5 space-y-4">
+                <h2 class="text-sm uppercase font-bold tracking-wider text-slate-400 flex items-center gap-2 border-b border-glassBorder pb-3">
+                    <i data-lucide="trending-up" class="w-4 h-4 text-emerald"></i>
+                    Bilateral Capital Protection (SOFR Desk)
+                </h2>
+                <div class="space-y-3">
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Margin Target</label>
+                            <input type="text" value="100,000 Units" class="w-full bg-black/40 border border-glassBorder rounded px-3 py-2 text-xs text-white font-mono focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Leverage Constraint</label>
+                            <select class="w-full bg-black/40 border border-glassBorder rounded px-2 py-2 text-xs text-slate-300 focus:outline-none font-sans">
+                                <option>1x Fixed Protection</option>
+                                <option>Hedged Balance Floor</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="p-3 bg-emerald/5 rounded-lg border border-emerald/10 flex items-center justify-between">
+                        <span class="text-xs text-slate-300 font-sans">Daily Yield Offset Optimization</span>
+                        <span class="text-xs font-mono font-bold text-emerald">+4.50% APY</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN: Market Position & Automated Communication Suite -->
+        <div class="space-y-6">
+            
+            <!-- Section 1: First-to-Market Communication Engine & Proposal Generator -->
+            <div class="glass-panel rounded-xl p-5 space-y-4">
+                <h2 class="text-sm uppercase font-bold tracking-wider text-slate-400 flex items-center gap-2 border-b border-glassBorder pb-3">
+                    <i data-lucide="file-signature" class="w-4 h-4 text-cobalt"></i>
+                    Bilateral Client Proposal Desk
+                </h2>
+                <div class="space-y-3">
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Target Project</label>
+                            <select id="comms-project" onchange="updateCommsPreview()" class="w-full bg-black/40 border border-glassBorder rounded px-2 py-2 text-xs text-slate-200 focus:outline-none">
+                                <option value="helen" selected>M Helen Hotel LLC</option>
+                                <option value="louisiana">Louisiana Hotel Portfolio</option>
+                                <option value="kentucky">Kentucky Full Service</option>
+                                <option value="california">California Portfolio</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Briefing Template</label>
+                            <select id="comms-template" onchange="updateCommsPreview()" class="w-full bg-black/40 border border-glassBorder rounded px-2 py-2 text-xs text-slate-200 focus:outline-none">
+                                <option value="proposal" selected>Proposal Pitch Email</option>
+                                <option value="one_pager">Executive One-Pager</option>
+                                <option value="terms">Refinancing Terms Memo</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Target LTV Target</label>
+                            <div class="flex items-center gap-2 bg-black/40 border border-glassBorder rounded px-2 py-1">
+                                <input type="range" id="comms-ltv" min="50" max="75" step="5" value="65" oninput="updateCommsPreview()" class="w-full bg-transparent accent-cobalt cursor-pointer">
+                                <span id="ltv-display" class="text-[10px] font-mono text-slate-300 w-8">65%</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Clearance Speed</label>
+                            <select id="comms-speed" onchange="updateCommsPreview()" class="w-full bg-black/40 border border-glassBorder rounded px-2 py-2 text-xs text-slate-200 focus:outline-none">
+                                <option value="90s" selected>Under 90 Seconds</option>
+                                <option value="15m">Within 15 Minutes</option>
+                                <option value="t1">Next-Day (T+1)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <label class="text-[10px] uppercase tracking-wider text-slate-400 block">Outbound Tailored Briefing Output</label>
+                            <div class="flex gap-1.5">
+                                <button onclick="copyToClipboard()" class="text-[9px] text-slate-500 hover:text-slate-300 flex items-center gap-0.5" title="Copy to Clipboard">
+                                    <i data-lucide="copy" class="w-2.5 h-2.5"></i> Copy
+                                </button>
+                                <button onclick="printProposal()" class="text-[9px] text-slate-500 hover:text-slate-300 flex items-center gap-0.5" title="Print Proposal">
+                                    <i data-lucide="printer" class="w-2.5 h-2.5"></i> Print
+                                </button>
+                            </div>
+                        </div>
+                        <textarea id="comms-preview" rows="5" class="w-full bg-black/40 border border-glassBorder rounded p-3 text-xs font-sans text-slate-300 leading-relaxed focus:outline-none resize-none" readonly></textarea>
+                    </div>
+
+                    <button onclick="triggerVerificationModal('Communication payload dispatched to Corporate Core.')" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold py-2 px-4 rounded text-xs tracking-wide transition-all uppercase border border-glassBorder flex items-center justify-center gap-1.5">
+                        <i data-lucide="mail-check" class="w-3.5 h-3.5 text-cobalt"></i>
+                        Export to Corporate Communication Suite
+                    </button>
+                </div>
+            </div>
+
+            <!-- Section 2: Audio Synthesis Briefing Control -->
+            <div class="glass-panel rounded-xl p-5 space-y-4">
+                <h2 class="text-sm uppercase font-bold tracking-wider text-slate-400 flex items-center gap-2 border-b border-glassBorder pb-3">
+                    <i data-lucide="volume-2" class="w-4 h-4 text-emerald"></i>
+                    Audio Synthesis Briefing Control
+                </h2>
+                <div class="space-y-3">
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Voice Registry</label>
+                            <select id="audio-voice" class="w-full bg-black/40 border border-glassBorder rounded px-2 py-2 text-xs text-slate-300 focus:outline-none font-sans">
+                                <option value="corporate">Executive Core Male</option>
+                                <option value="advisor">Institutional Female</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Playback Velocity</label>
+                            <select id="audio-speed" class="w-full bg-black/40 border border-glassBorder rounded px-2 py-2 text-xs text-slate-300 focus:outline-none font-sans">
+                                <option value="0.9">0.9x Latency</option>
+                                <option value="1.0" selected>1.0x Standard</option>
+                                <option value="1.15">1.15x Compression</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between bg-black/40 border border-glassBorder px-3 py-2 rounded-lg">
+                        <span class="text-[10px] text-slate-400 uppercase font-mono tracking-wider">Audio Telemetry status</span>
+                        
+                        <!-- Equalizer Animation bars -->
+                        <div class="voice-visualizer flex items-end" id="equalizer-bars">
+                            <div class="voice-bar" style="height: 10px;"></div>
+                            <div class="voice-bar" style="height: 14px;"></div>
+                            <div class="voice-bar" style="height: 8px;"></div>
+                            <div class="voice-bar" style="height: 12px;"></div>
+                            <div class="voice-bar" style="height: 6px;"></div>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <button id="audio-play-btn" onclick="playExecutiveOverview()" class="flex-1 bg-emerald/10 hover:bg-emerald text-emerald hover:text-slate-950 border border-emerald/20 hover:border-transparent font-bold py-2.5 px-4 rounded text-xs tracking-wide transition-all uppercase flex items-center justify-center gap-2">
+                            <i data-lucide="play" class="w-4 h-4"></i>
+                            Listen
+                        </button>
+                        <button id="audio-stop-btn" onclick="stopAudio()" disabled class="flex-1 bg-slate-900 border border-glassBorder text-slate-500 cursor-not-allowed font-bold py-2.5 px-4 rounded text-xs tracking-wide transition-all uppercase flex items-center justify-center gap-2">
+                            <i data-lucide="square" class="w-4 h-4"></i>
+                            Stop
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- SECURE MULTI-KEY AUTHORIZATION GATEWAY (MODAL OVERLAY) -->
+    <div id="security-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden items-center justify-center z-50 p-4">
+        <div class="glass-panel w-full max-w-lg rounded-xl overflow-hidden shadow-2xl border border-glassBorder transform scale-95 transition-transform duration-300">
+            
+            <!-- Modal Header -->
+            <div class="bg-slate-950 px-6 py-4 border-b border-glassBorder flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <div class="h-2 w-2 rounded-full bg-cobalt animate-ping"></div>
+                    <span class="text-xs uppercase font-bold tracking-widest text-slate-300">UnyKorn Multi-Key Verification Node</span>
+                </div>
+                <button onclick="closeModal()" class="text-slate-500 hover:text-slate-200 transition-colors">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+            
+            <!-- Modal Terminal Logs Output Area -->
+            <div class="p-6 space-y-4">
+                <div class="bg-black/60 font-mono text-[11px] p-4 rounded-lg border border-glassBorder h-48 overflow-y-auto space-y-2 text-slate-400" id="terminal-logs">
+                    <!-- Logs injection target -->
+                </div>
+                
+                <div class="flex justify-end gap-3 border-t border-glassBorder pt-4">
+                    <button onclick="closeModal()" class="px-4 py-2 bg-slate-900 border border-glassBorder text-slate-400 hover:text-slate-200 rounded text-xs uppercase font-bold tracking-wide transition-colors">
+                        Abort Protocol
+                    </button>
+                    <button id="modal-confirm-btn" onclick="executeSystemAnchoring()" class="px-4 py-2 bg-cobalt text-white rounded text-xs uppercase font-bold tracking-wide hover:bg-cobalt/80 transition-colors shadow-lg shadow-cobalt/20">
+                        Confirm Signature Verification
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CORE INTERACTIVE JS ARCHITECTURE ENGINE -->
+    <script>
+        // System State Data Structure for Perspectives
+        const stateData = {
+            debt: {
+                trancheLabel: "CMBS Tranche Asset",
+                equityLabel: "Base Physical Equity",
+                step1: "CMBS Vault Clearance & Entitlement Verification",
+                step2: "Capital Allocation Draw Real-Time Audit",
+                step3: "In-House Treasury Unit Allocation Routing",
+                previewText: "UnyKorn Institutional Capital announcement: Master execution strategies have achieved complete fund lock. Real-time draw audit nodes ensure sovereign risk-adjusted performance benchmarks exceed commercial lending baseline safety regulations."
+            },
+            family: {
+                trancheLabel: "Co-Investment Allocation",
+                equityLabel: "Principal Sponsor Base",
+                step1: "Family Office Capital Lock Pass-Through",
+                step2: "Bilateral Allocation Yield Verification",
+                step3: "Private Multi-Key Settlement Distribution",
+                previewText: "UnyKorn Family Office Advisory Briefing: Private placement parameters have successfully clearinghouse verified. Total capital containment safeguards portfolio value while guaranteeing priority distribution velocity."
+            },
+            ledger: {
+                trancheLabel: "Sovereign Ledger Credit Tranche",
+                equityLabel: "Internal Treasury Reserve Base",
+                step1: "Private Ledger Entitlement Settlement",
+                step2: "Internal Treasury Unit Balancing Audit",
+                step3: "Direct Operating System Routing Settlement",
+                previewText: "UnyKorn Internal Operations Telemetry: Sovereign ledger units initialized and reconciled against locked physical reserves. Programmatic settlement metrics confirmed across internal clearinghouse routing nodes."
+            }
+        };
+
+        // Investor Directory historical profiles mapping
+        const investorProfiles = {
+            doe: {
+                name: "John Doe",
+                segment: "Institutional",
+                deals: "Louisiana statewide portfolio, Ohio Cashout",
+                ltv: "65% LTV Target",
+                speed: "Under 90 Seconds",
+                personality: "Direct, yield-focused, high capital velocity",
+                pitchContext: "We notice you participated in our $30.5M Louisiana Refinance in the past. We have structured a new opportunity that meets your target LTV preferences and matches your standard clearing parameters."
+            },
+            smith: {
+                name: "Jane Smith",
+                segment: "Family Office",
+                deals: "Kentucky Full Service equity recapture",
+                ltv: "50% LTV Target",
+                speed: "Within 15 Minutes",
+                personality: "Detail-oriented, risk-averse, requires rate hedge",
+                pitchContext: "Following your co-investment in the Louisville, Kentucky property, we have structured a low-leverage opportunity featuring CME SOFR fixed protection swaps designed specifically for family office capital stability."
+            },
+            johnson: {
+                name: "Robert Johnson",
+                segment: "LP Partner",
+                deals: "Los Angeles limited service cashout",
+                ltv: "70% LTV Target",
+                speed: "Next-Day Settlement",
+                personality: "Growth-focused, opportunistic, yield optimizer",
+                pitchContext: "Building on the Los Angeles cashout refinancing framework, this custom structure incorporates daily reserve staking yields of 4.50% APY to actively offset borrower debt service costs."
+            },
+            connor: {
+                name: "Sarah Connor",
+                segment: "Security Trust Principal",
+                deals: "California portfolio cashout",
+                ltv: "60% LTV Target",
+                speed: "Under 90 Seconds",
+                personality: "Security-first, strict auditor, multi-sig dependent",
+                pitchContext: "Reflecting your parameters on the California portfolio, this transaction implements whitelisted signature channels, 3-of-5 signatory quorum gates, and real-time G703 AIA budget compliance checking."
+            }
+        };
+
+        // Project profiles mapping (from Flyer and PDF data)
+        const projectData = {
+            helen: {
+                name: "M Helen Hotel LLC",
+                valuation: "$48,750,000.00",
+                debt: "$31,687,500.00 (Senior)",
+                mezz: "$9,750,000.00 (Mezzanine)",
+                equity: "$7,312,500.00 (LP/GP)",
+                location: "New Orleans, LA"
+            },
+            louisiana: {
+                name: "Louisiana Hotel Portfolio",
+                valuation: "$30,500,000.00",
+                debt: "$19,825,000.00 (Senior)",
+                mezz: "$6,100,000.00 (Mezzanine)",
+                equity: "$15,250,000.00 (LP/GP)",
+                location: "Statewide Louisiana"
+            },
+            kentucky: {
+                name: "Kentucky Full Service Hotel",
+                valuation: "$10,000,000.00",
+                debt: "$6,500,000.00 (Senior)",
+                mezz: "$2,000,000.00 (Mezzanine)",
+                equity: "$5,000,000.00 (LP/GP)",
+                location: "Louisville, KY"
+            },
+            california: {
+                name: "California Hotel Portfolio",
+                valuation: "$33,000,000.00",
+                debt: "$21,450,000.00 (Senior)",
+                mezz: "$6,600,000.00 (Mezzanine)",
+                equity: "$16,500,000.00 (LP/GP)",
+                location: "Los Angeles/San Francisco, CA"
+            }
+        };
+
+        let activePerspective = 'debt';
+        let selectedInvestorKey = 'doe';
+
+        // Slide Switcher helper
+        function switchSlide(slideId) {
+            document.querySelectorAll('.slide-item').forEach(el => el.classList.add('hidden'));
+            document.getElementById(slideId).classList.remove('hidden');
+
+            ['slide-stack', 'slide-hierarchy', 'slide-budget'].forEach(s => {
+                const btn = document.getElementById(`btn-${s}`);
+                if (btn) {
+                    btn.classList.remove('bg-slate-800', 'text-white');
+                    btn.classList.add('text-slate-400');
+                }
+            });
+            const activeBtn = document.getElementById(`btn-${slideId}`);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-slate-800', 'text-white');
+                activeBtn.classList.remove('text-slate-400');
+            }
+        }
+
+        // Investor selection handler
+        function selectInvestor(investorKey) {
+            selectedInvestorKey = investorKey;
+            const client = investorProfiles[investorKey];
+
+            // Toggle select class styling
+            document.querySelectorAll('.investor-btn').forEach(btn => {
+                btn.classList.remove('bg-cobalt/20', 'border-cobalt/40');
+                btn.classList.add('bg-black/20', 'border-glassBorder');
+            });
+            const activeBtn = document.getElementById(`btn-investor-${investorKey}`);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-cobalt/20', 'border-cobalt/40');
+                activeBtn.classList.remove('bg-black/20', 'border-glassBorder');
+            }
+
+            // Update profile card details
+            document.getElementById('profile-name').innerText = `${client.name} Profile`;
+            document.getElementById('profile-segment').innerText = client.segment;
+            document.getElementById('profile-deals').innerText = client.deals;
+            document.getElementById('profile-ltv').innerText = client.ltv;
+            document.getElementById('profile-speed').innerText = client.speed;
+            document.getElementById('profile-personality').innerText = client.personality;
+
+            updateCommsPreview();
+        }
+
+        // Initialize Comms Textbox Preview Area dynamically
+        function updateCommsPreview() {
+            const currentTemplate = document.getElementById('comms-template').value;
+            const currentProjKey = document.getElementById('comms-project').value;
+            const ltvSliderVal = document.getElementById('comms-ltv').value;
+            const currentSpeedVal = document.getElementById('comms-speed').value;
+            
+            document.getElementById('ltv-display').innerText = `${ltvSliderVal}%`;
+
+            const client = investorProfiles[selectedInvestorKey];
+            const project = projectData[currentProjKey];
+
+            let speedText = 'under 90 seconds';
+            if (currentSpeedVal === '15m') speedText = 'within 15 minutes';
+            if (currentSpeedVal === 't1') speedText = 'next-day (T+1) settlement';
+
+            let documentOutput = '';
+
+            if (currentTemplate === 'proposal') {
+                documentOutput = `[CONFIDENTIAL PROPOSAL EMAIL - TARGET: ${client.name.toUpperCase()}]\n\nSubject: Custom Draw Settlement Options - Project ${project.name}\n\nDear ${client.name},\n\nWe have structured a proprietary refinancing opportunity for the ${project.name} in ${project.location} tailored to your history of deploying capital in high-efficiency pathways.\n\n${client.pitchContext}\n\nKey Parameters for this Draw Clearing Structure:\n- Target Valuation: ${project.valuation}\n- Proposed Refinancing Leverage: ${ltvSliderVal}% LTV\n- Draw Disbursal Window: Cleared and settled ${speedText}\n- Daily Yield Offset: 4.50% APY applied to reserve accounts\n\nSincerely,\nNiraj Sheth, President & CEO, The Loan Depot`;
+            } else if (currentTemplate === 'one_pager') {
+                documentOutput = `[EXECUTIVE ONE-PAGER BRIEF - ${project.name.toUpperCase()}]\n\nRefinancing Structured for ${client.name}\nSegment Profile: ${client.segment} (Track Record: ${client.deals})\n\nCapital Stack Details:\n- Total Asset Valuation: ${project.valuation}\n- Leverage Structure: ${ltvSliderVal}% LTV\n- Senior Loan Allocation: ${project.debt}\n- Mezzanine Tranche: ${project.mezz}\n- Physical Reserve Base: ${project.equity}\n\nOperations & Safeguards:\n- Draw clearing finalized ${speedText} via whitelisted ledger routing channels.\n- Zero exposure to third-party wire delays.\n- Compliance checking executed automatically against pre-approved G703 AIA items.`;
+            } else {
+                documentOutput = `[UNDERWRITING REVIEW MEMORANDUM]\n\nTo: Credit Committee\nFrom: Executive Office\nSubject: Structure Review for ${project.name} (${project.location})\n\nProposal Details:\nThis memorandum reviews the refinancing parameters proposed for ${client.name}. Under the agreed ${ltvSliderVal}% LTV profile, senior debt registers at ${project.debt} with mezzanine hybrid tranches at ${project.mezz}.\n\nRisk Mitigation Guidelines:\nClearance latency is restricted to ${speedText} utilizing localized treasury routing vaults. Rate protection swaps are bilateral, referenced directly against the SOFR index and protected by a 4.50% yield reserve.`;
+            }
+
+            document.getElementById('comms-preview').value = documentOutput;
+        }
+
+        // Perspective Switcher Handler Function
+        function switchPerspective(perspective) {
+            activePerspective = perspective;
+            const data = stateData[perspective];
+
+            // Reset Switcher CSS States
+            ['debt', 'family', 'ledger'].forEach(p => {
+                const btn = document.getElementById(`btn-${p}`);
+                if (btn) {
+                    btn.className = "px-3 py-1.5 text-xs font-semibold rounded-md transition-all duration-200 text-slate-400 hover:text-slate-200";
+                }
+            });
+            const activeBtn = document.getElementById(`btn-${perspective}`);
+            if (activeBtn) {
+                activeBtn.className = "px-3 py-1.5 text-xs font-semibold rounded-md transition-all duration-200 bg-cobalt text-white shadow-lg shadow-cobalt/20";
+            }
+
+            // Transform System Vernacular Metrics Content Text
+            document.getElementById('lbl-step-1').innerText = data.step1;
+            document.getElementById('lbl-step-2').innerText = data.step2;
+            document.getElementById('lbl-step-3').innerText = data.step3;
+
+            updateCommsPreview();
+        }
+
+        // Native System Web Speech Synthesis API Implementation
+        let utteranceInstance = null;
+
+        function playExecutiveOverview() {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel(); // Abort active queue spikes
+                const contextSummary = document.getElementById('comms-preview').value;
+                utteranceInstance = new SpeechSynthesisUtterance(contextSummary);
+                
+                // Read configurations from control interface state metrics
+                const speed = parseFloat(document.getElementById('audio-speed').value);
+                utteranceInstance.rate = speed;
+
+                const selectedVoiceType = document.getElementById('audio-voice').value;
+                
+                if (selectedVoiceType === 'corporate') {
+                    // Default fallback filters to standard deep articulation voices
+                    utteranceInstance.pitch = 0.85;
+                } else {
+                    utteranceInstance.pitch = 1.1;
+                }
+
+                // Handle visualizer states on play events
+                utteranceInstance.onstart = () => {
+                    document.getElementById('equalizer-bars').classList.add('playing');
+                    const stopBtn = document.getElementById('audio-stop-btn');
+                    stopBtn.disabled = false;
+                    stopBtn.classList.remove('bg-slate-900', 'text-slate-500', 'cursor-not-allowed');
+                    stopBtn.classList.add('bg-red-500/10', 'text-red-400', 'border-red-500/20');
+                };
+
+                utteranceInstance.onend = () => {
+                    resetAudioState();
+                };
+
+                utteranceInstance.onerror = () => {
+                    resetAudioState();
+                };
+
+                window.speechSynthesis.speak(utteranceInstance);
+            } else {
+                alert("Native browser speech synthesis engine not detected in current security container.");
+            }
+        }
+
+        function stopAudio() {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+            }
+            resetAudioState();
+        }
+
+        function resetAudioState() {
+            document.getElementById('equalizer-bars').classList.remove('playing');
+            const stopBtn = document.getElementById('audio-stop-btn');
+            stopBtn.disabled = true;
+            stopBtn.classList.add('bg-slate-900', 'text-slate-500', 'cursor-not-allowed');
+            stopBtn.classList.remove('bg-red-500/10', 'text-red-400', 'border-red-500/20');
+        }
+
+        // Copy Text Function
+        function copyToClipboard() {
+            const copyText = document.getElementById("comms-preview");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(copyText.value).then(() => {
+                alert("Proposal text successfully copied to clipboard.");
+            }).catch(() => {
+                alert("Failed to copy text.");
+            });
+        }
+
+        // Print Proposal Function
+        function printProposal() {
+            const content = document.getElementById("comms-preview").value;
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                    <head>
+                        <title>UnyKorn Institutional Capital Proposal</title>
+                        <style>
+                            body { font-family: sans-serif; white-space: pre-line; line-height: 1.6; color: #333; padding: 40px; }
+                        </style>
+                    </head>
+                    <body>
+                        ${content}
+                        <script>window.print();<\/script>
+                    </body>
+                </html>
+            `);
+            printWindow.document.close();
+        }
+
+        // Multi-Key Authorization Logging Animation Simulation Loop
+        function triggerVerificationModal(completionText) {
+            const modal = document.getElementById('security-modal');
+            const logsArea = document.getElementById('terminal-logs');
+            const confirmBtn = document.getElementById('modal-confirm-btn');
+            
+            modal.style.display = 'flex';
+            confirmBtn.disabled = true;
+            confirmBtn.classList.add('opacity-40');
+            logsArea.innerHTML = '';
+
+            const systemLogs = [
+                "[SYSTEM] Initializing handshake sequence to UnyKorn sovereign node framework...",
+                "[POLICY] Auditing structural allocation parameters against M Helen Hotel LLC ledger...",
+                "[SECURITY] Verifying Executive Multi-Key structure compliance overrides...",
+                "[IDENTITY] Founder signature node matched: Kevan Burns [Super Admin Master Key Verified]",
+                "[SUCCESS] Cryptographic quorum consensus logged across private banking rails.",
+                `[INFO] System standby initialized. Target parameters: ${completionText}`
+            ];
+
+            let index = 0;
+            function printLogLine() {
+                if (index < systemLogs.length) {
+                    const logParagraph = document.createElement('p');
+                    logParagraph.className = systemLogs[index].includes('SUCCESS') ? 'text-emerald font-semibold' : 
+                                         systemLogs[index].includes('IDENTITY') ? 'text-cobalt font-semibold' : 'text-slate-400';
+                    logParagraph.innerText = systemLogs[index];
+                    logsArea.appendChild(logParagraph);
+                    logsArea.scrollTop = logsArea.scrollHeight;
+                    index++;
+                    setTimeout(printLogLine, 500);
+                } else {
+                    confirmBtn.disabled = false;
+                    confirmBtn.classList.remove('opacity-40');
+                }
+            }
+            printLogLine();
+        }
+
+        function executeSystemAnchoring() {
+            alert("Ledger synchronization complete. Changes permanently anchored to your UnyKorn Private Clearinghouse account network.");
+            closeModal();
+        }
+
+        function closeModal() {
+            document.getElementById('security-modal').style.display = 'none';
+        }
+
+        // Initialize view state parameters on boot context load
+        window.onload = () => {
+            // Initialize Lucide icons
+            if (window.lucide) {
+                window.lucide.createIcons();
+            }
+            // Load default preview brief
+            selectInvestor('doe');
+        };
+    </script>
+</body>
+</html>
