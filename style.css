@@ -456,3 +456,84 @@ th {
 tbody tr:hover {
   background: var(--bg-main);
 }
+
+/* Responsive Layout and Touch Optimization */
+@media (max-width: 1200px) {
+  .navbar {
+    height: auto;
+    padding: 12px 0;
+  }
+  .nav-container {
+    flex-direction: column;
+    gap: 12px;
+    padding: 0 1rem;
+    align-items: center;
+  }
+  .nav-links {
+    width: 100%;
+    overflow-x: auto;
+    padding: 4px 10px 10px;
+    margin: 0;
+    justify-content: flex-start;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none; /* Hide scrollbar Firefox */
+  }
+  .nav-links::-webkit-scrollbar {
+    display: none; /* Hide scrollbar Chrome/Safari */
+  }
+  .nav-link {
+    scroll-snap-align: start;
+    padding: 8px 12px;
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 991px) {
+  .app-layout {
+    grid-template-columns: 1fr;
+    margin: 1.5rem auto;
+    padding: 0 1rem;
+    gap: 1.5rem;
+  }
+  .logo {
+    align-items: center;
+  }
+  .logo .title-depot {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    padding-bottom: 60px;
+  }
+  .card {
+    padding: 16px;
+  }
+  /* Responsive Grids Stacking */
+  .stats-grid, 
+  .grid-3, 
+  .balance-card-grid, 
+  .rate-hedging-grid, 
+  .proposal-desk-grid,
+  .app-layout {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+  
+  /* Make all tables responsive */
+  table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .btn-primary, .btn {
+    width: 100%;
+    display: inline-flex;
+    justify-content: center;
+  }
+}
+
