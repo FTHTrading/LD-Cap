@@ -205,6 +205,14 @@ executeDrawBtn.addEventListener('click', () => {
         topStatusIndicator.style.color = 'var(--accent-green)';
         topStatusIndicator.style.borderColor = 'var(--accent-green)';
         
+        // Show Signature Stamp
+        const drawSignatureStamp = document.getElementById('draw-signature-stamp');
+        const signatureTimestampVal = document.getElementById('signature-timestamp-val');
+        if (drawSignatureStamp && signatureTimestampVal) {
+          drawSignatureStamp.style.display = 'block';
+          signatureTimestampVal.textContent = new Date().toLocaleString();
+        }
+        
         // Update timeline status
         pStep2.className = 'timeline-step completed';
         pStep3.className = 'timeline-step active';
@@ -627,7 +635,7 @@ document.querySelectorAll('.slide-tab-btn').forEach(btn => {
 });
 
 // ==========================================
-// 10. CLIENT PROPOSAL & ONE-PAGER GENERATOR
+// 10. CLIENT PROPOSAL & ONE-PAGER GENERATOR (WITH 30-YEAR INVESTOR REGISTRY)
 // ==========================================
 const propProjectSelect = document.getElementById('prop-project-select');
 const propTemplateSelect = document.getElementById('prop-template-select');
@@ -638,6 +646,83 @@ const generateDocBtn = document.getElementById('generate-doc-btn');
 const documentPreviewBox = document.getElementById('document-preview-box');
 const btnCopyDoc = document.getElementById('btn-copy-doc');
 const btnPrintDoc = document.getElementById('btn-print-doc');
+
+// Investor Profiles Definition (30-Year Client History)
+const investorProfiles = {
+  doe: {
+    key: 'doe',
+    name: "John Doe",
+    segment: "Institutional Partner",
+    deals: "Louisiana Statewide Portfolio ($30.5M), Ohio cashout ($9M)",
+    ltv: 65,
+    speed: "90SEC",
+    risk: "Direct, yield-focused, high velocity",
+    context: "We notice you participated in our $30.5M Louisiana Statewide Portfolio refinance in the past. We have structured a new opportunity that meets your target LTV preferences and matches your standard clearing parameters."
+  },
+  smith: {
+    key: 'smith',
+    name: "Jane Smith",
+    segment: "Family Office",
+    deals: "Kentucky Full Service equity recapture ($10M)",
+    ltv: 50,
+    speed: "15MIN",
+    risk: "Detail-oriented, risk-averse, rate hedge dependent",
+    context: "Following your co-investment in the Louisville, Kentucky property, we have structured a low-leverage opportunity featuring CME SOFR fixed protection swaps designed specifically for family office capital stability."
+  },
+  johnson: {
+    key: 'johnson',
+    name: "Robert Johnson",
+    segment: "LP Partner",
+    deals: "Los Angeles limited service cashout ($19M)",
+    ltv: 70,
+    speed: "T1",
+    risk: "Growth-focused, opportunistic, yield optimizer",
+    context: "Building on the Los Angeles cashout refinancing framework, this custom structure incorporates daily reserve staking yields of 4.50% APY to actively offset borrower debt service costs."
+  },
+  connor: {
+    key: 'connor',
+    name: "Sarah Connor",
+    segment: "Trust Principal",
+    deals: "California Portfolio cashout ($33M)",
+    ltv: 60,
+    speed: "90SEC",
+    risk: "Security-first, strict auditor, multi-sig dependent",
+    context: "Reflecting your parameters on the California portfolio, this transaction implements whitelisted signature channels, 3-of-5 signatory quorum gates, and real-time G703 AIA budget compliance checking."
+  }
+};
+
+let activeClientKey = 'doe';
+
+// Client Select Buttons handler
+document.querySelectorAll('.client-select-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    // Remove active state
+    document.querySelectorAll('.client-select-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const clientKey = btn.dataset.client;
+    activeClientKey = clientKey;
+    const client = investorProfiles[clientKey];
+
+    // Update Profile Brief UI
+    document.getElementById('brief-client-name').textContent = `${client.name} Profile`;
+    document.getElementById('brief-client-segment').textContent = client.segment;
+    document.getElementById('brief-client-deals').textContent = client.deals;
+    document.getElementById('brief-client-risk').textContent = client.risk;
+
+    // Auto-update parameters to match selected investor's preferences
+    if (propLtvSlider) {
+      propLtvSlider.value = client.ltv;
+      propLtvLabel.textContent = `${client.ltv}% LTV`;
+    }
+    if (propSpeedSelect) {
+      propSpeedSelect.value = client.speed;
+    }
+
+    // Auto-generate proposal instantly for a seamless "one-click" experience
+    generateOutboundDocument();
+  });
+});
 
 // Update LTV label dynamically
 if (propLtvSlider) {
@@ -691,25 +776,28 @@ const speeds = {
   'T1': 'next-day (T+1) settlement'
 };
 
-if (generateDocBtn) {
-  generateDocBtn.addEventListener('click', () => {
-    const projKey = propProjectSelect.value;
-    const templateKey = propTemplateSelect.value;
-    const ltv = propLtvSlider.value;
-    const speedText = speeds[propSpeedSelect.value];
-    const proj = projectData[projKey] || projectData.M_HELEN;
+function generateOutboundDocument() {
+  const projKey = propProjectSelect.value;
+  const templateKey = propTemplateSelect.value;
+  const ltv = propLtvSlider.value;
+  const speedText = speeds[propSpeedSelect.value];
+  const proj = projectData[projKey] || projectData.M_HELEN;
+  const client = investorProfiles[activeClientKey];
 
-    let content = '';
+  let content = '';
 
-    if (templateKey === 'ONE_PAGER') {
-      content = `
+  if (templateKey === 'ONE_PAGER') {
+    content = `
 <div style="font-family: var(--font-display); border-bottom: 2px solid var(--gold); padding-bottom: 8px; margin-bottom: 15px; text-align: center;">
   <span style="font-weight: 800; font-size: 14px; color: var(--blue-brand); text-transform: uppercase; letter-spacing: 0.05em;">The Loan Depot</span><br/>
   <span style="font-size: 9px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.1em;">Commercial Real Estate Refinancing Executive Brief</span>
 </div>
 
-<h3 style="font-size: 12px; color: var(--blue-brand); margin-bottom: 8px; text-transform: uppercase;">Project: ${proj.name}</h3>
-<p style="margin-bottom: 12px; font-size: 11px; color: var(--text-secondary);">${proj.description}</p>
+<h3 style="font-size: 12px; color: var(--blue-brand); margin-bottom: 4px; text-transform: uppercase;">Project: ${proj.name}</h3>
+<p style="margin-bottom: 10px; font-size: 11px; color: var(--text-secondary);">${proj.description}</p>
+<p style="margin-bottom: 12px; font-size: 10px; color: var(--text-primary); padding: 8px; background: rgba(15,59,124,0.03); border-left: 3px solid var(--blue-brand); border-radius: 4px;">
+  <strong>Tailored Structure Briefing:</strong> ${client.context}
+</p>
 
 <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px; font-size: 10px;">
   <thead>
@@ -753,19 +841,23 @@ if (generateDocBtn) {
 <div style="font-size: 8px; color: var(--text-muted); text-align: center; border-top: 1px dashed var(--border-color); padding-top: 8px; margin-top: 12px;">
   Confidential Document — For Qualified Institutional Review Only — Distributed by The Loan Depot
 </div>
-      `;
-    } else if (templateKey === 'EMAIL_PITCH') {
-      content = `
+    `;
+  } else if (templateKey === 'EMAIL_PITCH') {
+    content = `
 <div style="font-family: var(--font-mono); font-size: 10px; border: 1px solid var(--border-color); padding: 12px; background: var(--bg-main); border-radius: 4px; margin-bottom: 12px;">
   <strong>Subject:</strong> Institutional Refinancing Innovation & Draw Efficiency — ${proj.name}<br/>
   <strong>From:</strong> Niraj Sheth, CEO, The Loan Depot &lt;nsheth@ldlgh.com&gt;
 </div>
 
 <div style="font-size: 11px; color: var(--text-primary);">
-  <p>Dear Partner,</p>
+  <p>Dear ${client.name},</p>
   
   <p>We are pleased to introduce our proprietary, in-house refinancing and draw clearing platform. We have structured a custom scenario for <strong>${proj.name}</strong> that eliminates traditional lending friction and sets a new institutional standard.</p>
   
+  <p style="padding: 8px; background: rgba(15,59,124,0.03); border-left: 3px solid var(--blue-brand); border-radius: 4px; font-size: 10px;">
+    <strong>Tailored Client Context:</strong> ${client.context}
+  </p>
+
   <p><strong>Proposed Refinancing Terms:</strong></p>
   <ul style="padding-left: 15px; margin: 10px 0;">
     <li><strong>Asset Valuation:</strong> ${proj.valuation}</li>
@@ -784,9 +876,9 @@ if (generateDocBtn) {
   President & CEO, The Loan Depot Lending Co, Inc.<br/>
   Office: (423) 385-2300 | www.LDLGH.com</p>
 </div>
-      `;
-    } else if (templateKey === 'STRUCTURE_BRIEF') {
-      content = `
+    `;
+  } else if (templateKey === 'STRUCTURE_BRIEF') {
+    content = `
 <div style="text-align: center; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">
   <strong style="font-size: 12px; color: var(--blue-brand); text-transform: uppercase;">Underwriting & Risk Management Memorandum</strong>
 </div>
@@ -797,6 +889,10 @@ if (generateDocBtn) {
   <strong>Date:</strong> <span>${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
   <strong>Subject:</strong> <span>Risk Mitigation & Refinancing Audit for ${proj.name}</span>
 </div>
+
+<p style="margin-bottom: 12px; font-size: 10px; color: var(--text-primary); padding: 8px; background: rgba(15,59,124,0.03); border-left: 3px solid var(--blue-brand); border-radius: 4px;">
+  <strong>Review Context (${client.name}):</strong> Investor Profile: ${client.segment} (Past record: ${client.deals}). Underwriting settings set to LTV: ${ltv}% and disbursal latency: ${speedText}.
+</p>
 
 <h4 style="font-size: 10px; color: var(--blue-brand); text-transform: uppercase; margin-bottom: 6px; border-bottom: 1px dashed var(--border-color); padding-bottom: 3px;">1. Capital Stack Structure</h4>
 <p style="margin-bottom: 8px; line-height: 1.4;">
@@ -812,10 +908,15 @@ if (generateDocBtn) {
 <p style="margin-bottom: 8px; line-height: 1.4;">
   The borrower utilizes bilateral SOFR average rate swaps clearing directly against the isolated yield accounts. Staked reserve pools earn 4.5% APY to provide an active buffer for interest payments.
 </p>
-      `;
-    }
+    `;
+  }
 
-    documentPreviewBox.innerHTML = content;
+  documentPreviewBox.innerHTML = content;
+}
+
+if (generateDocBtn) {
+  generateDocBtn.addEventListener('click', () => {
+    generateOutboundDocument();
     showToast('Document successfully generated!');
   });
 }
@@ -865,4 +966,8 @@ if (btnPrintDoc) {
     win.document.close();
   });
 }
+
+// Trigger initial generation
+generateOutboundDocument();
+
 
