@@ -967,6 +967,46 @@ if (btnPrintDoc) {
   });
 }
 
+// Bilateral Signature Desk Execution
+const btnExecuteAgreement = document.getElementById('btn-execute-agreement');
+const agreementSignatureStamp = document.getElementById('agreement-signature-stamp');
+const stampSignatoryVal = document.getElementById('stamp-signatory-val');
+
+if (btnExecuteAgreement) {
+  btnExecuteAgreement.addEventListener('click', () => {
+    btnExecuteAgreement.disabled = true;
+    btnExecuteAgreement.textContent = "Executing secure signature...";
+
+    setTimeout(() => {
+      btnExecuteAgreement.textContent = "Agreement Digitally Executed";
+      const client = investorProfiles[activeClientKey];
+      
+      if (stampSignatoryVal) {
+        stampSignatoryVal.innerHTML = `<strong>Nick Sheth</strong> (President & CEO, The Loan Depot) <br/>& <strong>${client.name}</strong> (${client.segment})`;
+      }
+      if (agreementSignatureStamp) {
+        agreementSignatureStamp.style.display = "block";
+      }
+
+      showToast("Agreement cryptographically signed and locked to escrow ledger!");
+    }, 1000);
+  });
+}
+
+// Reset signature stamp on client selection
+const originalClientSelectBtnHandler = document.querySelectorAll('.client-select-btn');
+originalClientSelectBtnHandler.forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (btnExecuteAgreement) {
+      btnExecuteAgreement.disabled = false;
+      btnExecuteAgreement.textContent = "Sign & Execute Agreement";
+    }
+    if (agreementSignatureStamp) {
+      agreementSignatureStamp.style.display = "none";
+    }
+  });
+});
+
 // Trigger initial generation
 generateOutboundDocument();
 
