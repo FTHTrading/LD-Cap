@@ -107,12 +107,12 @@ modalSignBtn.addEventListener('click', () => {
   modalSignBtn.textContent = 'Processing Handshake...';
   
   const logSteps = [
-    { text: '[INFO] Initializing BitGo Gateway API v2...', color: 'var(--text-secondary)' },
-    { text: '[INFO] Mapping sub-vault: "M Helen Hotel LLC Escrow Pool"...', color: 'var(--text-secondary)' },
-    { text: '[POLICY] Scanning active rules for "Helen_Escrow_Pool"...', color: 'var(--accent-cyan)' },
-    { text: '[POLICY] Whitelist Check: 0x4E574939D460d284B5D990646D4aeaEF2D49Fa13 (Vetted)', color: 'var(--accent-green)' },
-    { text: '[SIG] Awaiting signature from Key 2 (SafeGuard Custodian)...', color: 'var(--gold)' },
-    { text: '[SUCCESS] Handshake verified. Connected as Unykorn Parent Vault.', color: 'var(--accent-green)' }
+    { text: '[INFO] Initializing Secure Vault Connection...', color: 'var(--text-secondary)' },
+    { text: '[INFO] Linking Escrow Account...', color: 'var(--text-secondary)' },
+    { text: '[POLICY] Verifying account compliance policies...', color: 'var(--accent-cyan)' },
+    { text: '[POLICY] Check: Recipient address matches approved whitelist', color: 'var(--accent-green)' },
+    { text: '[SIG] Verifying institutional custodian approvals...', color: 'var(--gold)' },
+    { text: '[SUCCESS] Connection authorized by linked treasury keys.', color: 'var(--accent-green)' }
   ];
 
   modalStatusLog.innerHTML = '';
@@ -128,7 +128,7 @@ modalSignBtn.addEventListener('click', () => {
       if (idx === logSteps.length - 1) {
         // Complete Wallet Connection
         isWalletConnected = true;
-        connectWalletBtn.innerHTML = `<i data-lucide="check-circle" style="width: 13px; height: 13px; color: var(--accent-green);"></i> Connected (0x4E57...)`;
+        connectWalletBtn.innerHTML = `<i data-lucide="check-circle" style="width: 13px; height: 13px; color: var(--accent-green);"></i> Linked (0x4E57...)`;
         connectWalletBtn.style.color = 'var(--accent-green)';
         connectWalletBtn.style.borderColor = 'rgba(16, 185, 129, 0.4)';
         connectWalletBtn.style.background = 'rgba(16, 185, 129, 0.05)';
@@ -139,7 +139,7 @@ modalSignBtn.addEventListener('click', () => {
           walletModal.classList.remove('show');
           modalSignBtn.disabled = false;
           modalSignBtn.textContent = 'Initiate Signature Request';
-          showToast('BitGo multi-sig vault successfully linked!');
+          showToast('Treasury vaults successfully linked!');
         }, 1000);
       }
     }, delay);
@@ -150,7 +150,7 @@ modalSignBtn.addEventListener('click', () => {
 // 4. Stablecoin Minting & G703 Draw 1 Execution Simulation (Port 8888)
 executeDrawBtn.addEventListener('click', () => {
   if (!isWalletConnected) {
-    showToast('Signature error: Connect your BitGo wallet first.', 'error');
+    showToast('Signature error: Link your treasury keys first.', 'error');
     return;
   }
   if (isDrawExecuted) {
@@ -162,22 +162,22 @@ executeDrawBtn.addEventListener('click', () => {
   executeDrawBtn.textContent = 'Verifying Draw 1...';
   
   const mintLogs = [
-    { text: '--- INCOMING PORT 8888 TRANSACTION DETECTED ---', color: 'var(--text-muted)' },
-    { text: 'POST /v2/wallet/0x4E57...Fa13/mint HTTP/1.1', color: 'var(--text-secondary)' },
-    { text: 'Headers: X-HMAC-Signature-SHA256, Content-Type: application/json', color: 'var(--text-secondary)' },
-    { text: '[HMAC] Verifying signature against parent secret key...', color: 'var(--accent-cyan)' },
-    { text: '[HMAC] Payload: {"drawCode":"DRAW_1","amount":961021.51,"coin":"USDF"}', color: 'var(--text-secondary)' },
-    { text: '[HMAC] Signature Hash: e8c6a51d8b2e3c0429f6p9fxa45d2d41a772da12b918f0a0', color: 'var(--accent-cyan)' },
-    { text: '[POLICY] Reconciling Draw 1 amount ($961,021.51) against G703 Code schedules...', color: 'var(--gold)' },
+    { text: '--- INCOMING DRAW TRANSFER REQUEST DETECTED ---', color: 'var(--text-muted)' },
+    { text: 'Target Account: Operating Draw Account (0x4E57...Fa13)', color: 'var(--text-secondary)' },
+    { text: 'Verification: Whitelisted Treasury Signature matches', color: 'var(--text-secondary)' },
+    { text: '[CLEARING] Authenticating draw request against escrow rules...', color: 'var(--accent-cyan)' },
+    { text: '[CLEARING] Request Detail: Draw 1 - Mobilization ($961,021.51)', color: 'var(--text-secondary)' },
+    { text: '[CLEARING] Security key handshake: Verified', color: 'var(--accent-cyan)' },
+    { text: '[POLICY] Verifying Draw 1 line-items match construction budget schedules...', color: 'var(--gold)' },
     { text: '  - G703-01 (Mobilization): $250,000.00 (Match)', color: 'var(--accent-green)' },
     { text: '  - G703-02 (General Site): $310,000.00 (Match)', color: 'var(--accent-green)' },
     { text: '  - G703-03 (Dirt/Drainage): $85,000.00 (Match)', color: 'var(--accent-green)' },
     { text: '  - G703-04 (Architectural): $196,021.51 (Match)', color: 'var(--accent-green)' },
     { text: '  - G703-05 (Closing Cost): $120,000.00 (Match)', color: 'var(--accent-green)' },
-    { text: '[MINT] Minting 961,021.51 USDF directly to child wallet...', color: 'var(--accent-cyan)' },
-    { text: '[BitGo] Co-signers approved. Broadmitting transaction to Sovereign Clearing...', color: 'var(--accent-cyan)' },
-    { text: '[LEDGER] Appending new transaction block to SHA-256 chain...', color: 'var(--accent-green)' },
-    { text: '--- TRANSACTION CONFIRMED: Block #27492019 ---', color: 'var(--accent-green)' }
+    { text: '[CLEARING] Disbursing $961,021.51 to Operating Account...', color: 'var(--accent-cyan)' },
+    { text: '[BitGo] Multi-sig approvals verified. Broadmitting to clearing network...', color: 'var(--accent-cyan)' },
+    { text: '[LEDGER] Appending immutable record to escrow draw ledger...', color: 'var(--accent-green)' },
+    { text: '--- SETTLED & DEPOSITED: Reference #27492019 ---', color: 'var(--accent-green)' }
   ];
 
   hookConsoleLog.innerHTML = '';
@@ -194,10 +194,10 @@ executeDrawBtn.addEventListener('click', () => {
       if (idx === mintLogs.length - 1) {
         // Complete Draw 1 Execution
         isDrawExecuted = true;
-        executeDrawBtn.textContent = 'Draw 1 Executed';
+        executeDrawBtn.textContent = 'Draw 1 Disbursed';
         executeDrawBtn.disabled = true;
         drawChildBal.textContent = '$961,021.51 USDF';
-        topStatusIndicator.textContent = 'Draw 1: Executed & Minted';
+        topStatusIndicator.textContent = 'Draw 1: Settled & Disbursed';
         topStatusIndicator.style.background = 'rgba(16, 185, 129, 0.05)';
         topStatusIndicator.style.color = 'var(--accent-green)';
         topStatusIndicator.style.borderColor = 'var(--accent-green)';
@@ -206,15 +206,15 @@ executeDrawBtn.addEventListener('click', () => {
         pStep2.className = 'timeline-step completed';
         pStep3.className = 'timeline-step active';
         
-        showToast('G703 Draw 1 successfully executed and minted!');
+        showToast('G703 Draw 1 successfully verified and disbursed!');
         
         // Add blocks to audit ledger
         addAuditBlock({
-          draw: 'G703 Draw 1: Mobilization & Site Prep',
+          draw: 'Draw 1: Mobilization & Site Prep',
           amount: '$961,021.51 USDF',
           prevHash: '0000000000000000000000000000000000000000000000000000000000000000',
           hash: 'c6f5a34e8d2e3c0429f6p9fxa45d2d41a772da12b918f0a0e8c6a51d8b2e3c04',
-          details: 'Verified G703 reconciliation. Mobilization ($250k), Site Prep ($310k), Dirt Study ($85k), A&E ($196k), Loan Cost ($120k). Whitelisted child wallet destination: 0x4E57...Fa13.'
+          details: 'Verified budget reconciliation. Mobilization ($250k), Site Prep ($310k), Dirt Study ($85k), A&E ($196k), Loan Cost ($120k). Whitelisted operating sub-account target: 0x4E57...Fa13.'
         });
       }
     }, delay);
@@ -377,7 +377,7 @@ function highlightNarrativeBlock(idx) {
 function addAuditBlock(blockData) {
   currentBlockIndex++;
   const blockEl = document.createElement('div');
-  blockEl.style.background = 'rgba(0,0,0,0.3)';
+  blockEl.style.background = 'var(--bg-main)';
   blockEl.style.border = '1px solid var(--border-color)';
   blockEl.style.borderRadius = '8px';
   blockEl.style.padding = '12px';
@@ -388,14 +388,14 @@ function addAuditBlock(blockData) {
   
   blockEl.innerHTML = `
     <div style="display: flex; justify-content: space-between; font-size: 10px; color: var(--accent-green);">
-      <strong>BLOCK #${currentBlockIndex} (Draw Verification)</strong>
+      <strong>BLOCK #${currentBlockIndex} (Draw Approved & Settled)</strong>
       <span style="font-family: var(--font-mono);">${new Date().toISOString()}</span>
     </div>
-    <div style="font-size: 11px; color: #fff;"><strong>Target:</strong> ${blockData.draw} | <strong>Amount:</strong> ${blockData.amount}</div>
+    <div style="font-size: 11px; color: var(--text-primary);"><strong>Target:</strong> ${blockData.draw} | <strong>Amount:</strong> ${blockData.amount}</div>
     <div style="font-size: 9px; color: var(--text-secondary); line-height: 1.4;">${blockData.details}</div>
     <div style="display: flex; flex-direction: column; gap: 2px; font-family: var(--font-mono); font-size: 8px; color: var(--text-muted); border-top: 1px dashed var(--border-color); padding-top: 6px; margin-top: 4px;">
       <div>PREV HASH: ${blockData.prevHash}</div>
-      <div style="color: var(--accent-cyan);">CURR HASH: ${blockData.hash}</div>
+      <div style="color: var(--blue-brand);">CURR HASH: ${blockData.hash}</div>
     </div>
   `;
   
@@ -413,11 +413,11 @@ function loadInitialLedgerBlocks() {
   
   // Block 1: Initial G703 Budget & Land Equity Lock
   addAuditBlock({
-    draw: 'G703 Base Capitalization Setup',
+    draw: 'Escrow Base Capitalization Setup',
     amount: '$29,100,000.00 Floor Lock',
     prevHash: '0000000000000000000000000000000000000000000000000000000000000000',
     hash: '8f0a0e8c6a51d8b2e3c0429f6p9fxa45d2d41a772da12b918c6f5a34e8d2e3c04',
-    details: 'Locked Prudential CMBS Tranche ($25M) and M Helen Hotel LLC base land equity ($4.1M) as verified asset floor. Verified full G703 project construction budget ($28,906,886.00).'
+    details: 'Locked CMBS Tranche ($25M) and M Helen Hotel LLC base land equity ($4.1M) as verified asset floor. Verified full project construction budget ($28,906,886.00).'
   });
   
   ledgerStatusBadge.textContent = 'Chain Verified';
@@ -466,11 +466,11 @@ tokenizePairs.forEach(pair => {
         
         if (check) check.disabled = false;
         if (label) {
-          label.style.color = '#fff';
+          label.style.color = 'var(--text-primary)';
           label.textContent = `${pair.name} (${pair.equity} Equity)`;
         }
         
-        showToast(`${pair.name} successfully tokenized as RWA!`);
+        showToast(`${pair.name} successfully tokenized!`);
         recalculateCrossCollateral();
       }, 1200);
     });
@@ -481,7 +481,7 @@ tokenizePairs.forEach(pair => {
   const btn = document.getElementById(id);
   if (btn) {
     btn.addEventListener('click', () => {
-      showToast('Asset fractionalized into 10,000 tranches successfully!');
+      showToast('Asset fractionalized successfully!');
     });
   }
 });
@@ -539,7 +539,7 @@ acquisitionTargetSelect.addEventListener('change', recalculateCrossCollateral);
 // Execute Cross-Collateral purchase
 executeCrossPurchaseBtn.addEventListener('click', () => {
   if (!isWalletConnected) {
-    showToast('Signature error: Connect your BitGo wallet first.', 'error');
+    showToast('Signature error: Link your treasury keys first.', 'error');
     return;
   }
   
@@ -547,7 +547,7 @@ executeCrossPurchaseBtn.addEventListener('click', () => {
   executeCrossPurchaseBtn.textContent = 'Executing...';
   
   // Force shift view to stablecoin mint tab so they can see logs in the secure console
-  showToast('Initiating Port 8888 cross-collateral acquisition handshake...', 'success');
+  showToast('Initiating cross-collateral acquisition handshake...', 'success');
   
   // Switch to mint tab after a short delay
   setTimeout(() => {
@@ -555,14 +555,14 @@ executeCrossPurchaseBtn.addEventListener('click', () => {
     
     const crossLogs = [
       { text: '--- CROSS-COLLATERAL ACQUISITION SEQUENCE ---', color: 'var(--text-muted)' },
-      { text: `POST /v2/wallet/0x4E57...Fa13/cross-collateral HTTP/1.1`, color: 'var(--text-secondary)' },
+      { text: `Target Account: Operating Draw Account (0x4E57...Fa13)`, color: 'var(--text-secondary)' },
       { text: `Target Asset: ${acquisitionTargetSelect.value}`, color: 'var(--text-secondary)' },
-      { text: '[HMAC] Signing collateral lock with Unykorn Executive Key...', color: 'var(--accent-cyan)' },
-      { text: '[BitGo] Provisioning child org drawing sub-vault: "ldcap_mhelen_acquisition"...', color: 'var(--gold)' },
-      { text: '[BitGo] Locking collateral tranches in escrow pool sub-vaults...', color: 'var(--gold)' },
-      { text: '[MINT] Minting acquisition USDF stablecoins to destination escrow account...', color: 'var(--accent-cyan)' },
-      { text: '[SUCCESS] Acquisition cleared. Mapped to child org drawing account!', color: 'var(--accent-green)' },
-      { text: '--- TRANSACTION CONFIRMED: Block #27492020 ---', color: 'var(--accent-green)' }
+      { text: '[CLEARING] Signing collateral lock with whitelisted keys...', color: 'var(--accent-cyan)' },
+      { text: '[BitGo] Provisioning child account drawing sub-vault: "ldcap_mhelen_acquisition"...', color: 'var(--gold)' },
+      { text: '[BitGo] Locking collateral tranches in escrow sub-vaults...', color: 'var(--gold)' },
+      { text: '[CLEARING] Disbursing acquisition USDF stablecoins to destination account...', color: 'var(--accent-cyan)' },
+      { text: '[SUCCESS] Refinancing draw cleared and credited to drawing account!', color: 'var(--accent-green)' },
+      { text: '--- SETTLED & DEPOSITED: Reference #27492020 ---', color: 'var(--accent-green)' }
     ];
 
     hookConsoleLog.innerHTML = '';
@@ -586,7 +586,7 @@ executeCrossPurchaseBtn.addEventListener('click', () => {
             amount: `$${(parseFloat(acquisitionTargetSelect.value.match(/\$(\d+\.?\d*)M/)[1]) * 1000000).toLocaleString()} USDF`,
             prevHash: 'c6f5a34e8d2e3c0429f6p9fxa45d2d41a772da12b918c6f5a34e8d2e3c04',
             hash: '772da12b918f0a0e8c6a51d8b2e3c0429f6p9fxa45d2d41a772da12b918f0a0',
-            details: `Cross-collateralized national portfolio. Target asset acquired under multi-sig escrow whitelist. BitGo child organization configured and registered.`
+            details: `Cross-collateralized national portfolio. Target asset acquired under multi-sig escrow whitelist. Child sub-account configured and registered.`
           });
         }
       }, delay);
