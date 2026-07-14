@@ -15,11 +15,13 @@ const navCustody = document.getElementById('nav-custody');
 const navMint = document.getElementById('nav-mint');
 const navHedge = document.getElementById('nav-hedge');
 const navLedger = document.getElementById('nav-ledger');
+const navRwa = document.getElementById('nav-rwa');
 
 const custodyView = document.getElementById('custody-view');
 const mintView = document.getElementById('mint-view');
 const hedgeView = document.getElementById('hedge-view');
 const ledgerView = document.getElementById('ledger-view');
+const rwaView = document.getElementById('rwa-view');
 
 const connectWalletBtn = document.getElementById('connect-wallet-btn');
 const walletModal = document.getElementById('wallet-modal');
@@ -57,7 +59,8 @@ const tabs = [
   { btn: navCustody, view: custodyView },
   { btn: navMint, view: mintView },
   { btn: navHedge, view: hedgeView },
-  { btn: navLedger, view: ledgerView }
+  { btn: navLedger, view: ledgerView },
+  { btn: navRwa, view: rwaView }
 ];
 
 tabs.forEach(tab => {
@@ -426,3 +429,177 @@ function loadInitialLedgerBlocks() {
 // Trigger initial load
 loadInitialLedgerBlocks();
 updateYieldMath();
+
+// ==========================================
+// 8. RWA REAL ESTATE TOKENIZATION CONTROLLERS
+// ==========================================
+
+// Tokenize Actions
+const btnTokAustin = document.getElementById('btn-tok-austin');
+const btnTokNashville = document.getElementById('btn-tok-nashville');
+const btnFracAtlanta = document.getElementById('btn-frac-atlanta');
+
+const statusAustin = document.getElementById('status-austin');
+const statusNashville = document.getElementById('status-nashville');
+const statusAtlanta = document.getElementById('status-atlanta');
+
+const checkColAtlanta = document.getElementById('check-col-atlanta');
+const checkColAustin = document.getElementById('check-col-austin');
+const checkColNashville = document.getElementById('check-col-nashville');
+
+const labelColAustin = document.getElementById('label-col-austin');
+const labelColNashville = document.getElementById('label-col-nashville');
+
+const colPoolChecks = document.querySelectorAll('.col-pool-check');
+const acquisitionTargetSelect = document.getElementById('acquisition-target-select');
+const pooledCollateralVal = document.getElementById('pooled-collateral-val');
+const maxLtvVal = document.getElementById('max-ltv-val');
+const requiredAcquisitionVal = document.getElementById('required-acquisition-val');
+const collateralStatusVal = document.getElementById('collateral-status-val');
+const executeCrossPurchaseBtn = document.getElementById('execute-cross-purchase-btn');
+
+btnTokAustin.addEventListener('click', () => {
+  btnTokAustin.disabled = true;
+  btnTokAustin.textContent = 'Tokenizing...';
+  setTimeout(() => {
+    btnTokAustin.textContent = 'Tokenized';
+    statusAustin.textContent = 'Tokenized (100%)';
+    statusAustin.style.color = 'var(--accent-green)';
+    statusAustin.style.fontWeight = '600';
+    
+    // Enable cross-collateral selection
+    checkColAustin.disabled = false;
+    labelColAustin.style.color = '#fff';
+    labelColAustin.textContent = 'Austin Hospitality Suites ($6.0M Equity)';
+    
+    showToast('Austin Hospitality Suites successfully tokenized as RWA!');
+    recalculateCrossCollateral();
+  }, 1200);
+});
+
+btnTokNashville.addEventListener('click', () => {
+  btnTokNashville.disabled = true;
+  btnTokNashville.textContent = 'Tokenizing...';
+  setTimeout(() => {
+    btnTokNashville.textContent = 'Tokenized';
+    statusNashville.textContent = 'Tokenized (100%)';
+    statusNashville.style.color = 'var(--accent-green)';
+    statusNashville.style.fontWeight = '600';
+    
+    // Enable cross-collateral selection
+    checkColNashville.disabled = false;
+    labelColNashville.style.color = '#fff';
+    labelColNashville.textContent = 'Nashville Boutique Hotel ($11.2M Equity)';
+    
+    showToast('Nashville Boutique Hotel successfully tokenized as RWA!');
+    recalculateCrossCollateral();
+  }, 1200);
+});
+
+btnFracAtlanta.addEventListener('click', () => {
+  showToast('Atlanta Corporate Enclave fractionalized into 10,000 tranches.');
+});
+
+// Cross Collateral Math
+function recalculateCrossCollateral() {
+  let totalEquity = 4100000; // Base M Helen Hotel Equity
+  
+  colPoolChecks.forEach(box => {
+    if (box.checked && !box.disabled) {
+      totalEquity += parseFloat(box.dataset.equity) || 0;
+    }
+  });
+
+  const maxLtv = totalEquity * 0.65;
+  
+  // Parse required acquisition
+  const targetStr = acquisitionTargetSelect.value;
+  const match = targetStr.match(/\$(\d+\.?\d*)M/);
+  const targetVal = match ? parseFloat(match[1]) * 1000000 : 8500000;
+  
+  const status = maxLtv - targetVal;
+
+  // Render values
+  pooledCollateralVal.textContent = `$${totalEquity.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  maxLtvVal.textContent = `$${maxLtv.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  requiredAcquisitionVal.textContent = `$${targetVal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  
+  if (status >= 0) {
+    collateralStatusVal.textContent = `Surplus: +$${status.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    collateralStatusVal.style.color = 'var(--accent-green)';
+    executeCrossPurchaseBtn.disabled = false;
+  } else {
+    collateralStatusVal.textContent = `Deficit: -$${Math.abs(status).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    collateralStatusVal.style.color = 'var(--accent-red)';
+    executeCrossPurchaseBtn.disabled = true;
+  }
+}
+
+// Bind checkbox listeners
+colPoolChecks.forEach(box => {
+  box.addEventListener('change', recalculateCrossCollateral);
+});
+acquisitionTargetSelect.addEventListener('change', recalculateCrossCollateral);
+
+// Execute Cross-Collateral purchase
+executeCrossPurchaseBtn.addEventListener('click', () => {
+  if (!isWalletConnected) {
+    showToast('Signature error: Connect your BitGo wallet first.', 'error');
+    return;
+  }
+  
+  executeCrossPurchaseBtn.disabled = true;
+  executeCrossPurchaseBtn.textContent = 'Executing...';
+  
+  // Force shift view to stablecoin mint tab so they can see logs in the secure console
+  showToast('Initiating Port 8888 cross-collateral acquisition handshake...', 'success');
+  
+  // Switch to mint tab after a short delay
+  setTimeout(() => {
+    navMint.click();
+    
+    const crossLogs = [
+      { text: '--- CROSS-COLLATERAL ACQUISITION SEQUENCE ---', color: 'var(--text-muted)' },
+      { text: `POST /v2/wallet/0x4E57...Fa13/cross-collateral HTTP/1.1`, color: 'var(--text-secondary)' },
+      { text: `Target Asset: ${acquisitionTargetSelect.value}`, color: 'var(--text-secondary)' },
+      { text: '[HMAC] Signing collateral lock with Unykorn Executive Key...', color: 'var(--accent-cyan)' },
+      { text: '[BitGo] Provisioning child org drawing sub-vault: "ldcap_mhelen_acquisition"...', color: 'var(--gold)' },
+      { text: '[BitGo] Locking collateral tranches in escrow pool sub-vaults...', color: 'var(--gold)' },
+      { text: '[MINT] Minting acquisition USDF stablecoins to destination escrow account...', color: 'var(--accent-cyan)' },
+      { text: '[SUCCESS] Acquisition cleared. Mapped to child org drawing account!', color: 'var(--accent-green)' },
+      { text: '--- TRANSACTION CONFIRMED: Block #27492020 ---', color: 'var(--accent-green)' }
+    ];
+
+    hookConsoleLog.innerHTML = '';
+    let delay = 0;
+    
+    crossLogs.forEach((log, idx) => {
+      setTimeout(() => {
+        const line = document.createElement('div');
+        line.style.color = log.color;
+        line.textContent = log.text;
+        hookConsoleLog.appendChild(line);
+        hookConsoleLog.scrollTop = hookConsoleLog.scrollHeight;
+        
+        if (idx === crossLogs.length - 1) {
+          executeCrossPurchaseBtn.textContent = 'Acquisition Executed';
+          showToast(`Successfully acquired ${acquisitionTargetSelect.value}!`);
+          
+          // Add to cryptographic audit ledger
+          addAuditBlock({
+            draw: `Acquisition: ${acquisitionTargetSelect.value}`,
+            amount: `$${(parseFloat(acquisitionTargetSelect.value.match(/\$(\d+\.?\d*)M/)[1]) * 1000000).toLocaleString()} USDF`,
+            prevHash: 'c6f5a34e8d2e3c0429f6p9fxa45d2d41a772da12b918c6f5a34e8d2e3c04',
+            hash: '772da12b918f0a0e8c6a51d8b2e3c0429f6p9fxa45d2d41a772da12b918f0a0',
+            details: `Cross-collateralized national portfolio. Target asset acquired under multi-sig escrow whitelist. BitGo child organization configured and registered.`
+          });
+        }
+      }, delay);
+      delay += 250;
+    });
+
+  }, 1000);
+});
+
+// Run initial math
+recalculateCrossCollateral();

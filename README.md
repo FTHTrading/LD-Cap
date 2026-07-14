@@ -17,6 +17,8 @@
 * 🟡 **3. BitGo Institutional Sub-Account Architecture Hierarchy**
 * 🔴 **4. 3-of-4 Governance Wallet Rules & Anti-Drain Whitelisting**
 * 🟣 **5. GitHub CI/CD Actions Engine & Automated Ingestion Script**
+* 🟠 **6. Commercial Refinancing Disruption & Programmatic Custody**
+* 🟤 **7. National Portfolio RWA Tokenization & Multi-Property Acquisition**
 
 ---
 
@@ -130,3 +132,29 @@ jobs:
           git commit -m "chore: automated milestone lock - corporate_cash_injections verified [aia_g703_unlocked = true]"
           git push origin main
 ```
+
+---
+
+## 🟡 6. Commercial Refinancing Disruption & Programmatic Custody
+
+Standard CMBS refinancing and loan operations inside institutions like **The Loan Depot** rely on high-latency bank escrows. Committed capital sits idle, earning zero yield, while construction draws take 30 to 45 days to clear due to:
+1. Manual G702/G703 invoice verification.
+2. On-site physical engineering inspections.
+3. Retroactive title updates and manual wire processing.
+
+Unykorn's BitGo Child Vault architecture resolves this operational drag by shifting the asset floor into programmatic custody:
+*   **Yield on Escrow:** Committed capital locked in `ldcap_mhelen_escrow_pool` earns a **4.5% APY yield** directly through Unykorn's staking sub-vaults, rather than sitting non-interest-bearing in institutional bank reserves.
+*   **10-Second Clearance:** Programmatic draws check HMAC-SHA256 signature handshakes on Port 8888, verifying G703 milestones against the ledger instantly. Once cleared, USDF stablecoins are minted directly to `ldcap_mhelen_draw_vault` for immediate contractor payment, reducing draw latency from 45 days to under 10 seconds.
+
+---
+
+## 🔴 7. National Portfolio RWA Tokenization & Multi-Property Acquisition
+
+For developers with vast national portfolios, unlocking equity to acquire new properties historically required a 6-month refinancing loop per asset. The Unykorn Cockpit introduces **RWA real estate tokenization and fractionalization** directly within the enterprise environment:
+
+### Programmatic Fractionalization Lifecycle
+
+1.  **Asset Tokenization:** Physical assets (e.g. Austin Boutique, Atlanta Suites) are represented on-chain via RWA token contracts, anchoring their verified valuation and title deeds.
+2.  **Cross-Collateral Pools:** Multiple tokenized properties are grouped in the cockpit. The Unykorn state engine aggregates their equity to compute a real-time borrowing ceiling.
+3.  **Instant Draw Minting:** The developer leverages the aggregated cross-collateral to mint USDF stablecoins, bypassing individual mortgage origination delays.
+4.  **Bilateral Acquisition:** The minted USDF routes directly to a newly provisioned BitGo Child Draw Account mapped to the target property (e.g. Miami Beach Resort Tranche), locking the new asset under the enterprise whitelist.
