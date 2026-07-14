@@ -1323,51 +1323,53 @@ if (btnSignIssuePof) {
 // Resource Library Guides Document Database
 const libraryGuides = {
   borrower_guide: {
-    title: "Your Borrower Guide: How Your Commercial Loan Works",
-    overviewSpeechText: "Your Borrower Guide outlines the seven stages of a commercial real estate loan at The Loan Depot, showcasing how we eliminate traditional bank wait times of 15 to 30 days and replace them with instant on-chain escrow clearance, real-time balance attestations, and 90-second draw finality.",
+    title: "Traditional CRE Lending Comparables (Legacy Systems)",
+    overviewSpeechText: "This document is a comparative analysis sheet of traditional commercial real estate lending to show our clients the extreme friction of legacy institutions. It contrasts legacy timelines of 15 to 30 days for underwriting and closing with our instant on-chain escrow clearance and 90-second draw finality.",
     htmlContent: `
-      <h1>Your Borrower Guide: How Your Commercial Loan Works</h1>
-      <h3>The Loan Depot Commercial Real Estate Lender</h3>
-      <p>Niraj (Nick) Desai, President & CEO | In Partnership with Prudential Mortgage Capital Company</p>
+      <h1>Traditional CRE Lending Comparables</h1>
+      <h3>Comparative Legacy Reference Document</h3>
+      <p>Prepared by Niraj (Nick) Desai, President & CEO | The Loan Depot Lending Co.</p>
       <hr/>
-      <p>This guide contrasts traditional commercial real estate loans (which take 30 to 45 business days to underwrite and close) with <strong>The Loan Depot's Sovereign Clearing Network</strong>. We have designed our process to eliminate third-party clearing friction and legacy paperwork loops.</p>
-      <h4>At a Glance: Traditional vs. Our System</h4>
-      <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 11px;">
+      <p><strong>IMPORTANT NOTICE:</strong> This document details traditional commercial lending protocols and is provided <em>solely</em> as a market comparable to illustrate legacy friction. Under legacy guidelines, deals take weeks to close and draws take days. The Loan Depot’s Sovereign Clearing Network eliminates these timelines completely.</p>
+      
+      <h4>Underwriting & Clearing Telemetry: Traditional vs. Our System</h4>
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 25px; font-size: 11px;">
         <thead>
           <tr style="background: #f5f5f5;">
-            <th style="padding: 8px; text-align: left; border-bottom: 2px solid #ddd;">Lending Protocol</th>
-            <th style="padding: 8px; text-align: left; border-bottom: 2px solid #ddd;">Traditional Path</th>
-            <th style="padding: 8px; text-align: left; border-bottom: 2px solid #ddd; color: #0f3b7c;">Our Sovereign Path</th>
+            <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd; width: 30%;">Loan Phase</th>
+            <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd; width: 35%; color: #dc2626;">Legacy Bank Comparable</th>
+            <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd; width: 35%; color: #10b981;">Our Sovereign Clearing Network</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>1. Preliminary Sizing</strong></td>
-            <td style="padding: 8px; border-bottom: 1px solid #ddd;">3 to 5 business days</td>
-            <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold; color: #10b981;">Within 48 Hours</td>
+            <td style="padding: 10px; border-bottom: 1px solid #ddd;"><strong>Loan Sizing</strong></td>
+            <td style="padding: 10px; border-bottom: 1px solid #ddd; color: #7f1d1d;">3 to 5 business days</td>
+            <td style="padding: 10px; border-bottom: 1px solid #ddd; font-weight: bold; color: #10b981;">Within 48 hours (Direct Line)</td>
           </tr>
           <tr>
-            <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>2. Underwriting & Audit</strong></td>
-            <td style="padding: 8px; border-bottom: 1px solid #ddd;">15 to 30 business days</td>
-            <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold; color: #10b981;">Real-Time API Attestation</td>
+            <td style="padding: 10px; border-bottom: 1px solid #ddd;"><strong>Underwriting & Appraisal</strong></td>
+            <td style="padding: 10px; border-bottom: 1px solid #ddd; color: #7f1d1d;">15 to 30 business days (Paper search)</td>
+            <td style="padding: 10px; border-bottom: 1px solid #ddd; font-weight: bold; color: #10b981;">Automated API & Floor Attestations</td>
           </tr>
           <tr>
-            <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>3. Escrow Funding & Closing</strong></td>
-            <td style="padding: 8px; border-bottom: 1px solid #ddd;">5 to 10 business days</td>
-            <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold; color: #10b981;">Under 90 Seconds</td>
+            <td style="padding: 10px; border-bottom: 1px solid #ddd;"><strong>Loan Closing & Funding</strong></td>
+            <td style="padding: 10px; border-bottom: 1px solid #ddd; color: #7f1d1d;">5 to 10 business days</td>
+            <td style="padding: 10px; border-bottom: 1px solid #ddd; font-weight: bold; color: #10b981;">Under 90 Seconds (BitGo Trust Vault)</td>
           </tr>
           <tr>
-            <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>4. Construction Draws</strong></td>
-            <td style="padding: 8px; border-bottom: 1px solid #ddd;">3 to 5 business days per draw</td>
-            <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold; color: #10b981;">Instant Clearing (<90s)</td>
+            <td style="padding: 10px; border-bottom: 1px solid #ddd;"><strong>Construction Draws</strong></td>
+            <td style="padding: 10px; border-bottom: 1px solid #ddd; color: #7f1d1d;">3 to 5 business days per request</td>
+            <td style="padding: 10px; border-bottom: 1px solid #ddd; font-weight: bold; color: #10b981;">Instant Clearing (<90s to GC bank wire)</td>
           </tr>
         </tbody>
       </table>
-      <h4>How Our System Helps You:</h4>
+
+      <h4>System Architecture Highlights:</h4>
       <ul>
-        <li><strong>Zero Lost Paperwork:</strong> Every document logged directly into the digital ledger file.</li>
-        <li><strong>Dynamic Comfort Letters:</strong> Real-time on-chain balance attestations replace static paper comfort letters.</li>
-        <li><strong>Multi-Sig Security:</strong> All capital protected via isolated custody accounts with 3-of-5 quorum releases.</li>
+        <li><strong>Frictionless Netting:</strong> Bypasses FedWire batching and escrow holds via whitelisted child account settlement.</li>
+        <li><strong>Automated Attestations:</strong> Validates reserve backing on-chain in real time, eliminating outdated paper comfort letters.</li>
+        <li><strong>Protected Quorum:</strong> 3-of-5 key consensus governs draw disburals dynamically.</li>
       </ul>
     `
   },
