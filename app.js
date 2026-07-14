@@ -365,7 +365,8 @@ function populateVoices() {
     option.textContent = `${voice.name} (${voice.lang})`;
     
     // Auto-select Google UK English Male or en-GB Male
-    const isPreferred = voice.name.includes('Google UK English Male') || (voice.lang === 'en-GB' && voice.name.toLowerCase().includes('male'));
+    const isMale = voice.name.toLowerCase().includes('male') && !voice.name.toLowerCase().includes('female');
+    const isPreferred = voice.name.includes('Google UK English Male') || (voice.lang === 'en-GB' && isMale);
     if (isPreferred && !preferredVoiceSelected) {
       option.selected = true;
       preferredVoiceSelected = true;
