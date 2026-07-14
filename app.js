@@ -1324,22 +1324,50 @@ if (btnSignIssuePof) {
 const libraryGuides = {
   borrower_guide: {
     title: "Your Borrower Guide: How Your Commercial Loan Works",
-    overviewSpeechText: "Your Borrower Guide outlines the seven stages of a commercial real estate loan at The Loan Depot, starting with initial conversations and loan sizing, moving to underwriting in 15 to 30 days, closing, draw management, and maturity.",
+    overviewSpeechText: "Your Borrower Guide outlines the seven stages of a commercial real estate loan at The Loan Depot, showcasing how we eliminate traditional bank wait times of 15 to 30 days and replace them with instant on-chain escrow clearance, real-time balance attestations, and 90-second draw finality.",
     htmlContent: `
       <h1>Your Borrower Guide: How Your Commercial Loan Works</h1>
       <h3>The Loan Depot Commercial Real Estate Lender</h3>
-      <p>Niraj (Nick) Desai, President & CEO | Revised July 2026</p>
+      <p>Niraj (Nick) Desai, President & CEO | In Partnership with Prudential Mortgage Capital Company</p>
       <hr/>
-      <p>This guide walks you through every stage of your commercial real estate loan — from the day you first contact The Loan Depot to the day your loan is paid off or refinanced. We have designed our process to be clear, predictable, and transparent.</p>
-      <h4>At a Glance: The Seven Stages of Your Loan</h4>
+      <p>This guide contrasts traditional commercial real estate loans (which take 30 to 45 business days to underwrite and close) with <strong>The Loan Depot's Sovereign Clearing Network</strong>. We have designed our process to eliminate third-party clearing friction and legacy paperwork loops.</p>
+      <h4>At a Glance: Traditional vs. Our System</h4>
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 11px;">
+        <thead>
+          <tr style="background: #f5f5f5;">
+            <th style="padding: 8px; text-align: left; border-bottom: 2px solid #ddd;">Lending Protocol</th>
+            <th style="padding: 8px; text-align: left; border-bottom: 2px solid #ddd;">Traditional Path</th>
+            <th style="padding: 8px; text-align: left; border-bottom: 2px solid #ddd; color: #0f3b7c;">Our Sovereign Path</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>1. Preliminary Sizing</strong></td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">3 to 5 business days</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold; color: #10b981;">Within 48 Hours</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>2. Underwriting & Audit</strong></td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">15 to 30 business days</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold; color: #10b981;">Real-Time API Attestation</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>3. Escrow Funding & Closing</strong></td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">5 to 10 business days</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold; color: #10b981;">Under 90 Seconds</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>4. Construction Draws</strong></td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">3 to 5 business days per draw</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold; color: #10b981;">Instant Clearing (<90s)</td>
+          </tr>
+        </tbody>
+      </table>
+      <h4>How Our System Helps You:</h4>
       <ul>
-        <li><strong>Stage 1: Initial Conversation & Loan Sizing</strong> - Within 48 hours. Preliminary indication of interest.</li>
-        <li><strong>Stage 2: Term Sheet & Commitment Letter</strong> - 5 to 10 business days. Binding agreement follows sheet acceptance.</li>
-        <li><strong>Stage 3: Due Diligence & Underwriting</strong> - 15 to 30 business days. Order appraisal, title, environmental phase I.</li>
-        <li><strong>Stage 4: Loan Closing</strong> - 5 to 10 business days. Proceeds funded into dedicated custody accounts.</li>
-        <li><strong>Stage 5: Loan Servicing & Management</strong> - Ongoing. Borrower dashboard access.</li>
-        <li><strong>Stage 6: Construction Draws</strong> - 1 business day clearance per approved draw.</li>
-        <li><strong>Stage 7: Maturity & Refinance</strong> - Starts 90 days before maturity. Cashout refinance coordination.</li>
+        <li><strong>Zero Lost Paperwork:</strong> Every document logged directly into the digital ledger file.</li>
+        <li><strong>Dynamic Comfort Letters:</strong> Real-time on-chain balance attestations replace static paper comfort letters.</li>
+        <li><strong>Multi-Sig Security:</strong> All capital protected via isolated custody accounts with 3-of-5 quorum releases.</li>
       </ul>
     `
   },
@@ -1348,15 +1376,15 @@ const libraryGuides = {
     overviewSpeechText: "The Cash Out Refinance Guide details how to recapture built-up equity through restructured cashout loans without selling the asset. This allows developers to unlock their appreciation under compliant custody structures.",
     htmlContent: `
       <h1>Cash-Out Refinance and Equity Recapture Client Guide</h1>
-      <h3>Accessing the Value You Have Built</h3>
+      <h3>Accessing the Value You Have Built Instantly</h3>
       <p>The Loan Depot Lending Co. | origination desk</p>
       <hr/>
-      <p>If your property has appreciated significantly, or if your loan balance has paid down substantially, you may have the option to recapture equity through a cash-out refinance. This allows you to access the increased value of your asset — without selling the property.</p>
+      <p>If your property has appreciated significantly, or if your loan balance has paid down substantially, you may have the option to recapture equity through a cash-out refinance. Traditional cashouts take weeks; our system executes refinancing recaptures instantly through programmatic netting and daily yield offsets.</p>
       <h4>Key Advantages:</h4>
       <ul>
         <li>No re-gathering of 5 years of documents; we utilize your existing active loan record.</li>
         <li>Bilateral SOFR interest rate swaps shield your cashout tranches from market volatility.</li>
-        <li>Clears directly into isolated yield accounts earning 4.5% APY.</li>
+        <li>Clears directly into isolated yield accounts earning 4.5% APY to actively offset borrower debt service costs.</li>
       </ul>
     `
   },
@@ -1446,7 +1474,7 @@ const libraryGuides = {
       <h1>Construction Draw Disbursement Guide</h1>
       <h3>Milestone-Based Draw Clearance</h3>
       <hr/>
-      <p>How construction draws are cleared and off-ramped to contractors:</p>
+      <p>Traditional draws require 3 to 5 business days per release. Our system clearing bridge checks compliance dynamically against approved budgets and off-ramps payments to standard USD Fiat wire to contractors in under 90 seconds.</p>
       <ul>
         <li>Step 1: General Contractor submits AIA G702/G703 application.</li>
         <li>Step 2: Loan system automatically checks draw against approved budget.</li>
