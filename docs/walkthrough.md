@@ -54,9 +54,28 @@ To meet the 11:30 AM presentation objectives, we added interactive systems that 
 
 ---
 
+## 📑 In-System One-Click Proposals & G703 CEO Signature Stamp
+
+We have added the client-tailored brief synthesizer and draw approval stamp directly into **The Loan Depot's core portal** (`index.html`) to deliver a simplified, zero-confusion workflow for borrowers and lenders:
+
+1.  **30-Year Investor Registry Selector**:
+    *   Directly inside the **Proposal Desk** tab, a new 2x2 grid selector displays profiles for historical clients (John Doe, Jane Smith, Robert Johnson, Sarah Connor).
+    *   Clicking a client instantly updates their profile brief, locks the LTV slider to their preferred value, sets the clearance speed, and dynamically compiles a custom outreach document referencing their historical property deals (New Orleans, Louisville, Los Angeles, or California portfolios).
+2.  **One-Click G703 Signature Stamp**:
+    *   Once Draw 1 is authorized on the **Draw Disbursal** tab, an official digital stamp is rendered underneath the disbursal button.
+    *   The stamp includes the digital sign-off of **Nick Sheth, President & CEO**, a live timestamp, and an audit consensus code (**AUTH-TLD-9093**), showing clients an immediate "one-click and you're paid" verification.
+
+![One-Click Proposal Jane Smith](C:\Users\Kevan\.gemini\antigravity-ide\brain\844b3ca0-72d4-4e98-a45a-08775feb0a44\jane_smith_proposal_1784030726178.png)
+*Figure 3: Interactive Proposal Desk showing the automated LTV selection and tailored pitch email compiled for Jane Smith.*
+
+![G703 CEO Signature Stamp Approved](C:\Users\Kevan\.gemini\antigravity-ide\brain\844b3ca0-72d4-4e98-a45a-08775feb0a44\disbursal_approved_1784030751082.png)
+*Figure 4: Executed Draw Disbursal tab showing the live clearance log and official G703 digital signature stamp of Nick Sheth.*
+
+---
+
 ## 🌌 UnyKorn Sovereign Capital Portal (`dashboard.html`)
 
-We have built and verified a unified, single-file dashboard called [dashboard.html](file:///C:/Users/Kevan/.gemini/antigravity-ide/scratch/ld-cap/dashboard.html) that showcases UnyKorn's sovereign capital system, utilizing Tailwind CSS, Lucide icons, and modern glassmorphic panels:
+We have also built a unified, single-file administrative dashboard called [dashboard.html](file:///C:/Users/Kevan/.gemini/antigravity-ide/scratch/ld-cap/dashboard.html) that showcases UnyKorn's sovereign capital system, utilizing Tailwind CSS, Lucide icons, and modern glassmorphic panels:
 
 1.  **Multi-Perspective Switching**:
     *   **Commercial Debt Mode**: Restructures telemetry timelines and labels to commercial bank vernacular.
@@ -72,4 +91,4 @@ We have built and verified a unified, single-file dashboard called [dashboard.ht
     *   Shield node modal that runs cryptographic logs, audits ledger paths, and anchors signature consensus permanently.
 
 ![UnyKorn Sovereign Capital Portal Dashboard](C:\Users\Kevan\.gemini\antigravity-ide\brain\844b3ca0-72d4-4e98-a45a-08775feb0a44\signature_verification_alert_1784030503224.png)
-*Figure 3: Fully verified glassmorphic portal presenting the underwriting review memo and simulated multi-key consensus handshake.*
+*Figure 5: Fully verified glassmorphic portal presenting the underwriting review memo and simulated multi-key consensus handshake.*
