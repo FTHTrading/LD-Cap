@@ -16,12 +16,14 @@ const navMint = document.getElementById('nav-mint');
 const navHedge = document.getElementById('nav-hedge');
 const navLedger = document.getElementById('nav-ledger');
 const navRwa = document.getElementById('nav-rwa');
+const navProposals = document.getElementById('nav-proposals');
 
 const custodyView = document.getElementById('custody-view');
 const mintView = document.getElementById('mint-view');
 const hedgeView = document.getElementById('hedge-view');
 const ledgerView = document.getElementById('ledger-view');
 const rwaView = document.getElementById('rwa-view');
+const proposalsView = document.getElementById('proposals-view');
 
 const connectWalletBtn = document.getElementById('connect-wallet-btn');
 const walletModal = document.getElementById('wallet-modal');
@@ -60,7 +62,8 @@ const tabs = [
   { btn: navMint, view: mintView },
   { btn: navHedge, view: hedgeView },
   { btn: navLedger, view: ledgerView },
-  { btn: navRwa, view: rwaView }
+  { btn: navRwa, view: rwaView },
+  { btn: navProposals, view: proposalsView }
 ];
 
 tabs.forEach(tab => {
@@ -598,3 +601,268 @@ executeCrossPurchaseBtn.addEventListener('click', () => {
 
 // Run initial math
 recalculateCrossCollateral();
+
+// ==========================================
+// 9. CAPITAL ENGINE SLIDE TAB SWITCHING
+// ==========================================
+document.querySelectorAll('.slide-tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    // Deactivate all slide tab buttons
+    document.querySelectorAll('.slide-tab-btn').forEach(b => b.classList.remove('active'));
+    // Activate clicked button
+    btn.classList.add('active');
+
+    // Hide all slide panels
+    document.querySelectorAll('.slide-panel').forEach(panel => {
+      panel.style.display = 'none';
+    });
+
+    // Show targeted slide panel
+    const slideId = btn.dataset.slide;
+    const activePanel = document.getElementById(slideId);
+    if (activePanel) {
+      activePanel.style.display = activePanel.id === 'slide-exec' || activePanel.id === 'slide-stack' || activePanel.id === 'slide-governance' ? 'flex' : 'block';
+    }
+  });
+});
+
+// ==========================================
+// 10. CLIENT PROPOSAL & ONE-PAGER GENERATOR
+// ==========================================
+const propProjectSelect = document.getElementById('prop-project-select');
+const propTemplateSelect = document.getElementById('prop-template-select');
+const propLtvSlider = document.getElementById('prop-ltv-slider');
+const propLtvLabel = document.getElementById('prop-ltv-label');
+const propSpeedSelect = document.getElementById('prop-speed-select');
+const generateDocBtn = document.getElementById('generate-doc-btn');
+const documentPreviewBox = document.getElementById('document-preview-box');
+const btnCopyDoc = document.getElementById('btn-copy-doc');
+const btnPrintDoc = document.getElementById('btn-print-doc');
+
+// Update LTV label dynamically
+if (propLtvSlider) {
+  propLtvSlider.addEventListener('input', () => {
+    propLtvLabel.textContent = `${propLtvSlider.value}% LTV`;
+  });
+}
+
+const projectData = {
+  M_HELEN: {
+    name: 'M Helen Hotel LLC',
+    valuation: '$48,750,000.00',
+    equity: '$7,312,500.00',
+    debt: '$31,687,500.00',
+    mezz: '$9,750,000.00',
+    location: 'New Orleans, LA',
+    description: 'A premium hospitality project featuring verified capital floors and multi-sig compliance controls.'
+  },
+  LA_PORTFOLIO: {
+    name: 'Louisiana Hotel Portfolio',
+    valuation: '$30,500,000.00',
+    equity: '$15,250,000.00',
+    debt: '$19,825,000.00',
+    mezz: '$6,100,000.00',
+    location: 'Louisiana Statewide',
+    description: 'A diversified hotel portfolio cashout transaction restructured under whitelisted draw pathways.'
+  },
+  KY_HOTEL: {
+    name: 'Kentucky Full Service Hotel',
+    valuation: '$10,000,000.00',
+    equity: '$5,000,000.00',
+    debt: '$6,500,000.00',
+    mezz: '$2,000,000.00',
+    location: 'Louisville, KY',
+    description: 'An equity recapture refinancing transaction utilizing isolated reserve vaults and yield staking offsets.'
+  },
+  CA_HOTEL: {
+    name: 'California Limited Service Hotel',
+    valuation: '$19,000,000.00',
+    equity: '$9,500,000.00',
+    debt: '$12,350,000.00',
+    mezz: '$3,800,000.00',
+    location: 'Los Angeles, CA',
+    description: 'A Cashout Refinance transaction featuring CME SOFR rate protection and instant settlement.'
+  }
+};
+
+const speeds = {
+  '90SEC': 'under 90 seconds',
+  '15MIN': 'within 15 minutes',
+  'T1': 'next-day (T+1) settlement'
+};
+
+if (generateDocBtn) {
+  generateDocBtn.addEventListener('click', () => {
+    const projKey = propProjectSelect.value;
+    const templateKey = propTemplateSelect.value;
+    const ltv = propLtvSlider.value;
+    const speedText = speeds[propSpeedSelect.value];
+    const proj = projectData[projKey] || projectData.M_HELEN;
+
+    let content = '';
+
+    if (templateKey === 'ONE_PAGER') {
+      content = `
+<div style="font-family: var(--font-display); border-bottom: 2px solid var(--gold); padding-bottom: 8px; margin-bottom: 15px; text-align: center;">
+  <span style="font-weight: 800; font-size: 14px; color: var(--blue-brand); text-transform: uppercase; letter-spacing: 0.05em;">The Loan Depot</span><br/>
+  <span style="font-size: 9px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.1em;">Commercial Real Estate Refinancing Executive Brief</span>
+</div>
+
+<h3 style="font-size: 12px; color: var(--blue-brand); margin-bottom: 8px; text-transform: uppercase;">Project: ${proj.name}</h3>
+<p style="margin-bottom: 12px; font-size: 11px; color: var(--text-secondary);">${proj.description}</p>
+
+<table style="width: 100%; border-collapse: collapse; margin-bottom: 15px; font-size: 10px;">
+  <thead>
+    <tr style="background: var(--bg-darker);">
+      <th style="padding: 6px; text-align: left; color: var(--blue-brand);">Financial Metric</th>
+      <th style="padding: 6px; text-align: right; color: var(--blue-brand);">Structured Allocation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding: 6px; border-bottom: 1px solid var(--border-color);">Asset Valuation</td>
+      <td style="padding: 6px; border-bottom: 1px solid var(--border-color); text-align: right; font-weight: bold;">${proj.valuation}</td>
+    </tr>
+    <tr>
+      <td style="padding: 6px; border-bottom: 1px solid var(--border-color);">Target Loan-to-Value (LTV)</td>
+      <td style="padding: 6px; border-bottom: 1px solid var(--border-color); text-align: right; font-weight: bold;">${ltv}%</td>
+    </tr>
+    <tr>
+      <td style="padding: 6px; border-bottom: 1px solid var(--border-color);">Structured Senior Debt</td>
+      <td style="padding: 6px; border-bottom: 1px solid var(--border-color); text-align: right;">${proj.debt}</td>
+    </tr>
+    <tr>
+      <td style="padding: 6px; border-bottom: 1px solid var(--border-color);">Preferred Mezzanine Tranche</td>
+      <td style="padding: 6px; border-bottom: 1px solid var(--border-color); text-align: right;">${proj.mezz}</td>
+    </tr>
+    <tr>
+      <td style="padding: 6px; border-bottom: 1px solid var(--border-color);">Verified Land Equity (LP/GP)</td>
+      <td style="padding: 6px; border-bottom: 1px solid var(--border-color); text-align: right;">${proj.equity}</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 style="font-size: 10px; color: var(--blue-brand); margin-bottom: 6px; text-transform: uppercase;">Operational Advantages</h4>
+<ul style="padding-left: 15px; margin-bottom: 12px; font-size: 10px; color: var(--text-secondary); display: flex; flex-direction: column; gap: 4px;">
+  <li><strong>Instant Drawing Accounts:</strong> Restructured draw processing allows disbursal ${speedText} directly to General Contractors.</li>
+  <li><strong>Preferred Yield Offsets:</strong> Staked reserve accounts accumulate yield at 4.5% APY, offsetting daily debt service.</li>
+  <li><strong>Bilateral Rate Protection:</strong> CME SOFR average hedging swaps protect borrower principal against market volatility.</li>
+  <li><strong>Multi-Sig Governance Gates:</strong> Quorum routing restricts outbound paths to pre-vetted project whitelists, eliminating escrow risk.</li>
+</ul>
+
+<div style="font-size: 8px; color: var(--text-muted); text-align: center; border-top: 1px dashed var(--border-color); padding-top: 8px; margin-top: 12px;">
+  Confidential Document — For Qualified Institutional Review Only — Distributed by The Loan Depot
+</div>
+      `;
+    } else if (templateKey === 'EMAIL_PITCH') {
+      content = `
+<div style="font-family: var(--font-mono); font-size: 10px; border: 1px solid var(--border-color); padding: 12px; background: var(--bg-main); border-radius: 4px; margin-bottom: 12px;">
+  <strong>Subject:</strong> Institutional Refinancing Innovation & Draw Efficiency — ${proj.name}<br/>
+  <strong>From:</strong> Niraj Sheth, CEO, The Loan Depot &lt;nsheth@ldlgh.com&gt;
+</div>
+
+<div style="font-size: 11px; color: var(--text-primary);">
+  <p>Dear Partner,</p>
+  
+  <p>We are pleased to introduce our proprietary, in-house refinancing and draw clearing platform. We have structured a custom scenario for <strong>${proj.name}</strong> that eliminates traditional lending friction and sets a new institutional standard.</p>
+  
+  <p><strong>Proposed Refinancing Terms:</strong></p>
+  <ul style="padding-left: 15px; margin: 10px 0;">
+    <li><strong>Asset Valuation:</strong> ${proj.valuation}</li>
+    <li><strong>Target Loan-to-Value:</strong> ${ltv}% LTV</li>
+    <li><strong>Draw Disbursal Window:</strong> Cleared and settled <strong>${speedText}</strong> directly to drawing accounts.</li>
+    <li><strong>Escrow Security:</strong> Whitelisted multi-sig custody gates preventing un-vetted capital outflows.</li>
+    <li><strong>Yield Optimizations:</strong> Active reserve accounts earning 4.5% APY to offset debt costs.</li>
+  </ul>
+  
+  <p>By bringing our drawing ledgers completely in-house, we remove third-party clearing friction entirely. Draw settlements that previously took days can now finalize in minutes. We are also able to lock in custom bilateral SOFR interest rate swaps to guarantee rate protection throughout the project life.</p>
+  
+  <p>Please let us know your availability this week to review the structured one-pager and finalize the draw whitelists.</p>
+  
+  <p>Sincerely,</p>
+  <p><strong>Niraj (Nick) Sheth</strong><br/>
+  President & CEO, The Loan Depot Lending Co, Inc.<br/>
+  Office: (423) 385-2300 | www.LDLGH.com</p>
+</div>
+      `;
+    } else if (templateKey === 'STRUCTURE_BRIEF') {
+      content = `
+<div style="text-align: center; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">
+  <strong style="font-size: 12px; color: var(--blue-brand); text-transform: uppercase;">Underwriting & Risk Management Memorandum</strong>
+</div>
+
+<div style="font-size: 10px; color: var(--text-secondary); margin-bottom: 12px; display: grid; grid-template-columns: 80px 1fr; gap: 4px;">
+  <strong>To:</strong> <span>Credit Committee & Underwriting Desk</span>
+  <strong>From:</strong> <span>The Loan Depot Executive Desk</span>
+  <strong>Date:</strong> <span>${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+  <strong>Subject:</strong> <span>Risk Mitigation & Refinancing Audit for ${proj.name}</span>
+</div>
+
+<h4 style="font-size: 10px; color: var(--blue-brand); text-transform: uppercase; margin-bottom: 6px; border-bottom: 1px dashed var(--border-color); padding-bottom: 3px;">1. Capital Stack Structure</h4>
+<p style="margin-bottom: 8px; line-height: 1.4;">
+  The project is capitalized at a total value of ${proj.valuation}. Under the proposed ${ltv}% LTV framework, the senior loan tranche is set at ${proj.debt}, supported by a mezzanine preferred equity position of ${proj.mezz} and a borrower land equity floor of ${proj.equity}.
+</p>
+
+<h4 style="font-size: 10px; color: var(--blue-brand); text-transform: uppercase; margin-bottom: 6px; border-bottom: 1px dashed var(--border-color); padding-bottom: 3px;">2. Draw Clearance Risk Control</h4>
+<p style="margin-bottom: 8px; line-height: 1.4;">
+  Draw disbursals are managed via isolated drawing sub-accounts. Outbound draw routing enforces G703 AIA budget compliance automatically. Funds are disbursed ${speedText} upon satisfying multi-party approval quorums (3-of-5 signatures collected from monitor, lender, GP, and legal representatives).
+</p>
+
+<h4 style="font-size: 10px; color: var(--blue-brand); text-transform: uppercase; margin-bottom: 6px; border-bottom: 1px dashed var(--border-color); padding-bottom: 3px;">3. Rate Volatility Mitigation</h4>
+<p style="margin-bottom: 8px; line-height: 1.4;">
+  The borrower utilizes bilateral SOFR average rate swaps clearing directly against the isolated yield accounts. Staked reserve pools earn 4.5% APY to provide an active buffer for interest payments.
+</p>
+      `;
+    }
+
+    documentPreviewBox.innerHTML = content;
+    showToast('Document successfully generated!');
+  });
+}
+
+// Copy to Clipboard handler
+if (btnCopyDoc) {
+  btnCopyDoc.addEventListener('click', () => {
+    const text = documentPreviewBox.innerText;
+    if (text.includes('Select options and click')) {
+      showToast('Generate a document first.', 'error');
+      return;
+    }
+    navigator.clipboard.writeText(text).then(() => {
+      showToast('Document text copied to clipboard!');
+    }).catch(err => {
+      showToast('Copy failed.', 'error');
+    });
+  });
+}
+
+// Print handler
+if (btnPrintDoc) {
+  btnPrintDoc.addEventListener('click', () => {
+    const text = documentPreviewBox.innerHTML;
+    if (text.includes('Select options and click')) {
+      showToast('Generate a document first.', 'error');
+      return;
+    }
+    const win = window.open('', '_blank');
+    win.document.write(`
+      <html>
+        <head>
+          <title>Export Proposal - The Loan Depot</title>
+          <style>
+            body { font-family: sans-serif; padding: 40px; color: #333; line-height: 1.6; }
+            table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+            th, td { padding: 8px; border-bottom: 1px solid #ddd; text-align: left; }
+            th { background: #f5f5f5; }
+          </style>
+        </head>
+        <body>
+          ${text}
+          <script>window.print();</script>
+        </body>
+      </html>
+    `);
+    win.document.close();
+  });
+}
+
