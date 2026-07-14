@@ -1315,7 +1315,7 @@ if (btnGeneratePof) {
               ${amt.formatted} USDC ESCROWED
             </div>
             <div style="font-size: 8px; color: var(--text-secondary); font-family: var(--font-mono);">
-              Escrow Wallet: r3kSVwgsoQZCSG9NZ1GMUG54SUiH8yv66H
+              Escrow Vault: bg-escrow-9c0c50ce
             </div>
           </div>
         `;
@@ -1350,7 +1350,7 @@ if (btnSimulateFlash) {
     const logs = [
       `[FLASH] Initiating non-custodial flash bridge check for $${amt.formatted} USDC...`,
       `[FLASH] Borrowing flash liquidity from whitelisted clearing pool: tesSUCCESS`,
-      `[FLASH] Deposited into escrow wallet address r3kSVwgsoQZCSG9NZ1GMUG54SUiH8yv66H: OK`,
+      `[FLASH] Deposited into escrow vault address bg-escrow-9c0c50ce: OK`,
       `[FLASH] On-chain asset ledger reserve status confirmed: tesSUCCESS`,
       `[FLASH] Releasing escrow lock and returning liquidity to pool...`,
       `[FLASH] Flash check completed. Latency: 1480ms. Status: tesSUCCESS.`
@@ -1586,7 +1586,7 @@ if (btnDownloadPofPdf) {
               </div>
               <div>
                 <span>Clearing Rail</span>
-                <strong>XRPL Mainnet Clearing</strong>
+                <strong>BitGo Enterprise Settlement Network</strong>
               </div>
               <div>
                 <span>Verification Status</span>
@@ -1597,7 +1597,7 @@ if (btnDownloadPofPdf) {
             <div class="verified-box">
               <h2>✓ Confirmed in Escrow Custody Wallet</h2>
               <h3>$${amt.formatted}.00 USDC / UNY CONFIRMED</h3>
-              <code>Escrow Wallet: r3kSVwgsoQZCSG9NZ1GMUG54SUiH8yv66H</code>
+              <code>Escrow Vault: bg-escrow-9c0c50ce</code>
             </div>
 
             <!-- New Section: Custodial Escrow Registry Details -->
@@ -1633,16 +1633,16 @@ if (btnDownloadPofPdf) {
 
             <div class="details-list">
               <div class="details-row">
-                <strong>Source Wallet:</strong>
-                <span>rNX4faQ35SdtE4rDoEg8YeVLQKQ57AYyCt (Verified Custodial Balance: 174,000,000 USDC)</span>
+                <strong>Source Vault:</strong>
+                <span>bg-vault-07bcc4a1 (Verified Custodial Balance: 174,000,000 USDC)</span>
               </div>
               <div class="details-row">
-                <strong>Issuer Wallet:</strong>
-                <span>rJLMSTy77hTxqgDw9WMxCnYC8m5vhqN3FQ (TROPTIONS / ECLAW Stablecoin Issuer)</span>
+                <strong>Issuer Vault:</strong>
+                <span>bg-issuer-254900 (UNY Stablecoin Issuer Node)</span>
               </div>
               <div class="details-row">
                 <strong>Beneficiary Address:</strong>
-                <span>r2KaS3soaSCSXpYJyiCvUf68UUPmepPxC (Awaiting Release activation)</span>
+                <span>bg-beneficiary-4e57 (Awaiting Release activation)</span>
               </div>
               <div class="details-row">
                 <strong>Ledger Clearing Hash:</strong>

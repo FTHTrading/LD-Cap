@@ -859,7 +859,7 @@
             <h3 style="font-family: var(--font-display); font-size: 1.2rem; color: var(--blue-brand); margin: 0; display: flex; align-items: center; gap: 8px;">
               <i data-lucide="shield-check" style="color: var(--gold);"></i> Cryptographic Proof-of-Funds (POF) Control Center
             </h3>
-            <span style="font-size: 10px; background: rgba(15,59,124,0.1); color: var(--blue-brand); border: 1px solid var(--blue-brand); padding: 2px 8px; border-radius: 4px;">XRPL Clearing Node: Active</span>
+            <span style="font-size: 10px; background: rgba(15,59,124,0.1); color: var(--blue-brand); border: 1px solid var(--blue-brand); padding: 2px 8px; border-radius: 4px;">BitGo Settlement Node: Active</span>
           </div>
 
           <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 20px;">
@@ -877,18 +877,18 @@
               </div>
 
               <div class="form-group">
-                <label>Issuer Wallet (XRPL)</label>
-                <input type="text" class="form-control" style="font-family: var(--font-mono); font-size: 10px;" value="rJLMSTy77hTxqgDw9WMxCnYC8m5vhqN3FQ" disabled>
+                <label>BitGo Issuer Vault Routing ID</label>
+                <input type="text" class="form-control" style="font-family: var(--font-mono); font-size: 10px;" value="bg-issuer-254900" disabled>
               </div>
 
               <div class="form-group">
-                <label>Source Wallet (Custodial Origin)</label>
-                <input type="text" class="form-control" style="font-family: var(--font-mono); font-size: 10px;" value="rNX4faQ35SdtE4rDoEg8YeVLQKQ57AYyCt" disabled>
+                <label>BitGo Master Source Vault ID</label>
+                <input type="text" class="form-control" style="font-family: var(--font-mono); font-size: 10px;" value="bg-vault-07bcc4a1" disabled>
               </div>
 
               <div class="form-group">
-                <label>Destination / Beneficiary Address</label>
-                <input type="text" class="form-control" style="font-family: var(--font-mono); font-size: 10px;" value="r2KaS3soaSCSXpYJyiCvUf68UUPmepPxC" disabled>
+                <label>Beneficiary Settlement Vault ID</label>
+                <input type="text" class="form-control" style="font-family: var(--font-mono); font-size: 10px;" value="bg-beneficiary-4e57" disabled>
               </div>
 
               <div style="border-top: 1px solid var(--border-color); padding-top: 12px; display: flex; flex-direction: column; gap: 8px;">
@@ -913,7 +913,7 @@
                   <div>
                     <span style="font-size: 8px; color: var(--text-muted); font-weight: bold; letter-spacing: 0.1em; text-transform: uppercase; display: block;">Institutional Escrow Documentation — Confidential</span>
                     <strong style="font-size: 14px; color: var(--blue-brand); font-family: var(--font-display); text-transform: uppercase;">Proof-of-Funds Escrow Instrument</strong>
-                    <span style="font-size: 9px; color: var(--text-secondary); display: block; margin-top: 2px;">USDC / UNY Custodial Escrow — XRPL Mainnet Clearing</span>
+                    <span style="font-size: 9px; color: var(--text-secondary); display: block; margin-top: 2px;">USDC / UNY Custodial Escrow — BitGo Settlement Network</span>
                   </div>
                   <div style="text-align: right;">
                     <span style="font-size: 7px; color: var(--text-muted); text-transform: uppercase; display: block;">Document ID</span>
@@ -929,7 +929,7 @@
                   </div>
                   <div>
                     <span style="color: var(--text-muted); display: block; font-size: 8px;">Clearing Rail</span>
-                    <strong style="color: var(--text-primary);">XRPL Mainnet</strong>
+                    <strong style="color: var(--text-primary);">BitGo Enterprise Settlement</strong>
                   </div>
                   <div>
                     <span style="color: var(--text-muted); display: block; font-size: 8px;">Verification Status</span>
@@ -945,7 +945,7 @@
 
                 <!-- On-chain verification log references -->
                 <div style="font-size: 8px; color: var(--text-muted); line-height: 1.4; display: grid; grid-template-columns: 120px 1fr; gap: 4px;">
-                  <strong>Escrow Wallet:</strong> <span style="font-family: var(--font-mono); color: var(--text-secondary);">r3kSVwgsoQZCSG9NZ1GMUG54SUiH8yv66H</span>
+                  <strong>Escrow Vault ID:</strong> <span style="font-family: var(--font-mono); color: var(--text-secondary);">bg-escrow-9c0c50ce</span>
                   <strong>Transfer TX Hash:</strong> <span id="cert-tx-hash" style="font-family: var(--font-mono); color: var(--text-secondary);">Generates upon execution...</span>
                 </div>
 
