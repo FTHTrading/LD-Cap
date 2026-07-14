@@ -128,19 +128,6 @@ We integrated a dedicated **Resource Library** tab displaying a structured grid 
 ![Resource Library State](C:\Users\Kevan\.gemini\antigravity-ide\brain\844b3ca0-72d4-4e98-a45a-08775feb0a44\resource_library_1784033561509.png)
 *Figure 7: Expanded Resource Library listing 13 documents and including the new institutional briefing files.*
 
----
-
-## ⚡ Institutional Liquidity Attestation & Deal Desk
-
-We replaced the previous retail-oriented POF controls with the updated **Liquidity Attestation Engine** matching the Wall Street Platinum premium aesthetic:
-
-*   **Active Liquidity Source Selector:** Allows the user to select from active institutional documents (e.g., *BitGo Institutional Proof of Funds Guide*, *Sovereign Capital Access Matrix*, etc.).
-*   **Real-Time Proof-of-Reserves Telemetry:** Renders high-level institutional balance sheet telemetry, confirming the **$100,000,000.00 confirmed facility capacity cap** instantly and clean of cryptocurrency jargon.
-
-![Institutional Liquidity Attestation Desk](C:\Users\Kevan\.gemini\antigravity-ide\brain\844b3ca0-72d4-4e98-a45a-08775feb0a44\attestation_state_1784033550650.png)
-*Figure 8: Institutional Deal Desk presenting real-time cryptographic attestation metrics upon document selection.*
-
----
 
 ## 🏛️ Peer-to-Peer Fact Check: Reconciling Speed with Compliance
 
@@ -174,4 +161,4 @@ We have also built a unified, single-file administrative dashboard called [dashb
     *   Shield node modal that runs cryptographic logs, audits ledger paths, and anchors signature consensus permanently.
 
 ![UnyKorn Sovereign Capital Portal Dashboard](C:\Users\Kevan\.gemini\antigravity-ide\brain\844b3ca0-72d4-4e98-a45a-08775feb0a44\signature_verification_alert_1784030503224.png)
-*Figure 9: Fully verified glassmorphic portal presenting the underwriting review memo and simulated multi-key consensus handshake.*
+*Figure 8: Fully verified glassmorphic portal presenting the underwriting review memo and simulated multi-key consensus handshake.*
