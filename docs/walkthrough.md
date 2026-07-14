@@ -35,3 +35,19 @@ All updated files have been successfully pushed to the private repository:
 *   [index.html](file:///C:/Users/Kevan/.gemini/antigravity-ide/scratch/ld-cap/index.html)
 *   [style.css](file:///C:/Users/Kevan/.gemini/antigravity-ide/scratch/ld-cap/style.css)
 *   [app.js](file:///C:/Users/Kevan/.gemini/antigravity-ide/scratch/ld-cap/app.js)
+
+---
+
+## 📑 PDF Deck Integration & Collateral Proposal Generator
+
+To meet the 11:30 AM presentation objectives, we added interactive systems that display PDF metrics in the client's language and auto-generate outbound sales assets:
+1.  **Capital Engine Slide Reference Deck (PDF Integration):**
+    *   Directly inside the *Custody & Draw 1* tab, users can click through interactive HTML slides reproducing details from the **M Helen Hotel LLC Capital Engine** PDF.
+    *   Includes: *Executive Summary* (Asset Floors, Finality), *Capital Stack* ($48.75M tranches), *Sub-Accounts* (6 reserve accounts), *Budget vs Floor* (G703 AIA items with the 118.5% coverage ratio), and *Governance & Quorum* (3-of-5 signatory controls).
+2.  **Client Proposal & One-Pager Generator Desk:**
+    *   A new **Proposal Desk** tab houses an interactive document builder.
+    *   Lenders can select properties from the national portfolio (Louisiana statewide, Kentucky, California, or M Helen Hotel), target LTV targets (50% to 75%), clearance speeds, and document types.
+    *   **Live Preview & Export Desk:** Dynamically updates a live-rendered corporate document preview. Includes **Copy Text** and **Print** buttons to immediately generate and export collateral.
+
+![Proposal Generator Desk Preview](C:\Users\Kevan\.gemini\antigravity-ide\brain\844b3ca0-72d4-4e98-a45a-08775feb0a44\proposal_desk_pitch_email_1784029615062.png)
+*Figure 2: Interactive Proposal Desk containing the customized client marketing email pitching in-house clearing speeds and rate swaps.*
