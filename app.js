@@ -17,6 +17,7 @@ const navHedge = document.getElementById('nav-hedge');
 const navLedger = document.getElementById('nav-ledger');
 const navRwa = document.getElementById('nav-rwa');
 const navProposals = document.getElementById('nav-proposals');
+const navPof = document.getElementById('nav-pof');
 
 const custodyView = document.getElementById('custody-view');
 const mintView = document.getElementById('mint-view');
@@ -24,6 +25,7 @@ const hedgeView = document.getElementById('hedge-view');
 const ledgerView = document.getElementById('ledger-view');
 const rwaView = document.getElementById('rwa-view');
 const proposalsView = document.getElementById('proposals-view');
+const pofView = document.getElementById('pof-view');
 
 const connectWalletBtn = document.getElementById('connect-wallet-btn');
 const walletModal = document.getElementById('wallet-modal');
@@ -63,7 +65,8 @@ const tabs = [
   { btn: navHedge, view: hedgeView },
   { btn: navLedger, view: ledgerView },
   { btn: navRwa, view: rwaView },
-  { btn: navProposals, view: proposalsView }
+  { btn: navProposals, view: proposalsView },
+  { btn: navPof, view: pofView }
 ];
 
 tabs.forEach(tab => {
@@ -1006,6 +1009,189 @@ originalClientSelectBtnHandler.forEach(btn => {
     }
   });
 });
+
+// ==========================================
+// 11. CRYPTOGRAPHIC PROOF-OF-FUNDS & FLASH LOAN SIMULATOR
+// ==========================================
+const btnGeneratePof = document.getElementById('btn-generate-pof');
+const pofAmountSelect = document.getElementById('pof-amount-select');
+const certDocId = document.getElementById('cert-doc-id');
+const certDate = document.getElementById('cert-date');
+const certStatus = document.getElementById('cert-status');
+const certConfirmedBox = document.getElementById('cert-confirmed-box');
+const certTxHash = document.getElementById('cert-tx-hash');
+
+const btnSimulateFlash = document.getElementById('btn-simulate-flash');
+const flashStatusStamp = document.getElementById('flash-status-stamp');
+const flashConsoleLog = document.getElementById('flash-console-log');
+
+const pofAmounts = {
+  '1M': { formatted: '1,000,000', value: '1M', tx: '773CD23C4C8307C7991F82B5012D9D65E3FD357E82EBBB32E50C4E564CE7F0A4' },
+  '5M': { formatted: '5,000,000', value: '5M', tx: '849BA850DF283BC60B12F0A3D99C8D678E2FF8902A2BBB90FF501D890CC7F3B9' },
+  '10M': { formatted: '10,000,000', value: '10M', tx: '912BA890EF223CC50D23F1C4E88C7D823F3AA9803B2BBB80EF402C892CC8E4C0' },
+  '25M': { formatted: '25,000,000', value: '25M', tx: '250BA900FF334DD60E34F2D5F99D8D904F4BB9904C3CCC90FF503D893DD9F5D1' }
+};
+
+if (btnGeneratePof) {
+  btnGeneratePof.addEventListener('click', () => {
+    btnGeneratePof.disabled = true;
+    btnGeneratePof.textContent = 'Verifying approval gates...';
+    
+    // Reset gates
+    const gates = ['gate-1', 'gate-2', 'gate-3', 'gate-4'];
+    gates.forEach(g => {
+      const el = document.getElementById(g);
+      if (el) {
+        el.style.background = '#fff';
+        el.style.borderColor = 'var(--border-color)';
+        el.style.color = 'var(--text-muted)';
+      }
+    });
+
+    // Reset status & certificate
+    if (certStatus) {
+      certStatus.textContent = 'Awaiting Verification';
+      certStatus.style.color = 'var(--accent-red)';
+    }
+    if (certConfirmedBox) {
+      certConfirmedBox.innerHTML = `
+        <i data-lucide="lock" style="width: 24px; height: 24px; color: var(--text-muted); margin-bottom: 6px;"></i>
+        <span style="font-size: 10px; color: var(--text-secondary); font-weight: 500;">Click 'Generate & Verify' to lock escrow reserves and stamp instrument on-chain.</span>
+      `;
+      if (window.lucide) window.lucide.createIcons();
+    }
+    if (certTxHash) certTxHash.textContent = 'Generates upon execution...';
+    if (btnSimulateFlash) {
+      btnSimulateFlash.disabled = true;
+      flashStatusStamp.textContent = 'Bridge Idle';
+      flashStatusStamp.style.background = '#fff';
+      flashStatusStamp.style.color = 'var(--text-muted)';
+      flashStatusStamp.style.borderColor = 'var(--border-color)';
+      flashConsoleLog.style.display = 'none';
+      flashConsoleLog.innerHTML = '';
+    }
+
+    const amtKey = pofAmountSelect.value;
+    const amt = pofAmounts[amtKey] || pofAmounts['1M'];
+
+    // Simulating sequential on-chain signature aggregation
+    setTimeout(() => {
+      const el = document.getElementById('gate-1');
+      if (el) {
+        el.style.background = 'rgba(16, 185, 129, 0.05)';
+        el.style.borderColor = 'var(--accent-green)';
+        el.style.color = 'var(--accent-green)';
+      }
+    }, 200);
+
+    setTimeout(() => {
+      const el = document.getElementById('gate-2');
+      if (el) {
+        el.style.background = 'rgba(16, 185, 129, 0.05)';
+        el.style.borderColor = 'var(--accent-green)';
+        el.style.color = 'var(--accent-green)';
+      }
+    }, 400);
+
+    setTimeout(() => {
+      const el = document.getElementById('gate-3');
+      if (el) {
+        el.style.background = 'rgba(16, 185, 129, 0.05)';
+        el.style.borderColor = 'var(--accent-green)';
+        el.style.color = 'var(--accent-green)';
+      }
+    }, 600);
+
+    setTimeout(() => {
+      const el = document.getElementById('gate-4');
+      if (el) {
+        el.style.background = 'rgba(16, 185, 129, 0.05)';
+        el.style.borderColor = 'var(--accent-green)';
+        el.style.color = 'var(--accent-green)';
+      }
+    }, 800);
+
+    setTimeout(() => {
+      btnGeneratePof.disabled = false;
+      btnGeneratePof.textContent = 'Generate & Verify POF Instrument';
+      
+      // Update Certificate ID and Date
+      if (certDocId) certDocId.textContent = `TROPT-POF-USDC-${amt.value}-ESCROW-2026-07-14`;
+      if (certDate) certDate.textContent = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+      
+      if (certStatus) {
+        certStatus.textContent = 'Verified - Funds Escrowed';
+        certStatus.style.color = 'var(--accent-green)';
+      }
+
+      if (certConfirmedBox) {
+        certConfirmedBox.innerHTML = `
+          <div style="border: 2px solid var(--accent-green); background: rgba(16, 185, 129, 0.03); border-radius: 6px; padding: 15px; text-align: center; width: 100%;">
+            <div style="font-size: 20px; font-weight: bold; color: var(--accent-green); margin-bottom: 5px;">✓</div>
+            <div style="font-size: 10px; font-weight: bold; color: var(--accent-green); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px;">
+              ${amt.formatted} USDC CONFIRMED IN ESCROW CUSTODY WALLET
+            </div>
+            <div style="font-size: 13px; font-weight: 800; color: var(--blue-brand); margin-bottom: 6px;">
+              ${amt.formatted} USDC ESCROWED
+            </div>
+            <div style="font-size: 8px; color: var(--text-secondary); font-family: var(--font-mono);">
+              Escrow Wallet: r3kSVwgsoQZCSG9NZ1GMUG54SUiH8yv66H
+            </div>
+          </div>
+        `;
+      }
+
+      if (certTxHash) certTxHash.textContent = amt.tx;
+      if (btnSimulateFlash) btnSimulateFlash.disabled = false;
+
+      showToast("Cryptographic Proof-of-Funds instrument generated and verified!");
+    }, 1200);
+  });
+}
+
+if (btnSimulateFlash) {
+  btnSimulateFlash.addEventListener('click', () => {
+    btnSimulateFlash.disabled = true;
+    flashConsoleLog.style.display = 'block';
+    flashConsoleLog.innerHTML = '';
+    
+    const amtKey = pofAmountSelect.value;
+    const amt = pofAmounts[amtKey] || pofAmounts['1M'];
+
+    const logs = [
+      `[FLASH] Initiating non-custodial flash bridge check for $${amt.formatted} USDC...`,
+      `[FLASH] Borrowing flash liquidity from whitelisted clearing pool: tesSUCCESS`,
+      `[FLASH] Deposited into escrow wallet address r3kSVwgsoQZCSG9NZ1GMUG54SUiH8yv66H: OK`,
+      `[FLASH] On-chain asset ledger reserve status confirmed: tesSUCCESS`,
+      `[FLASH] Releasing escrow lock and returning liquidity to pool...`,
+      `[FLASH] Flash check completed. Latency: 1480ms. Status: tesSUCCESS.`
+    ];
+
+    let delay = 0;
+    logs.forEach((log, idx) => {
+      setTimeout(() => {
+        const line = document.createElement('div');
+        line.textContent = log;
+        if (log.includes('tesSUCCESS')) {
+          line.style.color = 'var(--accent-green)';
+        } else if (log.includes('Initiating')) {
+          line.style.color = 'var(--accent-cyan)';
+        }
+        flashConsoleLog.appendChild(line);
+        flashConsoleLog.scrollTop = flashConsoleLog.scrollHeight;
+
+        if (idx === logs.length - 1) {
+          flashStatusStamp.textContent = 'Verified';
+          flashStatusStamp.style.background = 'var(--accent-green)';
+          flashStatusStamp.style.color = '#ffffff';
+          flashStatusStamp.style.borderColor = 'var(--accent-green)';
+          showToast("Atomic flash loan verification success! Asset backing validated.");
+        }
+      }, delay);
+      delay += 300;
+    });
+  });
+}
 
 // Trigger initial generation
 generateOutboundDocument();
