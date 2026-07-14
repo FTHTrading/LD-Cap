@@ -1,16 +1,16 @@
 :root {
   --bg-main: #020617;
-  --bg-card: #0b1528;
-  --bg-darker: #022c22; /* Deep emerald gradient anchor */
-  --border-color: rgba(255, 255, 255, 0.08);
-  --border-gold: rgba(212, 175, 55, 0.2);
+  --bg-card: #0b172a;
+  --bg-darker: #0f2244; /* Deep cobalt/navy gradient anchor */
+  --border-color: rgba(37, 99, 235, 0.15);
+  --border-gold: rgba(226, 184, 59, 0.2);
   --text-primary: #f8fafc;
   --text-secondary: #94a3b8;
   --text-muted: #64748b;
   
-  /* Brand luxury color variables */
-  --gold: #d4af37;
-  --accent-cyan: #06b6d4;
+  /* Brand luxury color variables matching The Loan Depot & Unykorn */
+  --gold: #e2b83b;
+  --accent-cyan: #3b82f6; /* Cobalt blue accent */
   --accent-green: #10b981;
   --accent-purple: #8b5cf6;
   --accent-red: #ef4444;

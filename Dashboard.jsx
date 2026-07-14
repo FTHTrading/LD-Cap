@@ -32,9 +32,15 @@ export default function SovereignPipelineDashboard() {
   // RWA & Cross-Collateralization states
   const [portfolio, setPortfolio] = useState([
     { id: 'mhelen', name: 'M Helen Hotel LLC', region: 'Georgia', valuation: 29100000, equity: 4100000, status: 'Refinance Active', action: 'Escrow Mapped', disabled: true, checked: true },
-    { id: 'atlanta', name: 'Atlanta Corporate Enclave', region: 'Georgia', valuation: 18500000, equity: 9250000, status: 'Tokenized (100%)', action: 'Fractionalize', disabled: false, checked: false },
-    { id: 'austin', name: 'Austin Hospitality Suites', region: 'Texas', valuation: 12000000, equity: 6000000, status: 'Idle Equity', action: 'Tokenize Asset', disabled: true, checked: false },
-    { id: 'nashville', name: 'Nashville Boutique Hotel', region: 'Tennessee', valuation: 22400000, equity: 11200000, status: 'Idle Equity', action: 'Tokenize Asset', disabled: true, checked: false }
+    { id: 'la_portfolio', name: 'Louisiana Hotel Portfolio', region: 'Louisiana', valuation: 30500000, equity: 15250000, status: 'Tokenized (100%)', action: 'Fractionalize', disabled: false, checked: false },
+    { id: 'ky_hotel', name: 'Kentucky Full Service Hotel', region: 'Kentucky', valuation: 10000000, equity: 5000000, status: 'Tokenized (100%)', action: 'Fractionalize', disabled: false, checked: false },
+    { id: 'ca_hotel', name: 'California Limited Service Hotel', region: 'California', valuation: 19000000, equity: 9500000, status: 'Tokenized (100%)', action: 'Fractionalize', disabled: false, checked: false },
+    { id: 'ca_full', name: 'California Full Service Hotel', region: 'California', valuation: 33000000, equity: 16500000, status: 'Idle Equity', action: 'Tokenize Asset', disabled: true, checked: false },
+    { id: 'tn_hotel', name: 'Tennessee Limited Service Hotel', region: 'Tennessee', valuation: 7000000, equity: 3500000, status: 'Idle Equity', action: 'Tokenize Asset', disabled: true, checked: false },
+    { id: 'tx_hotel_a', name: 'Texas Limited Service Hotel A', region: 'Texas', valuation: 2500000, equity: 1250000, status: 'Idle Equity', action: 'Tokenize Asset', disabled: true, checked: false },
+    { id: 'oh_portfolio', name: 'Ohio Hotel Portfolio', region: 'Ohio', valuation: 9000000, equity: 4500000, status: 'Idle Equity', action: 'Tokenize Asset', disabled: true, checked: false },
+    { id: 'tx_hotel_b', name: 'Texas Limited Service Hotel B', region: 'Texas', valuation: 6100000, equity: 3050000, status: 'Idle Equity', action: 'Tokenize Asset', disabled: true, checked: false },
+    { id: 'la_hotel', name: 'Louisiana Limited Service Hotel', region: 'Louisiana', valuation: 8000000, equity: 4000000, status: 'Idle Equity', action: 'Tokenize Asset', disabled: true, checked: false }
   ]);
   const [targetAcquisition, setTargetAcquisition] = useState('Miami Beach Resort - Tranche A ($8.5M)');
   const [pooledCollateral, setPooledCollateral] = useState(4100000);
@@ -683,10 +689,8 @@ export default function SovereignPipelineDashboard() {
                             ) : prop.status.includes('Tokenized') || prop.status === 'Fractionalized' ? (
                               <button 
                                 onClick={() => {
-                                  if (prop.id === 'atlanta') {
-                                    setPortfolio(prev => prev.map(p => p.id === 'atlanta' ? { ...p, status: 'Fractionalized' } : p));
-                                    alert('Atlanta Corporate Enclave fractionalized into 10,000 tranches.');
-                                  }
+                                  setPortfolio(prev => prev.map(p => p.id === prop.id ? { ...p, status: 'Fractionalized' } : p));
+                                  alert(`${prop.name} fractionalized into 10,000 tranches successfully.`);
                                 }}
                                 className="bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 text-[9px] font-bold px-2 py-1 rounded hover:opacity-90"
                               >

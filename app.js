@@ -435,21 +435,58 @@ updateYieldMath();
 // ==========================================
 
 // Tokenize Actions
-const btnTokAustin = document.getElementById('btn-tok-austin');
-const btnTokNashville = document.getElementById('btn-tok-nashville');
-const btnFracAtlanta = document.getElementById('btn-frac-atlanta');
+const btnFracLaPortfolio = document.getElementById('btn-frac-la-portfolio');
+const btnFracKyHotel = document.getElementById('btn-frac-ky-hotel');
+const btnFracCaHotel = document.getElementById('btn-frac-ca-hotel');
 
-const statusAustin = document.getElementById('status-austin');
-const statusNashville = document.getElementById('status-nashville');
-const statusAtlanta = document.getElementById('status-atlanta');
+const tokenizePairs = [
+  { btnId: 'btn-tok-ca-full', statusId: 'status-ca-full', checkId: 'check-col-ca-full', labelId: 'label-col-ca-full', name: 'California Full Service Hotel', equity: '$16.5M' },
+  { btnId: 'btn-tok-tn-hotel', statusId: 'status-tn-hotel', checkId: 'check-col-tn-hotel', labelId: 'label-col-tn-hotel', name: 'Tennessee Limited Service Hotel', equity: '$3.5M' },
+  { btnId: 'btn-tok-tx-hotel-a', statusId: 'status-tx-hotel-a', checkId: 'check-col-tx-hotel-a', labelId: 'label-col-tx-hotel-a', name: 'Texas Limited Service Hotel A', equity: '$1.25M' },
+  { btnId: 'btn-tok-oh-portfolio', statusId: 'status-oh-portfolio', checkId: 'check-col-oh-portfolio', labelId: 'label-col-oh-portfolio', name: 'Ohio Hotel Portfolio', equity: '$4.5M' },
+  { btnId: 'btn-tok-tx-hotel-b', statusId: 'status-tx-hotel-b', checkId: 'check-col-tx-hotel-b', labelId: 'label-col-tx-hotel-b', name: 'Texas Limited Service Hotel B', equity: '$3.05M' },
+  { btnId: 'btn-tok-la-hotel', statusId: 'status-la-hotel', checkId: 'check-col-la-hotel', labelId: 'label-col-la-hotel', name: 'Louisiana Limited Service Hotel', equity: '$4.0M' }
+];
 
-const checkColAtlanta = document.getElementById('check-col-atlanta');
-const checkColAustin = document.getElementById('check-col-austin');
-const checkColNashville = document.getElementById('check-col-nashville');
+tokenizePairs.forEach(pair => {
+  const btn = document.getElementById(pair.btnId);
+  const status = document.getElementById(pair.statusId);
+  const check = document.getElementById(pair.checkId);
+  const label = document.getElementById(pair.labelId);
 
-const labelColAustin = document.getElementById('label-col-austin');
-const labelColNashville = document.getElementById('label-col-nashville');
+  if (btn) {
+    btn.addEventListener('click', () => {
+      btn.disabled = true;
+      btn.textContent = 'Tokenizing...';
+      setTimeout(() => {
+        btn.textContent = 'Tokenized';
+        status.textContent = 'Tokenized (100%)';
+        status.style.color = 'var(--accent-green)';
+        status.style.fontWeight = '600';
+        
+        if (check) check.disabled = false;
+        if (label) {
+          label.style.color = '#fff';
+          label.textContent = `${pair.name} (${pair.equity} Equity)`;
+        }
+        
+        showToast(`${pair.name} successfully tokenized as RWA!`);
+        recalculateCrossCollateral();
+      }, 1200);
+    });
+  }
+});
 
+['btn-frac-la-portfolio', 'btn-frac-ky-hotel', 'btn-frac-ca-hotel'].forEach(id => {
+  const btn = document.getElementById(id);
+  if (btn) {
+    btn.addEventListener('click', () => {
+      showToast('Asset fractionalized into 10,000 tranches successfully!');
+    });
+  }
+});
+
+// RWA Interface Declarations
 const colPoolChecks = document.querySelectorAll('.col-pool-check');
 const acquisitionTargetSelect = document.getElementById('acquisition-target-select');
 const pooledCollateralVal = document.getElementById('pooled-collateral-val');
@@ -457,48 +494,6 @@ const maxLtvVal = document.getElementById('max-ltv-val');
 const requiredAcquisitionVal = document.getElementById('required-acquisition-val');
 const collateralStatusVal = document.getElementById('collateral-status-val');
 const executeCrossPurchaseBtn = document.getElementById('execute-cross-purchase-btn');
-
-btnTokAustin.addEventListener('click', () => {
-  btnTokAustin.disabled = true;
-  btnTokAustin.textContent = 'Tokenizing...';
-  setTimeout(() => {
-    btnTokAustin.textContent = 'Tokenized';
-    statusAustin.textContent = 'Tokenized (100%)';
-    statusAustin.style.color = 'var(--accent-green)';
-    statusAustin.style.fontWeight = '600';
-    
-    // Enable cross-collateral selection
-    checkColAustin.disabled = false;
-    labelColAustin.style.color = '#fff';
-    labelColAustin.textContent = 'Austin Hospitality Suites ($6.0M Equity)';
-    
-    showToast('Austin Hospitality Suites successfully tokenized as RWA!');
-    recalculateCrossCollateral();
-  }, 1200);
-});
-
-btnTokNashville.addEventListener('click', () => {
-  btnTokNashville.disabled = true;
-  btnTokNashville.textContent = 'Tokenizing...';
-  setTimeout(() => {
-    btnTokNashville.textContent = 'Tokenized';
-    statusNashville.textContent = 'Tokenized (100%)';
-    statusNashville.style.color = 'var(--accent-green)';
-    statusNashville.style.fontWeight = '600';
-    
-    // Enable cross-collateral selection
-    checkColNashville.disabled = false;
-    labelColNashville.style.color = '#fff';
-    labelColNashville.textContent = 'Nashville Boutique Hotel ($11.2M Equity)';
-    
-    showToast('Nashville Boutique Hotel successfully tokenized as RWA!');
-    recalculateCrossCollateral();
-  }, 1200);
-});
-
-btnFracAtlanta.addEventListener('click', () => {
-  showToast('Atlanta Corporate Enclave fractionalized into 10,000 tranches.');
-});
 
 // Cross Collateral Math
 function recalculateCrossCollateral() {
