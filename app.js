@@ -957,10 +957,21 @@ if (btnPrintDoc) {
         <head>
           <title>Export Proposal - The Loan Depot</title>
           <style>
-            body { font-family: sans-serif; padding: 40px; color: #333; line-height: 1.6; }
+            :root {
+              --blue-brand: #0f3b7c;
+              --gold: #b38d38;
+              --text-primary: #1e293b;
+              --text-secondary: #475569;
+              --border-color: #e2e8f0;
+              --bg-darker: #f1f5f9;
+              --accent-green: #10b981;
+            }
+            body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding: 40px; color: var(--text-primary); line-height: 1.6; }
             table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-            th, td { padding: 8px; border-bottom: 1px solid #ddd; text-align: left; }
-            th { background: #f5f5f5; }
+            th, td { padding: 8px; border-bottom: 1px solid var(--border-color); text-align: left; }
+            th { background: var(--bg-darker); }
+            ul { padding-left: 20px; }
+            li { margin-bottom: 6px; }
           </style>
         </head>
         <body>
@@ -1185,9 +1196,9 @@ if (btnSimulateFlash) {
         const line = document.createElement('div');
         line.textContent = log;
         if (log.includes('tesSUCCESS')) {
-          line.style.color = 'var(--accent-green)';
+          line.style.color = '#34d399'; // Bright emerald green
         } else if (log.includes('Initiating')) {
-          line.style.color = 'var(--accent-cyan)';
+          line.style.color = '#38bdf8'; // Bright sky blue
         }
         flashConsoleLog.appendChild(line);
         flashConsoleLog.scrollTop = flashConsoleLog.scrollHeight;
