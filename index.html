@@ -32,6 +32,7 @@
         <li><a class="nav-link" id="nav-proposals">Proposal Desk</a></li>
         <li><a class="nav-link" id="nav-pof">POF Desk</a></li>
         <li><a class="nav-link" id="nav-library">Resource Library</a></li>
+        <li><a class="nav-link" id="nav-qa">Q&A Desk</a></li>
       </ul>
       <div style="display: flex; align-items: center; gap: 10px;">
         <button id="connect-wallet-btn" class="btn" style="background: #ffffff; border: 1px solid var(--border-color); color: var(--blue-brand); padding: 6px 14px; border-radius: 4px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: var(--transition);">
@@ -1203,6 +1204,64 @@
                 <button type="button" class="btn btn-download-guide" data-guide="bitgo_pof" style="flex: 1; padding: 4px; font-size: 9px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 4px;">
                   <i data-lucide="download" style="width:11px; height:11px;"></i> Download
                 </button>
+              </div>
+            </div>
+
+          </div>
+        </section>
+      </div>
+
+      <!-- MODULE 10: Q&A DESK -->
+      <div id="qa-view" class="tab-content-panel" style="display: none; flex-direction: column; gap: 2rem; width: 100%;">
+        <section class="card" style="display: flex; flex-direction: column; gap: 20px;">
+          <div style="border-bottom: 2px solid var(--bg-darker); padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="font-family: var(--font-display); font-size: 1.2rem; color: var(--blue-brand); margin: 0; display: flex; align-items: center; gap: 8px;">
+              <i data-lucide="help-circle" style="color: var(--gold);"></i> "Is This Too Good To Be True?" — Q&A Desk
+            </h3>
+            <span style="font-size: 10px; background: rgba(15,59,124,0.1); color: var(--blue-brand); border: 1px solid var(--blue-brand); padding: 2px 8px; border-radius: 4px;">Institutional Intelligence</span>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 20px;">
+            
+            <div style="background: rgba(15, 59, 124, 0.03); border-left: 4px solid var(--blue-brand); padding: 15px; border-radius: 4px; line-height: 1.5;">
+              <strong style="color: var(--blue-brand); font-size: 13px; display: block; margin-bottom: 6px; text-transform: uppercase;">The Institutional Reality Check</strong>
+              <span style="font-size: 11px; color: var(--text-secondary);">
+                When presenting under-90-second clearing speeds and real-time capital attestations to conservative underwriters or CMBS credit committees, the natural response is: <em>"Is this too good to be true?"</em> This page outlines the operational realities, showing how our system preserves traditional capital security while completely compressing legacy administrative friction.
+              </span>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+              <!-- Question 1 -->
+              <div style="background: var(--bg-main); border: 1px solid var(--border-color); padding: 20px; border-radius: 8px;">
+                <h4 style="color: var(--blue-brand); font-size: 12px; margin-top: 0; margin-bottom: 8px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.02em;">
+                  Q1: Is an under-90-second draw disbursal speed too good to be true?
+                </h4>
+                <p style="font-size: 11px; color: var(--text-secondary); margin: 0; line-height: 1.6;">
+                  It sounds like a marketing placeholder, but the mechanics are fully compliance-grounded. Traditional lenders take 15 to 30 days per draw because of fragmented paper loops, manual title reviews, and external banking lag. Our system clears draws via pre-funded reserve allocations held inside <strong>BitGo Trust Company (a federally chartered custodian bank)</strong>. 
+                  When a G702/G703 draw request is approved by the certified monitor, our system automatically runs programmatic compliance checks against the entitlement schedule and dispatches funds as a direct USD fiat cash wire to the contractor in under 90 seconds. All traditional audit gates are active—we have simply replaced manual processing with direct vault rails.
+                </p>
+              </div>
+
+              <!-- Question 2 -->
+              <div style="background: var(--bg-main); border: 1px solid var(--border-color); padding: 20px; border-radius: 8px;">
+                <h4 style="color: var(--blue-brand); font-size: 12px; margin-top: 0; margin-bottom: 8px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.02em;">
+                  Q2: Does this model still preserve traditional lender and borrower protections?
+                </h4>
+                <p style="font-size: 11px; color: var(--text-secondary); margin: 0; line-height: 1.6;">
+                  Absolutely. This is not a retail crypto product. We operate under strict commercial real estate guidelines. Every draw request requires independent monitoring checks, and escrow disbursements require a <strong>3-of-5 signatory quorum</strong> (monitor, GP, lender, legal, and compliance representatives). 
+                  Furthermore, our capital is fully collateralized by a verified <strong>$29,100,000.00 physical asset floor</strong> (CMBS tranches and land equity locks) that is updated daily on the ledger. We preserve the security of traditional underwriting while optimizing its execution.
+                </p>
+              </div>
+
+              <!-- Question 3 -->
+              <div style="background: var(--bg-main); border: 1px solid var(--border-color); padding: 20px; border-radius: 8px;">
+                <h4 style="color: var(--blue-brand); font-size: 12px; margin-top: 0; margin-bottom: 8px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.02em;">
+                  Q3: How does this help escalate our clients to self-funding principals?
+                </h4>
+                <p style="font-size: 11px; color: var(--text-secondary); margin: 0; line-height: 1.6;">
+                  Over the last 30 years, our team has observed developers relying entirely on external broker decisions and sluggish wire queues, leaving them vulnerable to market shifts. By placing UnyKorn’s sovereign infrastructure directly in the client's hands, they are no longer just borrowers. 
+                  Providing designated underwriters (like Prudential) with read-only portfolio auditor nodes and maintaining pre-vetted multi-sig consensus rules allows developers to act as <strong>their own self-funding principals</strong>. You control the timeline, minimize interest carry, protect contractor schedules, and scale your asset portfolio with institutional efficiency.
+                </p>
               </div>
             </div>
 

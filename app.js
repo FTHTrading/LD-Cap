@@ -10,6 +10,11 @@ let activeVoice = null;
 let synthesisSpeech = null;
 let currentBlockIndex = 0;
 
+// Guided Audio Presentation Tour States
+let tourUtterance = null;
+let currentNarrativeIndex = 0;
+let narratives = [];
+
 // Element references
 const navCustody = document.getElementById('nav-custody');
 const navMint = document.getElementById('nav-mint');
@@ -19,6 +24,7 @@ const navRwa = document.getElementById('nav-rwa');
 const navProposals = document.getElementById('nav-proposals');
 const navPof = document.getElementById('nav-pof');
 const navLibrary = document.getElementById('nav-library');
+const navQa = document.getElementById('nav-qa');
 
 const custodyView = document.getElementById('custody-view');
 const mintView = document.getElementById('mint-view');
@@ -28,6 +34,7 @@ const rwaView = document.getElementById('rwa-view');
 const proposalsView = document.getElementById('proposals-view');
 const pofView = document.getElementById('pof-view');
 const libraryView = document.getElementById('library-view');
+const qaView = document.getElementById('qa-view');
 
 const connectWalletBtn = document.getElementById('connect-wallet-btn');
 const walletModal = document.getElementById('wallet-modal');
@@ -59,7 +66,6 @@ const audioStopBtn = document.getElementById('audio-stop-btn');
 const voiceSelect = document.getElementById('voice-select');
 const speedSelect = document.getElementById('speed-select');
 const equalizerBars = document.getElementById('equalizer-bars');
-
 // 1. Tab Navigation Functionality
 const tabs = [
   { btn: navCustody, view: custodyView },
@@ -69,8 +75,57 @@ const tabs = [
   { btn: navRwa, view: rwaView },
   { btn: navProposals, view: proposalsView },
   { btn: navPof, view: pofView },
-  { btn: navLibrary, view: libraryView }
+  { btn: navLibrary, view: libraryView },
+  { btn: navQa, view: qaView }
 ];
+
+const tabNarrativeSpeechMap = {
+  'custody-view': [
+    "Welcome to the Custody and Draw 1 Desk. Here, you can review the land equity lock and approve the first mobilization draw of nine hundred and sixty-one thousand dollars, which clears directly into your operating account under twenty-nine point one million dollars of verified asset backing.",
+    "This screen enables you to review G703 mobilization details, verify structural requirements, and approve the release of funds immediately.",
+    "Click Connect Wallet to link your multi-sig key and approve the mobilization draw on-chain."
+  ],
+  'mint-view': [
+    "This is the Draw Disbursal scheduler. It shows the detailed schedule of construction draw releases, G702 general conditions checks, and contractor off-ramps.",
+    "Our clearing bridge checks requests against the approved budget and off-ramps payments to contractor bank accounts in under ninety seconds.",
+    "Review entitling timelines and milestones to monitor construction progress."
+  ],
+  'hedge-view': [
+    "This is the Rate Hedging panel. Here, you can structure bilateral interest rate swaps based on average CME SOFR rates to protect borrower principal against market shifts.",
+    "Use the leverage slider to adjust yield ratios and active reserve offsets.",
+    "Staked reserves accumulate interest at four point five percent APY, directly offsetting daily borrowing costs."
+  ],
+  'rwa-view': [
+    "This is the Portfolio Equity structure panel. It displays senior and mezzanine tranches, target Loan-to-Value ratios, and borrower capital capacity.",
+    "You can model different capital stack scenarios by adjusting the loan-to-value limits.",
+    "This matrix ensures compliant debt structure layouts before CMBS packaging."
+  ],
+  'ledger-view': [
+    "This is the Escrow Ledger. It displays a real-time, immutable audit trail of SHA-256 block validations tracking draw clearance events.",
+    "Designated underwriters can monitor the cryptographic signature consensus for every draw approval.",
+    "Each block validates ledger compliance and establishes absolute audit trails."
+  ],
+  'proposals-view': [
+    "Welcome to the Client Proposal Desk. Here, you can access the thirty-year investor registry to structure tailored one-page memos, terms sheets, and proposal emails.",
+    "Select a client profile to auto-fill their leverage and speed preferences.",
+    "Once generated, you can digitally co-sign and execute agreements directly on the secure ledger."
+  ],
+  'pof-view': [
+    "This is the Proof of Funds and Flash Loan Desk. You can build verified, cryptographically signed Proof-of-Funds escrow instruments immediately.",
+    "Deploy the atomic non-custodial flash loan bridge to instantly verify liquidity presence.",
+    "The simulator returns success status in under two seconds to confirm qualified reserve backing."
+  ],
+  'library-view': [
+    "This is the Institutional Resource Library. It contains thirteen comprehensive guides, including legacy comparables, lender protocols, and advanced CRE strategies.",
+    "Click Listen to hear a voice overview of the guide's key compliance criteria.",
+    "Click Download to dynamically compile and print official briefing sheets."
+  ],
+  'qa-view': [
+    "Welcome to the Q and A Desk. This panel addresses critical underwriting inquiries, including why under-ninety-second disbursals are legitimately backed by chartered trust vaults.",
+    "Learn how our direct access to qualified custody eliminates middleman clearing lag entirely.",
+    "See how this architecture Corporate structures elevate commercial real estate developers to self-funding principals."
+  ]
+};
 
 tabs.forEach(tab => {
   tab.btn.addEventListener('click', () => {
@@ -83,6 +138,22 @@ tabs.forEach(tab => {
     
     // Refresh lucide icons in the view
     if (window.lucide) window.lucide.createIcons();
+
+    // Dynamically update Guided Audio Narratives based on active tab view
+    const viewId = tab.view.id;
+    const activeSpeech = tabNarrativeSpeechMap[viewId] || tabNarrativeSpeechMap['custody-view'];
+    if (typeof narratives !== 'undefined') {
+      narratives[0] = activeSpeech[0];
+      narratives[1] = activeSpeech[1];
+      narratives[2] = activeSpeech[2];
+    }
+
+    // Reset speaker index and stop if speaking
+    currentNarrativeIndex = 0;
+    if (typeof speechSynthesis !== 'undefined' && speechSynthesis.speaking) {
+      speechSynthesis.cancel();
+      stopVisualizer();
+    }
   });
 });
 
@@ -262,13 +333,11 @@ placeHedgeBtn.addEventListener('click', () => {
 });
 
 // 6. Guided Audio Presentation (Web Speech API)
-let tourUtterance = null;
-let currentNarrativeIndex = 0;
-const narratives = [
+narratives.push(
   document.getElementById('narrative-1').textContent.trim(),
   document.getElementById('narrative-2').textContent.trim(),
   document.getElementById('narrative-3').textContent.trim()
-];
+);
 
 function populateVoices() {
   if (typeof speechSynthesis === 'undefined') return;
@@ -289,12 +358,29 @@ function populateVoices() {
   naturalVoices.sort((a, b) => a.name.localeCompare(b.name));
 
   voiceSelect.innerHTML = '<option value="">Default Voice</option>';
+  let preferredVoiceSelected = false;
   naturalVoices.forEach(voice => {
     const option = document.createElement('option');
     option.value = voice.name;
     option.textContent = `${voice.name} (${voice.lang})`;
+    
+    // Auto-select Google UK English Male or en-GB Male
+    const isPreferred = voice.name.includes('Google UK English Male') || (voice.lang === 'en-GB' && voice.name.toLowerCase().includes('male'));
+    if (isPreferred && !preferredVoiceSelected) {
+      option.selected = true;
+      preferredVoiceSelected = true;
+    }
+    
     voiceSelect.appendChild(option);
   });
+
+  // If a preferred voice was selected, trigger select change to update default voice select value
+  if (preferredVoiceSelected && voiceSelect.value === "") {
+    const preferredOption = Array.from(voiceSelect.options).find(opt => opt.selected);
+    if (preferredOption) {
+      voiceSelect.value = preferredOption.value;
+    }
+  }
 }
 
 populateVoices();
