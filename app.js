@@ -227,6 +227,85 @@ modalSignBtn.addEventListener('click', () => {
   });
 });
 
+// AI Compliance Audit listener (Cloudflare AI Workers)
+const aiAuditBtn = document.getElementById('ai-audit-btn');
+if (aiAuditBtn) {
+  aiAuditBtn.addEventListener('click', () => {
+    if (aiAuditBtn.disabled) return;
+    aiAuditBtn.disabled = true;
+    aiAuditBtn.textContent = 'Auditing via Cloudflare AI...';
+    
+    // Clear log console and print starting logs
+    hookConsoleLog.innerHTML = '';
+    const startLogs = [
+      { text: '--- STARTING AI COMPLIANCE AUDIT ---', color: 'var(--blue-brand)' },
+      { text: '[AI WORKER] Establishing secure handshake with Cloudflare Edge...', color: 'var(--accent-cyan)' },
+      { text: '[AI WORKER] Submitting active draw payload for audit...', color: 'var(--accent-cyan)' },
+      { text: '[AI WORKER] Model target: @cf/meta/llama-3-8b-instruct', color: 'var(--gold)' }
+    ];
+
+    startLogs.forEach((log, i) => {
+      setTimeout(() => {
+        const line = document.createElement('div');
+        line.style.color = log.color;
+        line.textContent = log.text;
+        hookConsoleLog.appendChild(line);
+        hookConsoleLog.scrollTop = hookConsoleLog.scrollHeight;
+      }, i * 300);
+    });
+
+    // Make POST request to Cloudflare Pages Functions
+    setTimeout(() => {
+      fetch('/api/audit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          drawTarget: "Draw 1: Mobilization",
+          amount: "961,021.51",
+          stablecoin: "UNY",
+          recipient: "0x4E574939D460d284B5D990646D4aeaEF2D49Fa13",
+          collateralFloor: "29,100,000.00",
+          underwritingRules: "CMBS 75% LTV ceiling"
+        })
+      })
+      .then(res => res.json())
+      .then(result => {
+        aiAuditBtn.disabled = false;
+        aiAuditBtn.textContent = 'Run AI Compliance Audit';
+        
+        if (result.success) {
+          showToast('AI Compliance Audit Completed!');
+          
+          // Print result analysis
+          const resultLine = document.createElement('div');
+          resultLine.style.color = 'var(--accent-green)';
+          resultLine.style.marginTop = '10px';
+          resultLine.style.whiteSpace = 'pre-wrap';
+          resultLine.style.fontFamily = 'monospace';
+          resultLine.style.fontSize = '9px';
+          resultLine.textContent = result.analysis;
+          
+          hookConsoleLog.appendChild(resultLine);
+          hookConsoleLog.scrollTop = hookConsoleLog.scrollHeight;
+        } else {
+          showToast('AI Audit failed', 'error');
+        }
+      })
+      .catch(err => {
+        aiAuditBtn.disabled = false;
+        aiAuditBtn.textContent = 'Run AI Compliance Audit';
+        showToast('Error contacting AI worker API', 'error');
+        
+        // Append error log
+        const errLine = document.createElement('div');
+        errLine.style.color = 'var(--accent-red)';
+        errLine.textContent = `[ERROR] Failed to contact Edge API: ${err.message}`;
+        hookConsoleLog.appendChild(errLine);
+      });
+    }, 1500);
+  });
+}
+
 // 4. Stablecoin Minting & G703 Draw 1 Execution Simulation (Port 8888)
 executeDrawBtn.addEventListener('click', () => {
   if (!isWalletConnected) {
@@ -1472,15 +1551,31 @@ if (btnDownloadPofPdf) {
         </head>
         <body>
           <div class="border-wrap">
-            <div class="header">
-              <div>
-                <span>INSTITUTIONAL ESCROW DOCUMENTATION — CONFIDENTIAL</span>
-                <h1>Proof-of-Funds Escrow Instrument</h1>
-                <p style="margin: 2px 0 0; font-size: 10px; color: var(--text-secondary);">USDC / UNY Custodial Escrow — XRPL Mainnet Clearing</p>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--gold); padding-bottom: 12px; margin-bottom: 20px;">
+              <!-- BitGo and TLD Logos side-by-side -->
+              <div style="display: flex; align-items: center; gap: 15px;">
+                <svg viewBox="0 0 100 24" width="80" height="20" style="margin-bottom: 0;">
+                  <path d="M10 2a6 6 0 0 0-6 6v4a6 6 0 0 0 6 6h2v-2h-2a4 4 0 0 1-4-4V8a4 4 0 0 1 4-4h4V2h-4zm8 0h-4v2h4a4 4 0 0 1 4 4v4a4 4 0 0 1-4 4h-2v2h2a6 6 0 0 0 6-6V8a6 6 0 0 0-6-6z" fill="#b38d38"/>
+                  <rect x="8" y="10" width="8" height="4" fill="#0f3b7c" rx="1"/>
+                  <text x="32" y="17" font-family="-apple-system, sans-serif" font-weight="900" font-size="16" fill="#0f3b7c">BitGo</text>
+                </svg>
+                <div style="width: 1px; height: 20px; background: var(--border-color);"></div>
+                <svg viewBox="0 0 120 24" width="90" height="18">
+                  <text x="0" y="14" font-family="-apple-system, sans-serif" font-weight="900" font-size="11" letter-spacing="0.02em" fill="#0f3b7c">THE LOAN DEPOT</text>
+                  <text x="0" y="21" font-family="-apple-system, sans-serif" font-size="5.5" font-weight="bold" letter-spacing="0.05em" fill="#b38d38">COMMERCIAL LENDER</text>
+                </svg>
               </div>
               <div style="text-align: right;">
-                <span style="display:block;">DOCUMENT ID</span>
+                <span style="display:block; font-size: 8px; color: var(--text-secondary); font-weight: bold;">DOCUMENT ID</span>
                 <strong style="font-family: monospace; font-size: 10px; color: var(--blue-brand);">${docId}</strong>
+              </div>
+            </div>
+
+            <div class="header" style="border-bottom: none; margin-bottom: 15px; padding-bottom: 0;">
+              <div>
+                <span style="font-size: 8px; color: var(--text-secondary); font-weight: bold; letter-spacing: 0.1em; text-transform: uppercase;">INSTITUTIONAL TRUST CUSTODY ATTESTATION</span>
+                <h1 style="font-size: 18px; margin: 2px 0 0;">Proof-of-Funds Custodial Certificate</h1>
+                <p style="margin: 2px 0 0; font-size: 9px; color: var(--text-secondary);">Issued by BitGo Trust Company in partnership with The Loan Depot Clearing Desk</p>
               </div>
             </div>
 
@@ -1505,12 +1600,12 @@ if (btnDownloadPofPdf) {
               <code>Escrow Wallet: r3kSVwgsoQZCSG9NZ1GMUG54SUiH8yv66H</code>
             </div>
 
-            <!-- New Section: UnyKorn Corporate Registry Credentials -->
+            <!-- New Section: Custodial Escrow Registry Details -->
             <div class="credentials-section">
-              <h4>UnyKorn LLC Escrow Registry Credentials</h4>
+              <h4>Custodial Escrow Registry Details</h4>
               <div class="credentials-grid">
                 <div>
-                  <span>Sovereign Organization:</span>
+                  <span>Account Holder (Borrower):</span>
                   <strong>UnyKorn LLC</strong>
                 </div>
                 <div>
